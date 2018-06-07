@@ -14,8 +14,7 @@
   <body>
 
     <div id="container">
-
-
+        <!-- Mount Point -->
     </div>
 
   </body>
@@ -28,13 +27,11 @@
     #endif
 
     uniform float amplitude;
+    uniform float angle;
     attribute float displacement;
     varying vec3 vNormal;
 
     void main() {
-
-      vNormal = normal;
-
       // multiply our displacement by the
       // amplitude. The amp will get animated
       // so we'll have animated displacement
@@ -43,9 +40,25 @@
                  vec3(displacement *
                   amplitude);
 
+      vec3 column0 = vec3(cos(angle), -sin(angle), 0.0);
+      vec3 column1 = vec3(sin(angle), cos(angle), 0.0);
+      vec3 column2 = vec3(0.0, 0.0, 1.0);
+      mat3 Rz = mat3(column0, column1, column2);
+
+      vec3 column0x = vec3(1.0, 0.0, 0.0);
+      vec3 column1x = vec3(0.0, cos(angle), sin(angle));
+      vec3 column2x = vec3(0.0, -sin(angle), cos(angle));
+      mat3 Rx = mat3(column0x, column1x, column2x);
+
+        vec3 newPosition2 = Rz * Rx * newPosition;
+      // vNormal = Rz * normal;
+        vNormal = Rz * Rx * normal;
+
+
       gl_Position = projectionMatrix *
               modelViewMatrix *
-              vec4(newPosition,1.0);
+              vec4(newPosition2,1.0);
+
     }
   </script>
 
@@ -93,6 +106,10 @@
                 window.setTimeout(callback, 1000 / 60);
               };
     })();
+
+
+
+
   // set the scene size
   var WIDTH = window.document.documentElement.clientWidth,
       HEIGHT = window.document.documentElement.clientHeight;
@@ -114,7 +131,7 @@
                                   ASPECT,
                                   NEAR,
                                   FAR  );
-  var scene = new THREE.Scene();
+   var scene = new THREE.Scene();
 
   // the camera starts at 0,0,0 so pull it back
   camera.position.z = 300;
@@ -136,6 +153,10 @@
     amplitude: {
       type: 'f', // a float
       value: 0
+    },
+    angle: {
+        type: 'f', // a float
+        value: 0
     }
   };
 
@@ -148,7 +169,7 @@
   });
 
   // set up the sphere vars
-  var radius = 75, segments = 64, rings = 64;
+  var radius = 75, segments = 14, rings = 14;
 
   // create a new mesh with sphere geometry -
   // we will cover the sphereMaterial next!
@@ -172,6 +193,7 @@
   function update() {
 
     uniforms.amplitude.value = Math.sin(frame);
+    uniforms.angle.value = uniforms.angle.value + 0.01;
     frame += 0.1;
 
     renderer.render(scene, camera);

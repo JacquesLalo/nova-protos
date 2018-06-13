@@ -1,0 +1,19 @@
+* Resources
+** Git
+This PDF: [[./pro-git.pdf]]
+   
+** Math
+This PDF: [[./3d-math-primer-for-graphics-and-game-development.pdf]]
+
+** Shaders
+Functions that operate at the pixel level:
+
+- https://aerotwist.com/tutorials/an-introduction-to-shaders-part-1/
+- https://aerotwist.com/tutorials/an-introduction-to-shaders-part-2/
+
+** UV mapping
+UV mapping are used to map textures on 3D objects easily:
+
+- https://en.wikipedia.org/wiki/UV_mapping
+- https://cmichel.io/importing-blender-model-with-texture-to-threejs/
+- https://stackoverflow.com/questions/19891507/correct-uv-mapping-three-js

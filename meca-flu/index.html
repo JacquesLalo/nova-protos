@@ -105,11 +105,12 @@
                 uniforms: uniforms,
                 vertexShader: document.getElementById('vertexshader').textContent,
                 fragmentShader: document.getElementById('fragmentshader').textContent,
+                side: THREE.DoubleSide,
             })
 
             // setting up the geometry
             // play with controls on: https://threejs.org/docs/#api/geometries/PlaneBufferGeometry
-            var geometry = new THREE.SphereBufferGeometry(5, 32, 32)
+            var geometry = new THREE.SphereBufferGeometry(5, 32, 32, 0, 3)
 
             // Changing uv mapping of current geometry
             // change_uvs(geometry, 1, 1, 0, 0)

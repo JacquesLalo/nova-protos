@@ -1,175 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>three.js webgl - custom attributes</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<style>
-			body {
-				color: #ffffff;
-				font-family:Monospace;
-				font-size:13px;
-				text-align:center;
-				font-weight: bold;
-				background-color: #000000;
-				margin: 0px;
-				overflow: hidden;
-			}
-			#info {
-				color: #fff;
-				position: absolute;
-				top: 0px; width: 100%;
-				padding: 5px;
-				z-index:100;
-			}
-		</style>
-	</head>
 
-	<body>
-		<div id="container"></div>
+<head>
+    <title>three.js webgl - custom attributes</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+</head>
 
-		<script src="./js/Three.js"></script>
+<body>
+    <!-- JS dependencies -->
+    <script src="./js/Three.js"></script>
+    <script src="js/Detector.js"></script>
+    <script src="js/libs/stats.min.js"></script>
 
-		<script src="js/Detector.js"></script>
-		<script src="js/libs/stats.min.js"></script>
+    <!-- WEBGL mountpoint -->
+    <div id="container"></div>
 
-		<script type="x-shader/x-vertex" id="vertexshader">
-			uniform float amplitude;
-		  uniform float scaleFactor;
-			attribute float displacement;
-			varying vec3 vNormal;
-			varying vec2 vUv;
-			void main() {
-				vNormal = normal;
-				vUv = ( 0.5 + amplitude ) * uv + vec2( amplitude );
-				vec3 newPosition = position + amplitude * normal * vec3( displacement );
-          vec3 newPosition2 = mat3(
-              vec3(1, 0, 0),
-              vec3(0, 1, 0),
-              vec3(0, 0, scaleFactor)
-          ) * newPosition;
-				gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition2, 1.0 );
-			}
-		</script>
+    <!-- Vertex shader -->
+    <script type="x-shader/x-vertex" id="vertexshader">
+     uniform float amplitude;
+     uniform float scaleFactor;
+     attribute float displacement;
+     varying vec3 vNormal;
+     varying vec2 vUv;
 
-		<script type="x-shader/x-fragment" id="fragmentshader">
-			varying vec3 vNormal;
-			varying vec2 vUv;
-			uniform vec3 color;
-			uniform sampler2D texture;
-			void main() {
-				vec3 light = vec3( 0.5, 0.2, 1.0 );
-				light = normalize( light );
-				float dProd = dot( vNormal, light ) * 0.5 + 0.5;
-				vec4 tcolor = texture2D( texture, vUv );
-				vec4 gray = vec4( vec3( tcolor.r * 0.3 + tcolor.g * 0.59 + tcolor.b * 0.11 ), 1.0 );
-  		  gl_FragColor = texture2D(texture, vUv);
-			}
-		</script>
+     void main() {
+         vNormal = normal;
+         vUv = ( 0.5 + amplitude ) * uv + vec2( amplitude );
+         vec3 newPosition = position + amplitude * normal * vec3( displacement );
+         vec3 newPosition2 = mat3(
+             vec3(1, 0, 0),
+             vec3(0, 1, 0),
+             vec3(0, 0, scaleFactor)
+         ) * newPosition;
 
+         gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition2, 1.0 );
+     }
+    </script>
 
-		<script>
-		 // gl_FragColor = gray * vec4( vec3( dProd ) * vec3( color ), 1.0 );
+    <!-- Fragment shader -->
+    <script type="x-shader/x-fragment" id="fragmentshader">
+     varying vec3 vNormal;
+     varying vec2 vUv;
+     uniform vec3 color;
+     uniform sampler2D texture;
+     void main() {
+         vec3 light = vec3( 0.5, 0.2, 1.0 );
+         light = normalize( light );
+         float dProd = dot( vNormal, light ) * 0.5 + 0.5;
+         vec4 tcolor = texture2D( texture, vUv );
+         vec4 gray = vec4(
+             vec3( tcolor.r * 0.3 + tcolor.g * 0.59 + tcolor.b * 0.11 ),
+             1.0 );
+         gl_FragColor = texture2D(texture, vUv); }
+    </script>
 
-		// if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-		var renderer, scene, camera, stats;
-		var sphere, uniforms;
-    var displacement, noise;
-    var meshLength;
-    var meshWidth;
+    <!-- JS setup code -->
+    <script>
+        var renderer, scene, camera, stats;
+        var sphere, uniforms;
+        var displacement, noise;
+        var meshLength;
+        var meshWidth;
 
-		init();
-		animate();
-		function init() {
-      // Camera setup
-			camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
-			camera.position.z = 20;
-      camera.position.x = 5;
+        init();
+        animate();
 
-      // Scene setup
-			scene = new THREE.Scene();
-			scene.background = new THREE.Color( 0x050505 );
+        function init() {
+            // Camera setup
+            camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 10000);
+            camera.position.z = 20;
+            camera.position.x = 5;
 
-      // Shader variables setup
-			uniforms = {
-				amplitude: { value: 1.0 },
-				scaleFactor: { value: 1.0 },
-				color:     { value: new THREE.Color( 0xff2200 ) },
-				texture:   { value: new THREE.TextureLoader().load( "textures/about-us.png" ) }
-			};
-      uniforms.texture.value.wrapS = uniforms.texture.value.wrapT = THREE.MirroredRepeatWrapping;
-      uniforms.texture.minFilter = THREE.LinearFilter;
-  		uniforms.texture.magFilter = THREE.LinearFilter;
-			var shaderMaterial = new THREE.ShaderMaterial( {
-				uniforms: uniforms,
-				vertexShader:document.getElementById( 'vertexshader' ).textContent,
-				fragmentShader: document.getElementById( 'fragmentshader' ).textContent
-			});
-			var radius = 50, segments = 128, rings = 64;
-			// var geometry = new THREE.SphereBufferGeometry( radius, segments, rings );
-      meshLength = 100
-      meshWidth = meshLength
-			var geometry = new THREE.PlaneBufferGeometry( 50, 50, meshLength, meshWidth);
+            // Scene setup
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x050505);
 
-     function change_uvs( geometry, unitx, unity, offsetx, offsety ) {
-				var uvs = geometry.attributes.uv.array;
-				for ( var i = 0; i < uvs.length; i += 2 ) {
-            uvs[ i ] = ( uvs[ i ] + offsetx ) * unitx;
-            uvs[ i + 1 ] = ( uvs[ i + 1 ] + offsety ) * unity;
-				}
-	   }
+            // Shader variables setup
+            uniforms = {
+                amplitude: {
+                    value: 1.0
+                },
+                scaleFactor: {
+                    value: 1.0
+                },
+                color: {
+                    value: new THREE.Color(0xff2200)
+                },
+                texture: {
+                    value: new THREE.TextureLoader().load("textures/about-us.png")
+                }
+            };
+            uniforms.texture.value.wrapS = uniforms.texture.value.wrapT = THREE.MirroredRepeatWrapping;
+            uniforms.texture.minFilter = THREE.LinearFilter;
+            uniforms.texture.magFilter = THREE.LinearFilter;
+            var shaderMaterial = new THREE.ShaderMaterial({
+                uniforms: uniforms,
+                vertexShader: document.getElementById('vertexshader').textContent,
+                fragmentShader: document.getElementById('fragmentshader').textContent
+            });
 
-     change_uvs(geometry, 0.2, 0.2, 0.1, 0.1)
+            meshLengthSegments = 100
+            meshWidthSegments = meshLengthSegments
+            var meshWidth = 50
+            var meshLength = meshWidth
+            var geometry = new THREE.PlaneBufferGeometry(meshLength, meshWidth, meshLengthSegments, meshWidthSegments);
+
+            function change_uvs(geometry, unitx, unity, offsetx, offsety) {
+                var uvs = geometry.attributes.uv.array;
+                for (var i = 0; i < uvs.length; i += 2) {
+                    uvs[i] = (uvs[i] + offsetx) * unitx;
+                    uvs[i + 1] = (uvs[i + 1] + offsety) * unity;
+                }
+            }
+
+            change_uvs(geometry, 0.2, 0.2, 0.1, 0.1)
 
 
-			displacement = new Float32Array( geometry.attributes.position.count );
-			noise = new Float32Array( geometry.attributes.position.count );
-			for ( var i = 0; i < displacement.length; i ++ ) {
-				noise[ i ] = Math.random() * 5;
-			}
-			geometry.addAttribute( 'displacement', new THREE.BufferAttribute( displacement, 1 ) );
-			sphere = new THREE.Mesh( geometry, shaderMaterial );
-			scene.add( sphere );
-			renderer = new THREE.WebGLRenderer();
-			renderer.setPixelRatio( window.devicePixelRatio );
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			var container = document.getElementById( 'container' );
-			container.appendChild( renderer.domElement );
-			// stats = new Stats();
-			// container.appendChild( stats.dom );
-			//
-			window.addEventListener( 'resize', onWindowResize, false );
-		}
-		function onWindowResize() {
-			camera.aspect = window.innerWidth / window.innerHeight;
-			camera.updateProjectionMatrix();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-		}
-		function animate() {
-			requestAnimationFrame( animate );
-			render();
-			// stats.update();
-		}
-		function render() {
-      var tFactor = 0.01;
-			var time = Date.now() * 0.01 * tFactor;
-			// sphere.rotation.y = sphere.rotation.z = 0.01 * time;
-		  // sphere.rotation.y = sphere.rotation.z = 0.01 * time;
-			sphere.rotation.z = 0.5 * time;
-			uniforms.amplitude.value = 10// * Math.sin(time) //2.5 * Math.sin( sphere.rotation.y * 0.125 );
-      uniforms.scaleFactor.value = 0 + 0.2 * Math.sin(time) //2.5 * Math.sin( sphere.rotation.y * 0.125 );
-			uniforms.color.value.offsetHSL( 0.0001, 0, 0 );
-      var e1, e2
-			for ( var i = 0; i < displacement.length; i ++ ) {
-				displacement[ i ] = 4 * Math.sin( 0.1 * i + time ) * Math.cos( 0.1 * i + time) + Math.cos(time);
-        e1 = 0.5 * (i / meshWidth)
-        e2 =  0.5 * (i % meshWidth)
-        displacement[ i ] = 2 * Math.sin(e1) * Math.sin(e2);
-			}
-			sphere.geometry.attributes.displacement.needsUpdate = true;
-			renderer.render( scene, camera );
-		}
-	</script>
+            displacement = new Float32Array(geometry.attributes.position.count);
+            geometry.addAttribute('displacement', new THREE.BufferAttribute(displacement, 1));
+            sphere = new THREE.Mesh(geometry, shaderMaterial);
+            scene.add(sphere);
+            renderer = new THREE.WebGLRenderer();
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            var container = document.getElementById('container');
+            container.appendChild(renderer.domElement);
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            render();
+        }
+
+        function render() {
+            var tFactor = 0.01;
+            var time = Date.now() * 0.01 * tFactor;
+            sphere.rotation.z = 0.5 * time;
+            uniforms.amplitude.value = 10
+            uniforms.scaleFactor.value = 0 + 0.2 * Math.sin(time)
+            uniforms.color.value.offsetHSL(0.0001, 0, 0);
+            var e1, e2
+            for (var i = 0; i < displacement.length; i++) {
+                displacement[i] = 4 * Math.sin(0.1 * i + time) * Math.cos(0.1 * i + time) + Math.cos(time);
+                e1 = 0.5 * (i / meshWidthSegments)
+                e2 = 0.5 * (i % meshWidthSegments)
+                displacement[i] = 2 * Math.sin(e1) * Math.sin(e2);
+            }
+            sphere.geometry.attributes.displacement.needsUpdate = true;
+            renderer.render(scene, camera);
+        }
+    </script>
 
 </body>
 

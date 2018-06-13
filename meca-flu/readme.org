@@ -54,10 +54,11 @@ The mapping of the texture on the UVs can be found [[https://github.com/mecs13/n
 
 *** Changing the geometry
     
-| Commit                                   | Screenshot       |
-|------------------------------------------+------------------|
-| [[https://github.com/mecs13/nova-protos/commit/9bd550aabc75bd4ffd6dbbb6049c9619717b4f5c][9bd550aabc75bd4ffd6dbbb6049c9619717b4f5c]] | [[./img/sphere.png]] |
-|                                          |                  |
+| Commit                                   | Screenshot           |
+|------------------------------------------+----------------------|
+| [[https://github.com/mecs13/nova-protos/commit/9bd550aabc75bd4ffd6dbbb6049c9619717b4f5c][9bd550aabc75bd4ffd6dbbb6049c9619717b4f5c]] | [[./img/sphere.png]]     |
+| [[https://github.com/mecs13/nova-protos/commit/43a3006dfc192d74edfc679fd48a36a69e705aec][43a3006dfc192d74edfc679fd48a36a69e705aec]] | [[./img/hemisphere.png]] |
+| [[https://github.com/mecs13/nova-protos/commit/4756a7b037b9c578f22f757ccefcdf2987e8f2fb][4756a7b037b9c578f22f757ccefcdf2987e8f2fb]] | [[./img/gemstone.png]]   |
 
 
 

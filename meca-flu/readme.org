@@ -18,3 +18,4 @@ UV mapping are used to map textures on 3D objects easily:
 - https://en.wikipedia.org/wiki/UV_mapping
 - https://cmichel.io/importing-blender-model-with-texture-to-threejs/
 - https://stackoverflow.com/questions/19891507/correct-uv-mapping-three-js
+- https://codepen.io/knee-cola/pen/XMVBwQ

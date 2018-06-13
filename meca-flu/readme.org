@@ -1,6 +1,10 @@
 * Resources
 ** Git
 This PDF: [[../resources/pro-git.pdf]]
+
+Using git from your editor:
+- VS Code: https://code.visualstudio.com/docs/introvideos/versioncontrol
+- Emacs: https://magit.vc/
    
 ** Math
 This PDF: [[../resources/3d-math-primer-for-graphics-and-game-development.pdf]]

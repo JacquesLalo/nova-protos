@@ -9,6 +9,11 @@ Using git from your editor:
 ** Math
 This PDF: [[../resources/3d-math-primer-for-graphics-and-game-development.pdf]]
 
+** Threejs
+It's a high level library for making 3D program that can run in the web browser.
+
+- https://threejs.org/examples/
+
 ** Shaders
 Functions that operate at the pixel level:
 
@@ -32,3 +37,20 @@ Going back to the code developed for the fluid mechanics ([[./WEB XR 3D fluid me
 | [[./img/uvmap--with-tiling.png]]                    | [[./img/uvmap--without-tiling.png]]                 |
 
 On the pictures above, the trick is to modify the 2 first parameters of [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L118][this function]] from `(1, 1)` which stretches the textures to (9, 9) which tiles it 9 by 9 times. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L102][This lines]] handles the way the texture repeats (check out wrapping modes on the following [[https://threejs.org/docs/#api/constants/Textures][page]].
+
+*** Shader code
+
+The mapping of the texture on the UVs can be found [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L45][here]].
+
+** Generating the surface
+
+1. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L115][Create]] a plane using Three.js 
+2. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L77][Calculate displacements]] of the vertices on this plane along a function to shape the plane
+3. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L34][Update]] the geometry in the vertex shader.
+
+   
+** Scaling and rotating the surface
+
+1. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L35][Scaling in shader code]]
+2. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L160][Updating]] scaling factor in JS code
+3. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L159][Updating]] plane rotating in JS

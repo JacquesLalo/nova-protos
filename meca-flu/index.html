@@ -44,9 +44,9 @@
 				vUv = ( 0.5 + amplitude ) * uv + vec2( amplitude );
 				vec3 newPosition = position + amplitude * normal * vec3( displacement );
           vec3 newPosition2 = mat3(
-              vec3(scaleFactor, 0, 0),
-              vec3(0, scaleFactor, 0),
-              vec3(0, 0, 1)
+              vec3(1, 0, 0),
+              vec3(0, 1, 0),
+              vec3(0, 0, scaleFactor)
           ) * newPosition;
 				gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition2, 1.0 );
 			}
@@ -83,7 +83,8 @@
 		function init() {
       // Camera setup
 			camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
-			camera.position.z = 300;
+			camera.position.z = 20;
+      camera.position.x = 5;
 
       // Scene setup
 			scene = new THREE.Scene();
@@ -108,7 +109,19 @@
 			// var geometry = new THREE.SphereBufferGeometry( radius, segments, rings );
       meshLength = 100
       meshWidth = meshLength
-			var geometry = new THREE.PlaneBufferGeometry( 100, 100, meshLength, meshWidth);
+			var geometry = new THREE.PlaneBufferGeometry( 50, 50, meshLength, meshWidth);
+
+     function change_uvs( geometry, unitx, unity, offsetx, offsety ) {
+				var uvs = geometry.attributes.uv.array;
+				for ( var i = 0; i < uvs.length; i += 2 ) {
+            uvs[ i ] = ( uvs[ i ] + offsetx ) * unitx;
+            uvs[ i + 1 ] = ( uvs[ i + 1 ] + offsety ) * unity;
+				}
+	   }
+
+     change_uvs(geometry, 0.2, 0.2, 0.1, 0.1)
+
+
 			displacement = new Float32Array( geometry.attributes.position.count );
 			noise = new Float32Array( geometry.attributes.position.count );
 			for ( var i = 0; i < displacement.length; i ++ ) {
@@ -144,11 +157,11 @@
 		  // sphere.rotation.y = sphere.rotation.z = 0.01 * time;
 			sphere.rotation.z = 0.5 * time;
 			uniforms.amplitude.value = 10// * Math.sin(time) //2.5 * Math.sin( sphere.rotation.y * 0.125 );
-      uniforms.scaleFactor.value = 3 + 0.5 * Math.sin(time) //2.5 * Math.sin( sphere.rotation.y * 0.125 );
+      uniforms.scaleFactor.value = 0 + 0.2 * Math.sin(time) //2.5 * Math.sin( sphere.rotation.y * 0.125 );
 			uniforms.color.value.offsetHSL( 0.0001, 0, 0 );
       var e1, e2
 			for ( var i = 0; i < displacement.length; i ++ ) {
-				// displacement[ i ] = 4 * Math.sin( 0.1 * i + time ) * Math.cos( 0.1 * i + time) + Math.cos(time);
+				displacement[ i ] = 4 * Math.sin( 0.1 * i + time ) * Math.cos( 0.1 * i + time) + Math.cos(time);
         e1 = 0.5 * (i / meshWidth)
         e2 =  0.5 * (i % meshWidth)
         displacement[ i ] = 2 * Math.sin(e1) * Math.sin(e2);

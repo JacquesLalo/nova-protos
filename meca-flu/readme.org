@@ -1,9 +1,9 @@
 * Resources
 ** Git
-This PDF: [[./pro-git.pdf]]
+This PDF: [[../pro-git.pdf]]
    
 ** Math
-This PDF: [[./3d-math-primer-for-graphics-and-game-development.pdf]]
+This PDF: [[../3d-math-primer-for-graphics-and-game-development.pdf]]
 
 ** Shaders
 Functions that operate at the pixel level:

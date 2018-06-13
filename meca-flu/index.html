@@ -73,9 +73,7 @@
             var alpha = 0.5
             var beta = alpha
             for (var i = 0; i < displacement.length; i++) {
-                x = i / meshWidthSegments
-                y = i % meshWidthSegments
-                displacement[i] = 2 * Math.sin(alpha * x) * Math.sin(beta * y)
+                displacement[i] = Math.random() * 0.2
             }
         }
 
@@ -117,6 +115,7 @@
 
             // Deforming plane with displacements
             displacement = new Float32Array(geometry.attributes.position.count)
+            applyDisplacements(displacement)
 
             // Setting up the shaders' attributes
             geometry.addAttribute('displacement', new THREE.BufferAttribute(displacement, 1))

@@ -28,6 +28,7 @@
 	<body>
 		<script src="./js/Three.js"></script>
 
+    <script src="js/loaders/GLTFLoader.js"></script>
 		<script src="js/loaders/DDSLoader.js"></script>
 		<script src="js/loaders/MTLLoader.js"></script>
 		<script src="js/loaders/OBJLoader.js"></script>
@@ -45,7 +46,7 @@
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-				camera.position.z = 3;
+				camera.position.z = 30;
 				camera.position.x = 0;
 				camera.position.y = 0;
 				// scene
@@ -64,30 +65,12 @@
 				};
 				var onError = function ( xhr ) { };
 				THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
-				new THREE.MTLLoader()
-					.setPath( 'textures/' )
-					.load( 'world.mtl', function ( materials ) {
-						materials.preload();
-              // materials.side = THREE.DoubleSide
-						new THREE.OBJLoader()
-							.setMaterials( materials )
-							.setPath( 'textures/' )
-							.load( 'world.obj', function ( object ) {
-								object.position.y = 0;
-								  object.rotateX(Math.PI / 2);
-								  object.rotateY(Math.PI / 2);
-                  object.scale.set(1, 10, 1);
 
-                  object.traverse( function( node ) {
-                      if( node.material ) {
-                          node.material.side = THREE.DoubleSide;
-                      }
-                  });
+        var loader = new THREE.GLTFLoader();
+				loader.load( 'textures/scene.gltf', function ( gltf ) {
+            scene.add( gltf.scene );
+				} );
 
-								scene.add( object );
-                m_object = object
-							}, onProgress, onError );
-					} );
 				//
 				renderer = new THREE.WebGLRenderer();
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -124,8 +107,8 @@
         //     scale = -scale
         // }
         // m_object.scale.set(1, scale, 1)
-        m_object.scale.set(1, 4 * Math.sin(0.0001 * new Date().getTime()), 1)
-        m_object.rotateY(0.0001)
+        // m_object.scale.set(1, 4 * Math.sin(0.0001 * new Date().getTime()), 1)
+        // m_object.rotateY(0.0001)
 			}
 		</script>
 

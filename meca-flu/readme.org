@@ -56,7 +56,7 @@ The mapping of the texture on the UVs can be found [[https://github.com/mecs13/n
     
 | Commit                                   | Screenshot       |
 |------------------------------------------+------------------|
-| 9bd550aabc75bd4ffd6dbbb6049c9619717b4f5c | [[./img/sphere.png]] |
+| [[https://github.com/mecs13/nova-protos/commit/9bd550aabc75bd4ffd6dbbb6049c9619717b4f5c][9bd550aabc75bd4ffd6dbbb6049c9619717b4f5c]] | [[./img/sphere.png]] |
 |                                          |                  |
 
 

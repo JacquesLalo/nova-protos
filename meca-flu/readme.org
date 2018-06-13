@@ -52,9 +52,20 @@ The mapping of the texture on the UVs can be found [[https://github.com/mecs13/n
 2. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L77][Calculate displacements]] of the vertices on this plane along a function to shape the plane
 3. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L34][Update]] the geometry in the vertex shader.
 
+*** Changing the geometry
+    
+| Commit                                                                                | Screenshot       |
+|---------------------------------------------------------------------------------------+------------------|
+| https://github.com/mecs13/nova-protos/commit/9bd550aabc75bd4ffd6dbbb6049c9619717b4f5c | [[./img/sphere.png]] |
+|                                                                                       |                  |
+
+
+
+
    
 ** Scaling and rotating the surface
 
 1. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L35][Scaling in shader code]]
 2. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L160][Updating]] scaling factor in JS code
 3. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L159][Updating]] plane rotating in JS
+

@@ -31,3 +31,4 @@ Going back to the code developed for the fluid mechanics ([[./WEB XR 3D fluid me
 |-------------------------------------------------+-------------------------------------------------|
 | [[./img/uvmap--with-tiling.png]]                    | [[./img/uvmap--without-tiling.png]]                 |
 
+On the pictures above, the trick is to modify the 2 first parameters of [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L118][this function]] from `(1, 1)` which stretches the textures to (9, 9) which tiles it 9 by 9 times. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L102][This lines]] handles the way the texture repeats (check out wrapping modes on the following [[https://threejs.org/docs/#api/constants/Textures][page]].

@@ -51,8 +51,8 @@
         var renderer, scene, camera, stats;
         var sphere, uniforms;
         var displacement, noise;
-        var meshLength;
-        var meshWidth;
+        var meshLengthSegments;
+        var meshWidthSegments;
 
         init();
         animate();
@@ -65,38 +65,34 @@
 
             // Scene setup
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x050505);
 
             // Shader variables setup
             uniforms = {
                 amplitude: {
-                    value: 1.0
+                    value: 10
                 },
                 scaleFactor: {
                     value: 1.0
-                },
-                color: {
-                    value: new THREE.Color(0xff2200)
                 },
                 texture: {
                     value: new THREE.TextureLoader().load("textures/about-us.png")
                 }
             };
             uniforms.texture.value.wrapS = uniforms.texture.value.wrapT = THREE.MirroredRepeatWrapping;
-            uniforms.texture.minFilter = THREE.LinearFilter;
-            uniforms.texture.magFilter = THREE.LinearFilter;
             var shaderMaterial = new THREE.ShaderMaterial({
                 uniforms: uniforms,
                 vertexShader: document.getElementById('vertexshader').textContent,
                 fragmentShader: document.getElementById('fragmentshader').textContent
             });
 
+            // setting up the geometry
             meshLengthSegments = 100
             meshWidthSegments = meshLengthSegments
-            var meshWidth = 50
-            var meshLength = meshWidth
+            meshWidth = 50
+            meshLength = meshWidth
             var geometry = new THREE.PlaneBufferGeometry(meshLength, meshWidth, meshLengthSegments, meshWidthSegments);
 
+            // Function to change uv mapping
             function change_uvs(geometry, unitx, unity, offsetx, offsety) {
                 var uvs = geometry.attributes.uv.array;
                 for (var i = 0; i < uvs.length; i += 2) {
@@ -105,18 +101,35 @@
                 }
             }
 
+            // Changing uv mapping of current geometry
             change_uvs(geometry, 1, 1, 0, 0)
 
-
+            // Deforming plane with displacements
+            var e1, e2
             displacement = new Float32Array(geometry.attributes.position.count);
+            for (var i = 0; i < displacement.length; i++) {
+                e1 = 0.5 * (i / meshWidthSegments)
+                e2 = 0.5 * (i % meshWidthSegments)
+                displacement[i] = 2 * Math.sin(e1) * Math.sin(e2);
+            }
+
+            // Setting up the shaders' attributes
             geometry.addAttribute('displacement', new THREE.BufferAttribute(displacement, 1));
-            sphere = new THREE.Mesh(geometry, shaderMaterial);
-            scene.add(sphere);
+
+            // Creating the mesh
+            plane = new THREE.Mesh(geometry, shaderMaterial);
+
+            // Adding the mesh to our scene
+            scene.add(plane);
+
+            // Rendering
             renderer = new THREE.WebGLRenderer();
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(window.innerWidth, window.innerHeight);
             var container = document.getElementById('container');
             container.appendChild(renderer.domElement);
+
+            // Event listeneres
             window.addEventListener('resize', onWindowResize, false);
         }
 
@@ -132,20 +145,13 @@
         }
 
         function render() {
-            var tFactor = 0.01;
-            var time = Date.now() * 0.01 * tFactor;
-            sphere.rotation.z = 0.5 * time;
-            uniforms.amplitude.value = 10
+            var time = Date.now() * 0.0001;
+
+            // Rotating and scaling plane wrt time
+            plane.rotation.z = 0.5 * time;
             uniforms.scaleFactor.value = 0 + 0.2 * Math.sin(time)
-            uniforms.color.value.offsetHSL(0.0001, 0, 0);
-            var e1, e2
-            for (var i = 0; i < displacement.length; i++) {
-                displacement[i] = 4 * Math.sin(0.1 * i + time) * Math.cos(0.1 * i + time) + Math.cos(time);
-                e1 = 0.5 * (i / meshWidthSegments)
-                e2 = 0.5 * (i % meshWidthSegments)
-                displacement[i] = 2 * Math.sin(e1) * Math.sin(e2);
-            }
-            sphere.geometry.attributes.displacement.needsUpdate = true;
+
+            // Render
             renderer.render(scene, camera);
         }
     </script>

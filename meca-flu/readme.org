@@ -23,6 +23,7 @@ UV mapping are used to map textures on 3D objects easily:
 - https://cmichel.io/importing-blender-model-with-texture-to-threejs/
 - https://stackoverflow.com/questions/19891507/correct-uv-mapping-three-js
 - https://codepen.io/knee-cola/pen/XMVBwQ
+- https://threejs.org/examples/?q=uv#misc_uv_tests
 
 Going back to the code developed for the fluid mechanics ([[./Web XR 3D fluid mecanics.pdf]]), we need to map the picture to our surface. We use UV maps to do that. Here's what it gives with 2 different UV maps:
 

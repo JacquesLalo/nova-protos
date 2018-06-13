@@ -32,6 +32,7 @@
 
 
          vec3 newPosition = position + amplitude * normal * vec3( displacement );
+
          vec3 newPosition2 = scaleZ * ( newPosition );
          gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition2, 1.0 );
      }
@@ -81,7 +82,7 @@
         function init() {
             // Camera setup
             camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 10000)
-            camera.position.z = 30
+            camera.position.z = 40
             camera.position.x = 5
 
             // Scene setup
@@ -108,18 +109,13 @@
 
             // setting up the geometry
             // play with controls on: https://threejs.org/docs/#api/geometries/PlaneBufferGeometry
-            meshLengthSegments = 100
-            meshWidthSegments = meshLengthSegments
-            meshWidth = 50
-            meshLength = meshWidth
-            var geometry = new THREE.PlaneBufferGeometry(meshLength, meshWidth, meshLengthSegments, meshWidthSegments)
+            var geometry = new THREE.SphereBufferGeometry(5, 32, 32)
 
             // Changing uv mapping of current geometry
-            change_uvs(geometry, 1, 1, 0, 0)
+            // change_uvs(geometry, 1, 1, 0, 0)
 
             // Deforming plane with displacements
             displacement = new Float32Array(geometry.attributes.position.count)
-            applyDisplacements(displacement)
 
             // Setting up the shaders' attributes
             geometry.addAttribute('displacement', new THREE.BufferAttribute(displacement, 1))
@@ -153,11 +149,12 @@
         }
 
         function render() {
-            var time = Date.now() * 0.0001
+            var time = Date.now() * 0.001
 
             // Rotating and scaling plane wrt time
             plane.rotation.z = 0.5 * time
-            uniforms.scaleFactor.value = 0.5 * Math.sin(time)
+            plane.rotation.y = 0.5 * time
+            uniforms.scaleFactor.value = 1 //0.5 * Math.sin(time)
 
             // Render
             renderer.render(scene, camera)

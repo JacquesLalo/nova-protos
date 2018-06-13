@@ -29,5 +29,5 @@ Going back to the code developed for the fluid mechanics ([[./Web XR 3D fluid me
 
 | UV maps designed to repeat texture over surface | UV map designed to stretch texture over surface |
 |-------------------------------------------------+-------------------------------------------------|
-| [[./img/uvmap--without-tiling.png]]                 | [[./img/uvmap--with-tiling.png]]                    |
+| [[./img/uvmap--with-tiling.png]]                    | [[./img/uvmap--without-tiling.png]]                 |
 

@@ -25,7 +25,7 @@ UV mapping are used to map textures on 3D objects easily:
 - https://codepen.io/knee-cola/pen/XMVBwQ
 - https://threejs.org/examples/?q=uv#misc_uv_tests
 
-Going back to the code developed for the fluid mechanics ([[./Web XR 3D fluid mecanics.pdf]]), we need to map the picture to our surface. We use UV maps to do that. Here's what it gives with 2 different UV maps:
+Going back to the code developed for the fluid mechanics ([[./WEB XR 3D fluid mecanics.pdf]]), we need to map the picture to our surface. We use UV maps to do that. Here's what it gives with 2 different UV maps:
 
 | UV maps designed to repeat texture over surface | UV map designed to stretch texture over surface |
 |-------------------------------------------------+-------------------------------------------------|

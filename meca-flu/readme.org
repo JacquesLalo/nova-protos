@@ -10,6 +10,7 @@ Functions that operate at the pixel level:
 
 - https://aerotwist.com/tutorials/an-introduction-to-shaders-part-1/
 - https://aerotwist.com/tutorials/an-introduction-to-shaders-part-2/
+- https://webgl2fundamentals.org/webgl/lessons/webgl-shaders-and-glsl.html
 
 ** UV mapping
 UV mapping are used to map textures on 3D objects easily:

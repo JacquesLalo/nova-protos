@@ -11,9 +11,17 @@
     <!-- JS dependencies -->
     <script src="./js/Three.js"></script>
     <script src="./js/GPUComputationRenderer.js"></script>
+    <script src="./js/audio.js"></script>
 
     <!-- WEBGL mountpoint -->
-    <div id="container"></div>
+    <div id="container" style="display: none"></div>
+
+    <!-- audio mountpoint -->
+    <audio controls>
+        <source src="audio/ledzep.ogg" type="audio/ogg">
+        <source src="audio/ledzep.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <!-- Vertex shader -->
     <script type="x-shader/x-vertex" id="vertexshader">

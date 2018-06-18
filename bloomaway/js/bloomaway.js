@@ -35,9 +35,6 @@ class Bloomaway {
         this.initLight()
         this.initRenderer()
 
-				// Models
-        this.getObj('torus')
-        this.getGltf('bateau/scene')
 
     }
     initRenderer() {
@@ -49,6 +46,10 @@ class Bloomaway {
     }
     initScene() {
 				this.scene = new THREE.Scene();
+
+				// Models
+        this.getObj('torus')
+        this.getGltf('bateau/scene')
     }
     initLight() {
 				this.light = new THREE.HemisphereLight( 0xbbbbff, 0x444422 );
@@ -77,12 +78,12 @@ class Bloomaway {
         const onError = () => {}
 				new THREE.MTLLoader()
             .setPath( 'obj/' )
-            .load( name + '.mtl', function ( materials ) {
+            .load( name + '.mtl', materials => {
                 materials.preload();
                 new THREE.OBJLoader()
                     .setMaterials( materials )
                     .setPath( 'obj/' )
-                    .load( name + '.obj', function ( object ) {
+                    .load( name + '.obj', object => {
                         object.position.x = 0;
                         object.position.y = 0;
                         object.position.z = 0;

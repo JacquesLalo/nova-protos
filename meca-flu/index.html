@@ -11,13 +11,12 @@
     <!-- JS dependencies -->
     <script src="./js/Three.js"></script>
     <script src="./js/GPUComputationRenderer.js"></script>
-    <script src="./js/audio.js"></script>
 
     <!-- WEBGL mountpoint -->
-    <div id="container" style="display: none"></div>
+    <div id="container" style="display"></div>
 
     <!-- audio mountpoint -->
-    <audio controls>
+    <audio id="audio" controls>
         <source src="audio/ledzep.ogg" type="audio/ogg">
         <source src="audio/ledzep.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
@@ -63,6 +62,7 @@
         var displacement, noise
         var meshLengthSegments
         var meshWidthSegments
+        var geometry
 
         init()
         animate()
@@ -83,6 +83,10 @@
             var beta = alpha
             for (var i = 0; i < displacement.length; i++) {
                 displacement[i] = Math.random() * 0.5
+                if(window.data) {
+                    // displacement[i] = window.data.reduce((a, b) => a+b)/window.data.length / 128
+                    displacement[i] = 0.5 * window.data[i % 128] / 128
+                }
             }
         }
 
@@ -117,7 +121,7 @@
 
             // setting up the geometry
             // play with controls on: https://threejs.org/docs/#api/geometries/PlaneBufferGeometry
-            var geometry = new THREE.SphereBufferGeometry(5, 32, 32, 0, 3)
+            geometry = new THREE.SphereBufferGeometry(5, 32, 32, 0, 3)
 
             // Changing uv mapping of current geometry
             // change_uvs(geometry, 1, 1, 0, 0)
@@ -165,10 +169,15 @@
             plane.rotation.y = 0.5 * time
             uniforms.scaleFactor.value = 1 //0.5 * Math.sin(time)
 
+
+            applyDisplacements(displacement)
+            geometry.attributes.displacement.needsUpdate = true;
+
             // Render
             renderer.render(scene, camera)
         }
     </script>
+    <script src="./js/audio.js"></script>
 
 </body>
 

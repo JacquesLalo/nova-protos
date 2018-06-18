@@ -9,58 +9,10 @@
 	<body>
 		<script src="./js/Three.js"></script>
 		<script src="js/GLTFLoader.js"></script>
-
-		<script>
-			var container, stats, controls;
-			var camera, scene, renderer, light;
-      var m_gltf
-			init();
-			animate();
-			function init() {
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
-				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.25, 20 );
-				// envmap
-				scene = new THREE.Scene();
-				light = new THREE.HemisphereLight( 0xbbbbff, 0x444422 );
-				light.position.set( 0, 1, 0 );
-				scene.add( light );
-				// model
-				var loader = new THREE.GLTFLoader();
-				loader.load( 'gltf/bateau/scene.gltf', function ( gltf ) {
-            m_gltf = gltf
-            gltf.scene.scale.set( 0.0001, 0.0001, 0.0001 );
-            gltf.scene.position.x = 0;				    //Position (x = right+ left-)
-            gltf.scene.position.y = 0;				    //Position (y = up+, down-)
-            gltf.scene.position.z = 0;
-					  scene.add( gltf.scene );
-				} );
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				renderer.gammaOutput = true;
-				container.appendChild( renderer.domElement );
-				window.addEventListener( 'resize', onWindowResize, false );
-
-        var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-        var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-				camera.position.set( 0, 0, 10 );
-        scene.add( camera );
-			}
-			function onWindowResize() {
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-				renderer.setSize( window.innerWidth, window.innerHeight );
-			}
-			//
-			function animate() {
-				requestAnimationFrame( animate );
-          if(m_gltf)
-              m_gltf.scene.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.01)
-
-				renderer.render( scene, camera );
-			}
-		</script>
-
+		<script src="js/OBJLoader.js"></script>
+		<script src="js/MTLLoader.js"></script>
+    <script src="js/FlyControls.js"></script>
+    <script src="js/PointerLockControls.js"></script>
+    <script src="js/bloomaway.js"></script>
 	</body>
 </html>

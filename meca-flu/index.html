@@ -10,6 +10,7 @@
 <body>
     <!-- JS dependencies -->
     <script src="./js/Three.js"></script>
+    <script src="./js/GPUComputationRenderer.js"></script>
 
     <!-- WEBGL mountpoint -->
     <div id="container"></div>
@@ -73,7 +74,7 @@
             var alpha = 0.5
             var beta = alpha
             for (var i = 0; i < displacement.length; i++) {
-                displacement[i] = Math.random() * 0.2
+                displacement[i] = Math.random() * 0.5
             }
         }
 

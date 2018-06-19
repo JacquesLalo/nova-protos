@@ -17,7 +17,7 @@
 /**
  * Handles instantiating a THREE.js camera and hooking up controls to it with the DOM AP
  * @param {THREE.Scene} scene - Scene to mount camera into
- * @param {THREE>Renderer} renderer - Renderer to attach controls to
+ * @param {THREE.Renderer} renderer - Renderer to attach controls to
  */
 class Camera {
     constructor(scene, renderer) {

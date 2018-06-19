@@ -1,5 +1,26 @@
+/**
+ * @fileOverview
+ * @name bloomaway.js
+ * @author Nova Media LLC
+ * @license TBD
+
+ This is the main Bloomaway class.
+
+ It handles instantiating a camera and its controls, a scene, the Torus, and mounts everything into the DOM with a render loop.
+
+ TODO:
+ - Take scenes as class parameter
+ - Change scene when clicking on torus' map.
+   + Detect user click on map
+    - Setup raycaster: https://threejs.org/docs/#api/core/Raycaster
+   + Update scene in callback
+ - Refactor Torus in its own class
+ */
+
+
 class Bloomaway {
     constructor() {
+        // Initialize attributes
         this.container = null
         this.camera = null
         this.scene = null
@@ -8,6 +29,7 @@ class Bloomaway {
         this.gltf = null
         this.torus = {}
 
+        // Bind functions
         this.init = this.init.bind(this)
         this.animate = this.animate.bind(this)
         this.onWindowResize = this.onWindowResize.bind(this)
@@ -17,6 +39,7 @@ class Bloomaway {
         this.initDOM = this.initDOM.bind(this)
         this.initRenderer = this.initRenderer.bind(this)
 
+        // Run
         this.init()
         this.animate()
     }

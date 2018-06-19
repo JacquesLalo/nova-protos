@@ -1,29 +1,24 @@
 class Bloomaway {
     constructor() {
         this.container = null
-        this.controls = null
         this.camera = null
         this.scene = null
         this.renderer = null
         this.light = null
         this.gltf = null
         this.obj = []
-        this.controls = null
 
         this.init = this.init.bind(this)
         this.animate = this.animate.bind(this)
         this.onWindowResize = this.onWindowResize.bind(this)
         this.getObj = this.getObj.bind(this)
         this.getGltf = this.getGltf.bind(this)
-        this.initCamera = this.initCamera.bind(this)
         this.initLight = this.initLight.bind(this)
         this.initScene = this.initScene.bind(this)
         this.initRenderer = this.initRenderer.bind(this)
-        this.initControls = this.initControls.bind(this)
 
         this.init()
         this.animate()
-        this.initControls()
     }
     init() {
         // Bind to DOM
@@ -33,8 +28,8 @@ class Bloomaway {
 
         this.initScene()
         this.initRenderer()
-        this.initCamera()
         this.initLight()
+        this.camera = new Camera(this.scene, this.renderer)
     }
     initRenderer() {
 				this.renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -57,23 +52,6 @@ class Bloomaway {
 				this.light = new THREE.HemisphereLight(0xbbbbff, 0x444422)
 				this.light.position.set(0, 1, 0)
 				this.scene.add(this.light)
-    }
-    initCamera() {
-				this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 40)
-				this.camera.position.set(0, 0, 0)
-        this.camera.lookAt(new THREE.Vector3(-1, 0, 0))
-        this.scene.add(this.camera)
-
-        this.initControls()
-
-    }
-    initControls() {
-        this.controls = new THREE.FlyControls(this.camera)
-				this.controls.movementSpeed = 1000
-				this.controls.domElement = this.renderer.domElement
-				this.controls.rollSpeed = Math.PI / 24
-				this.controls.autoForward = false
-				this.controls.dragToLook = false
     }
     getGltf(name) {
         const loader = new THREE.GLTFLoader()
@@ -115,16 +93,14 @@ class Bloomaway {
             });
     }
 		onWindowResize() {
-				this.camera.aspect = window.innerWidth / window.innerHeight;
-				this.camera.updateProjectionMatrix()
+				this.camera.onWindowResize()
 				this.renderer.setSize(window.innerWidth, window.innerHeight)
 		}
 		animate() {
 				requestAnimationFrame(this.animate)
-				this.renderer.render(this.scene, this.camera)
+				this.renderer.render(this.scene, this.camera.getInstance())
 
-				this.controls.movementSpeed = 0.33
-				this.controls.update(0.1)
+        this.camera.animate()
 		}
 }
 

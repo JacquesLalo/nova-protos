@@ -28,6 +28,13 @@ Responsible for instantiating a camera which is what the user will see. This fil
 
 This file defines various functions helpful to the above classes but were cluttering the code too much and therefore have been refactored into their own file. Currently this file defines THREE.js abstractions for model imports more tailored to the Bloomaway classes
 
+** Running the application
+
+Clone this git repo, cd into the bloomaway folder and open index.html in Firefox. Chrome will currently not work.
+
+*** Controls
+Moving your mouse over the 3D canvas will rotate the camera. Left clicking will move the camera forward and right clicking backwards. The current controls are the worst and need to be replaced by [[https://threejs.org/examples/?q=controls#misc_controls_pointerlock][these]]. This is something we will be working on shortly and is mentioned in the camera.js file.
+
 ** TODOS
 
 They are defined at the top of bloomaway.js and camera.js

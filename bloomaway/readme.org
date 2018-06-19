@@ -24,6 +24,10 @@ The bloomaway class currently takes care of instantiating the Torus UI but this 
 
 Responsible for instantiating a camera which is what the user will see. This file defines a Camera class which is instantiated from the Bloomaway class. A Bloomaway class calls the camera class with parameters necessary for connecting both files since the world camera and the world are in 2 separate classes (Camera and Bloomaway respectively).
 
+*** controls.js
+
+Defines a class responsible for control of the camera. So far it's a very easy implementation that works with the mouse. But we will modify this file to include VR headset orientation and controllers.
+
 *** helpers.js
 
 This file defines various functions helpful to the above classes but were cluttering the code too much and therefore have been refactored into their own file. Currently this file defines THREE.js abstractions for model imports more tailored to the Bloomaway classes

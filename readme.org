@@ -22,6 +22,7 @@ It's a high level library for making 3D program that can run in the web browser.
 
 - https://learnxinyminutes.com/docs/javascript/
 - [[./resources/JavaScriptNotesForProfessionals.pdf]]
+- [[http://usejsdoc.org/about-getting-started.html][JSDoc]]
 
 ** Shaders
 

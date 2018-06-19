@@ -1,0 +1,48 @@
+* Resources
+** Git
+This PDF: [[./resources/pro-git.pdf]]
+
+Using git from your editor:
+- VS Code: https://code.visualstudio.com/docs/introvideos/versioncontrol
+- Emacs: https://magit.vc/
+   
+** Math
+This PDF: [[./resources/3d-math-primer-for-graphics-and-game-development.pdf]]
+
+** Threejs
+It's a high level library for making 3D program that can run in the web browser.
+
+- https://threejs.org/examples/
+
+** Javascript
+
+- https://learnxinyminutes.com/docs/javascript/
+- [[./resources/JavaScriptNotesForProfessionals.pdf]]
+
+** Shaders
+Functions that operate at the pixel level:
+
+- https://aerotwist.com/tutorials/an-introduction-to-shaders-part-1/
+- https://aerotwist.com/tutorials/an-introduction-to-shaders-part-2/
+- https://webgl2fundamentals.org/webgl/lessons/webgl-shaders-and-glsl.html
+
+** UV mapping
+UV mapping are used to map textures on 3D objects easily:
+
+- https://en.wikipedia.org/wiki/UV_mapping
+- https://cmichel.io/importing-blender-model-with-texture-to-threejs/
+- https://stackoverflow.com/questions/19891507/correct-uv-mapping-three-js
+- https://codepen.io/knee-cola/pen/XMVBwQ
+- https://threejs.org/examples/?q=uv#misc_uv_tests
+
+Going back to the code developed for the fluid mechanics ([[./WEB XR 3D fluid mecanics.pdf]]), we need to map the picture to our surface. We use UV maps to do that. Here's what it gives with 2 different UV maps:
+
+| UV maps designed to repeat texture over surface | UV map designed to stretch texture over surface |
+|-------------------------------------------------+-------------------------------------------------|
+| [[./meca-flu/img/uvmap--with-tiling.png]]           | [[./meca-flu/img/uvmap--without-tiling.png]]        |
+
+On the pictures above, the trick is to modify the 2 first parameters of [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L118][this function]] from `(1, 1)` which stretches the textures to (9, 9) which tiles it 9 by 9 times. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L102][This lines]] handles the way the texture repeats (check out wrapping modes on the following [[https://threejs.org/docs/#api/constants/Textures][page]].
+
+Here is a particularly impressive demo of UV mapping a video on cubes:
+- [[https://threejs.org/examples/?q=video#webgl_materials_video][Demo]]
+- [[https://github.com/mrdoob/three.js/blob/master/examples/webgl_materials_video.html#L203][Code]]

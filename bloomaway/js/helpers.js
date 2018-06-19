@@ -55,8 +55,8 @@ const prepareOptions = options => {
 /**
  * Imports an OBJ and MTL defined model.
  * @param {string} name - name of obj/mtl pair to look up
- * @param {function} defaultCallback - called after loading and application of 3D transforms of the imported model
- * @param {Type of _options} _options - other options. See defaultOptions
+ * @param {function} defaultCallback - called after loading and application of 3D transforms of the imported model. Passes loaded object as argument.
+ * @param {dict} _options - other options. See defaultOptions
  */
 const getObj = (name, callback = defaultCallback, _options) => {
     const options = prepareOptions(_options)
@@ -77,6 +77,7 @@ const getObj = (name, callback = defaultCallback, _options) => {
                     // Scale model
                     object.scale.set(options.scale.x, options.scale.y, options.scale.z)
 
+                    // Pass object to user callback
                     callback(object)
                 }, options.onProgress, options.onError)
         });
@@ -85,20 +86,26 @@ const getObj = (name, callback = defaultCallback, _options) => {
 /**
  * Imports a GLTF defined model.
  * @param {string} name - name of obj/mtl pair to look up
- * @param {function} defaultCallback - called after loading and application of 3D transforms of the imported model
- * @param {Type of _options} _options - other options. See defaultOptions
+ * @param {function} defaultCallback - called after loading and application of 3D transforms of the imported model. Passes loaded object as argument.
+ * @param {dict} _options - other options. See defaultOptions
  */
 const getGltf = (name, cb = defaultCallback, _options) => {
     const options = prepareOptions(_options)
 
     const loader = new THREE.GLTFLoader()
     loader.load('gltf/' + name + '.gltf', gltf => {
-        gltf.scene.scale.set(options.scale.x, options.scale.y, options.scale.z)
+        // Position model
         gltf.scene.position.x = options.position.x
         gltf.scene.position.y = options.position.y
         gltf.scene.position.z = options.position.z
+
+        // Scale model
+        gltf.scene.scale.set(options.scale.x, options.scale.y, options.scale.z)
+
+        // Rotate model
         gltf.scene.rotateOnAxis(options.rotation.axis, options.rotation.angle)
 
+        // Pass object to user callback
         cb(gltf)
     });
 }

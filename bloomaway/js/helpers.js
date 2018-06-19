@@ -61,7 +61,7 @@ const prepareOptions = options => {
 const getObj = (name, callback = defaultCallback, _options) => {
     const options = prepareOptions(_options)
 
-		new THREE.MTLLoader()
+    new THREE.MTLLoader()
         .setPath('obj/')
         .load(name + '.mtl', materials => {
             materials.preload()

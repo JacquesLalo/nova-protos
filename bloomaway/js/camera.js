@@ -46,20 +46,20 @@ class Camera {
     */
     initControls() {
         this.controls = new THREE.FlyControls(this.camera)
-				this.controls.movementSpeed = 1000
-				this.controls.domElement = this.renderer.domElement
-				this.controls.rollSpeed = Math.PI / 24
-				this.controls.autoForward = false
-				this.controls.dragToLook = false
-				this.controls.movementSpeed = 0.33
+        this.controls.movementSpeed = 1000
+        this.controls.domElement = this.renderer.domElement
+        this.controls.rollSpeed = Math.PI / 24
+        this.controls.autoForward = false
+        this.controls.dragToLook = false
+        this.controls.movementSpeed = 0.33
     }
     /**
     * Method to call in onWindowResize DOM event to update camera on screen resizes.
     */
-		onWindowResize() {
-				this.camera.aspect = window.innerWidth / window.innerHeight;
-				this.camera.updateProjectionMatrix()
-		}
+    onWindowResize() {
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix()
+    }
     /**
     * this.camera getter
     * @returns {THREE.Camera} THREE.js camera instance
@@ -71,6 +71,6 @@ class Camera {
     * Callback to be called in Bloomaway render loop
     */
     animate() {
-				this.controls.update(0.1)
+        this.controls.update(0.1)
     }
 }

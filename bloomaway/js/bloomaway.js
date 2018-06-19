@@ -52,17 +52,17 @@ class Bloomaway {
         this.camera = new Camera(this.scene, this.renderer)
     }
     initDOM() {
-				this.container = document.createElement('div')
-				document.body.appendChild(this.container)
-				window.addEventListener('resize', this.onWindowResize, false)
+        this.container = document.createElement('div')
+        document.body.appendChild(this.container)
+        window.addEventListener('resize', this.onWindowResize, false)
 
     }
     initRenderer() {
-				this.renderer = new THREE.WebGLRenderer({ antialias: true })
-				this.renderer.setPixelRatio(window.devicePixelRatio)
-				this.renderer.setSize(window.innerWidth, window.innerHeight)
-				this.renderer.gammaOutput = true
-				this.container.appendChild(this.renderer.domElement)
+        this.renderer = new THREE.WebGLRenderer({ antialias: true })
+        this.renderer.setPixelRatio(window.devicePixelRatio)
+        this.renderer.setSize(window.innerWidth, window.innerHeight)
+        this.renderer.gammaOutput = true
+        this.container.appendChild(this.renderer.domElement)
     }
     initTorus() {
         const options = {scale: {x: 2, y: 2, z: 2}}
@@ -78,7 +78,7 @@ class Bloomaway {
         getObj('shell/shell', cb('shell'), options)
     }
     initScene() {
-				this.scene = new THREE.Scene()
+        this.scene = new THREE.Scene()
 
         const s = 0.001
         const options = {
@@ -105,20 +105,20 @@ class Bloomaway {
 
     }
     initLight() {
-				this.light = new THREE.HemisphereLight(0xbbbbff, 0x444422)
-				this.light.position.set(0, 1, 0)
-				this.scene.add(this.light)
+        this.light = new THREE.HemisphereLight(0xbbbbff, 0x444422)
+        this.light.position.set(0, 1, 0)
+        this.scene.add(this.light)
     }
-		onWindowResize() {
-				this.camera.onWindowResize()
-				this.renderer.setSize(window.innerWidth, window.innerHeight)
-		}
-		animate() {
-				requestAnimationFrame(this.animate)
-				this.renderer.render(this.scene, this.camera.getInstance())
+    onWindowResize() {
+        this.camera.onWindowResize()
+        this.renderer.setSize(window.innerWidth, window.innerHeight)
+    }
+    animate() {
+        requestAnimationFrame(this.animate)
+        this.renderer.render(this.scene, this.camera.getInstance())
 
         this.camera.animate()
-		}
+    }
 }
 
 window.bloomaway = new Bloomaway()

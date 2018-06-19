@@ -1,36 +1,21 @@
-* Resources
-** Git
-This PDF: [[../resources/pro-git.pdf]]
+* Fluid Mechanics
+  
+Spec.: [[./WEB XR 3D fluid mecanics.pdf]]
 
-Using git from your editor:
-- VS Code: https://code.visualstudio.com/docs/introvideos/versioncontrol
-- Emacs: https://magit.vc/
+** Generating the surface
+
+1. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L115][Create]] a plane using Three.js 
+2. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L77][Calculate displacements]] of the vertices on this plane along a function to shape the plane
+3. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L34][Update]] the geometry in the vertex shader.
+
    
-** Math
-This PDF: [[../resources/3d-math-primer-for-graphics-and-game-development.pdf]]
+** Scaling and rotating the surface
 
-** Threejs
-It's a high level library for making 3D program that can run in the web browser.
+1. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L35][Scaling in shader code]]
+2. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L160][Updating]] scaling factor in JS code
+3. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L159][Updating]] plane rotating in JS
 
-- https://threejs.org/examples/
-
-** Shaders
-Functions that operate at the pixel level:
-
-- https://aerotwist.com/tutorials/an-introduction-to-shaders-part-1/
-- https://aerotwist.com/tutorials/an-introduction-to-shaders-part-2/
-- https://webgl2fundamentals.org/webgl/lessons/webgl-shaders-and-glsl.html
-
-** UV mapping
-UV mapping are used to map textures on 3D objects easily:
-
-- https://en.wikipedia.org/wiki/UV_mapping
-- https://cmichel.io/importing-blender-model-with-texture-to-threejs/
-- https://stackoverflow.com/questions/19891507/correct-uv-mapping-three-js
-- https://codepen.io/knee-cola/pen/XMVBwQ
-- https://threejs.org/examples/?q=uv#misc_uv_tests
-
-Going back to the code developed for the fluid mechanics ([[./WEB XR 3D fluid mecanics.pdf]]), we need to map the picture to our surface. We use UV maps to do that. Here's what it gives with 2 different UV maps:
+** UV mapping of the texture
 
 | UV maps designed to repeat texture over surface | UV map designed to stretch texture over surface |
 |-------------------------------------------------+-------------------------------------------------|
@@ -45,16 +30,3 @@ Here is a particularly impressive demo of UV mapping a video on cubes:
 *** Shader code
 
 The mapping of the texture on the UVs can be found [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L45][here]].
-
-** Generating the surface
-
-1. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L115][Create]] a plane using Three.js 
-2. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L77][Calculate displacements]] of the vertices on this plane along a function to shape the plane
-3. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L34][Update]] the geometry in the vertex shader.
-
-   
-** Scaling and rotating the surface
-
-1. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L35][Scaling in shader code]]
-2. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L160][Updating]] scaling factor in JS code
-3. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L159][Updating]] plane rotating in JS

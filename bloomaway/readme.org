@@ -30,7 +30,13 @@ This file defines various functions helpful to the above classes but were clutte
 
 ** Running the application
 
-Clone this git repo, cd into the bloomaway folder and open index.html in Firefox. Chrome will currently not work.
+Clone this git repo, cd into the bloomaway folder and open index.html in Firefox. Chrome will currently not work:
+
+#+begin_src bash
+git clone git@github.com:mecs13/nova-protos.git
+cd nova-protos/bloomaway
+firefox index.html
+#+end_src
 
 *** Controls
 Moving your mouse over the 3D canvas will rotate the camera. Left clicking will move the camera forward and right clicking backwards. The current controls are the worst and need to be replaced by [[https://threejs.org/examples/?q=controls#misc_controls_pointerlock][these]]. This is something we will be working on shortly and is mentioned in the camera.js file.

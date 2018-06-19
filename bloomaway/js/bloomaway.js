@@ -101,7 +101,7 @@ class Bloomaway {
             this.gltf = gltf
             this.scene.add(this.gltf.scene)
         }
-        getGltf('bateau/scene', cb, options)
+        getGltf('boat/scene', cb, options)
 
     }
     initLight() {

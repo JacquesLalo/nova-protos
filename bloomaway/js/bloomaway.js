@@ -11,8 +11,6 @@ class Bloomaway {
         this.init = this.init.bind(this)
         this.animate = this.animate.bind(this)
         this.onWindowResize = this.onWindowResize.bind(this)
-        this.getObj = this.getObj.bind(this)
-        this.getGltf = this.getGltf.bind(this)
         this.initLight = this.initLight.bind(this)
         this.initScene = this.initScene.bind(this)
         this.initRenderer = this.initRenderer.bind(this)
@@ -41,56 +39,45 @@ class Bloomaway {
     initScene() {
 				this.scene = new THREE.Scene()
 
-				// Models
-        const scaleCallback = obj => obj.scale.set(2, 2, 2)
-        this.getObj('map/map', scaleCallback)
-        this.getObj('ground/ground', scaleCallback)
-        this.getObj('shell/shell', scaleCallback)
-        this.getGltf('bateau/scene', scaleCallback)
+				// Scene
+        const s = 0.001
+        const sceneOptions = {
+            scale: {
+                x: s,
+                y: s,
+                z: s,
+            },
+            rotation: {
+                axis: new THREE.Vector3(0, 1, 0),
+                angle: Math.PI / 2,
+            },
+            position: {
+                x: -5,
+                y: 21,
+                z: 9
+            }
+        }
+        const sceneCb = gltf => {
+            this.gltf = gltf
+            this.scene.add(this.gltf.scene)
+        }
+        getGltf('bateau/scene', sceneCb, sceneOptions)
+
+        // UI
+        const options = {scale: {x: 2, y: 2, z: 2}}
+        const cb = object => {
+            this.scene.add(object)
+            this.obj.push(object)
+        }
+
+        getObj('map/map', cb, options)
+        getObj('ground/ground', cb, options)
+        getObj('shell/shell', cb, options)
     }
     initLight() {
 				this.light = new THREE.HemisphereLight(0xbbbbff, 0x444422)
 				this.light.position.set(0, 1, 0)
 				this.scene.add(this.light)
-    }
-    getGltf(name) {
-        const loader = new THREE.GLTFLoader()
-        loader.load('gltf/' + name + '.gltf', gltf => {
-            this.gltf = gltf
-            const s = 0.001
-            this.gltf.scene.scale.set(s, s, s)
-            this.gltf.scene.position.x = -5
-            this.gltf.scene.position.z = 9
-            this.gltf.scene.position.y = 21
-            this.gltf.scene.rotateOnAxis(new THREE.Vector3(0, 1, 0), Math.PI / 2)
-         	  this.scene.add(this.gltf.scene)
-        });
-    }
-    getObj(name, callback = () => {}) {
-        const onProgress = () => {}
-        const onError = e => { console.log(e) }
-				new THREE.MTLLoader()
-            .setPath('obj/')
-            .load(name + '.mtl', materials => {
-                materials.preload()
-                console.log(materials)
-                new THREE.OBJLoader()
-                    .setMaterials(materials)
-                    .setPath('obj/')
-                    .load( name + '.obj', object => {
-                        object.position.x = 0
-                        object.position.y = 0
-                        object.position.z = 0
-
-                        const s = 1
-                        object.scale.set(s, s, s)
-
-                        this.scene.add(object)
-                        this.obj.push(object)
-
-                        callback(object)
-                    }, onProgress, onError)
-            });
     }
 		onWindowResize() {
 				this.camera.onWindowResize()

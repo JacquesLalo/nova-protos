@@ -2,7 +2,7 @@ class Camera {
     constructor(scene, renderer) {
         this.renderer = renderer
         this.scene = scene
-        this.camera = null
+        this.camera = null // private
 
         this.init = this.init.bind(this)
         this.initControls = this.initControls.bind(this)

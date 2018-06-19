@@ -6,28 +6,33 @@ class Bloomaway {
         this.renderer = null
         this.light = null
         this.gltf = null
-        this.obj = []
+        this.torus = {}
 
         this.init = this.init.bind(this)
         this.animate = this.animate.bind(this)
         this.onWindowResize = this.onWindowResize.bind(this)
         this.initLight = this.initLight.bind(this)
         this.initScene = this.initScene.bind(this)
+        this.initTorus = this.initTorus.bind(this)
+        this.initDOM = this.initDOM.bind(this)
         this.initRenderer = this.initRenderer.bind(this)
 
         this.init()
         this.animate()
     }
     init() {
-        // Bind to DOM
+        this.initDOM()
+        this.initScene()
+        this.initTorus()
+        this.initRenderer()
+        this.initLight()
+        this.camera = new Camera(this.scene, this.renderer)
+    }
+    initDOM() {
 				this.container = document.createElement('div')
 				document.body.appendChild(this.container)
 				window.addEventListener('resize', this.onWindowResize, false)
 
-        this.initScene()
-        this.initRenderer()
-        this.initLight()
-        this.camera = new Camera(this.scene, this.renderer)
     }
     initRenderer() {
 				this.renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -36,12 +41,24 @@ class Bloomaway {
 				this.renderer.gammaOutput = true
 				this.container.appendChild(this.renderer.domElement)
     }
+    initTorus() {
+        const options = {scale: {x: 2, y: 2, z: 2}}
+        const cb = attrName => object => {
+            this.scene.add(object)
+            const d = {}
+            d.geometry = object
+            this.torus[attrName] = d
+        }
+
+        getObj('map/map', cb('map'), options)
+        getObj('ground/ground', cb('ground'), options)
+        getObj('shell/shell', cb('shell'), options)
+    }
     initScene() {
 				this.scene = new THREE.Scene()
 
-				// Scene
         const s = 0.001
-        const sceneOptions = {
+        const options = {
             scale: {
                 x: s,
                 y: s,
@@ -57,22 +74,12 @@ class Bloomaway {
                 z: 9
             }
         }
-        const sceneCb = gltf => {
+        const cb = gltf => {
             this.gltf = gltf
             this.scene.add(this.gltf.scene)
         }
-        getGltf('bateau/scene', sceneCb, sceneOptions)
+        getGltf('bateau/scene', cb, options)
 
-        // UI
-        const options = {scale: {x: 2, y: 2, z: 2}}
-        const cb = object => {
-            this.scene.add(object)
-            this.obj.push(object)
-        }
-
-        getObj('map/map', cb, options)
-        getObj('ground/ground', cb, options)
-        getObj('shell/shell', cb, options)
     }
     initLight() {
 				this.light = new THREE.HemisphereLight(0xbbbbff, 0x444422)

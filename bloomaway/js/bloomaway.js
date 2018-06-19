@@ -7,7 +7,7 @@ class Bloomaway {
         this.renderer = null
         this.light = null
         this.gltf = null
-        this.obj = null
+        this.obj = []
         this.controls = null
 
         this.init = this.init.bind(this)
@@ -19,11 +19,42 @@ class Bloomaway {
         this.initLight = this.initLight.bind(this)
         this.initScene = this.initScene.bind(this)
         this.initRenderer = this.initRenderer.bind(this)
+        this.initControls = this.initControls.bind(this)
 
         this.init()
         this.animate()
+        this.initControls()
     }
+    initControls() {
+        console.log('controls init')
+        var onKeyDown = event => {
+            console.log('hello')
+					  switch ( event.keyCode ) {
+						case 38: // up
+						case 87: // w
+                this.camera.position.set(this.camera.position.x + 1, 0, 0)
+							  break;
+						case 37: // left
+						case 65: // a
+                this.camera.position.set(0, this.camera.position.y - 1, 0)
+                break;
+						case 40: // down
+						case 83: // s
+                this.camera.position.set(this.camera.position.x - 1, 0, 0)
+							  break;
+						case 39: // right
+						case 68: // d
+                this.camera.position.set(0, this.camera.position.y + 1, 0)
+							  break;
+						case 32: // space
+							  if ( canJump === true ) velocity.y += 350;
+							  canJump = false;
+							  break;
+					  }
+				};
 
+        document.addEventListener('keydown', onKeyDown)
+    }
     init() {
         // Bind to DOM
 				this.container = document.createElement( 'div' );
@@ -34,8 +65,6 @@ class Bloomaway {
         this.initCamera()
         this.initLight()
         this.initRenderer()
-
-
     }
     initRenderer() {
 				this.renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -48,8 +77,10 @@ class Bloomaway {
 				this.scene = new THREE.Scene();
 
 				// Models
-        this.getObj('torus')
-        this.getGltf('bateau/scene')
+        this.getObj('map/map', obj => obj.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0))
+        this.getObj('ground/ground')
+        this.getObj('shell/shell')
+        // this.getGltf('bateau/scene')
     }
     initLight() {
 				this.light = new THREE.HemisphereLight( 0xbbbbff, 0x444422 );
@@ -58,7 +89,8 @@ class Bloomaway {
     }
     initCamera() {
 				this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.25, 20 );
-				this.camera.position.set( -0.2, -13, 0 );
+				this.camera.position.set(1, 0, 0);
+        this.camera.lookAt(new THREE.Vector3(-1, 0, 0))
         this.scene.add( this.camera );
     }
     getGltf(name) {
@@ -73,13 +105,14 @@ class Bloomaway {
          	  this.scene.add( this.gltf.scene );
         } );
     }
-    getObj(name) {
+    getObj(name, callback = () => {}) {
         const onProgress = () => {}
-        const onError = () => {}
+        const onError = e => {console.log(e)}
 				new THREE.MTLLoader()
             .setPath( 'obj/' )
             .load( name + '.mtl', materials => {
                 materials.preload();
+                console.log(materials)
                 new THREE.OBJLoader()
                     .setMaterials( materials )
                     .setPath( 'obj/' )
@@ -88,13 +121,15 @@ class Bloomaway {
                         object.position.y = 0;
                         object.position.z = 0;
 
-                        const s = 0.1
+                        const s = 1
                         object.scale.set(s, s, s);
 
-                        object.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.2)
+                        // object.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.2)
 
                         this.scene.add( object );
-                        this.obj = object
+                        this.obj.push(object)
+
+                        callback(object)
                     }, onProgress, onError );
             } );
     }

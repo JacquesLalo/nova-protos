@@ -82,10 +82,10 @@
             var alpha = 0.5
             var beta = alpha
             for (var i = 0; i < displacement.length; i++) {
-                displacement[i] = Math.random() * 0.5
-                if(window.data) {
-                    // displacement[i] = window.data.reduce((a, b) => a+b)/window.data.length / 128
-                    displacement[i] = 0.5 * window.data[i % 128] / 128
+                if(window.data && i % 2 === 0) {
+                    const x = window.data[i % window.data.length] / 128
+                    displacement[i] = 0.2 * Math.pow(x, 2)
+                } else {
                 }
             }
         }
@@ -93,7 +93,7 @@
         function init() {
             // Camera setup
             camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 10000)
-            camera.position.z = 40
+            camera.position.z = 60
             camera.position.x = 5
 
             // Scene setup
@@ -121,7 +121,7 @@
 
             // setting up the geometry
             // play with controls on: https://threejs.org/docs/#api/geometries/PlaneBufferGeometry
-            geometry = new THREE.SphereBufferGeometry(5, 32, 32, 0, 3)
+            geometry = new THREE.SphereBufferGeometry(5, 32, 32)
 
             // Changing uv mapping of current geometry
             // change_uvs(geometry, 1, 1, 0, 0)

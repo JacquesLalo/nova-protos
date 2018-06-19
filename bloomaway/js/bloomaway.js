@@ -23,6 +23,7 @@ class Bloomaway {
         // Initialize attributes
         this.container = null
         this.camera = null
+        this.controls = null
         this.scene = null
         this.renderer = null
         this.light = null
@@ -49,7 +50,8 @@ class Bloomaway {
         this.initTorus()
         this.initRenderer()
         this.initLight()
-        this.camera = new Camera(this.scene, this.renderer)
+        this.camera = new Camera(this.scene)
+        this.controls = new Controls(this.camera.getInstance(), this.renderer)
     }
     initDOM() {
         this.container = document.createElement('div')
@@ -117,7 +119,7 @@ class Bloomaway {
         requestAnimationFrame(this.animate)
         this.renderer.render(this.scene, this.camera.getInstance())
 
-        this.camera.animate()
+        this.controls.update()
     }
 }
 

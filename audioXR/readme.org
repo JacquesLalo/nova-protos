@@ -1,72 +1,15 @@
-* Resources
-** Git
-This PDF: [[../resources/pro-git.pdf]]
+* AudioXR
 
-Using git from your editor:
-- VS Code: https://code.visualstudio.com/docs/introvideos/versioncontrol
-- Emacs: https://magit.vc/
+AudioXR is a music visualizer the works on the web. Currently, it uses the [[https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API][Web Audio API]] to read a song, sample its frequencies using a [[https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API][Fast Fourier Transform]].
+
+** Shader code
    
-** Math
-This PDF: [[../resources/3d-math-primer-for-graphics-and-game-development.pdf]]
-
-** Threejs
-It's a high level library for making 3D program that can run in the web browser.
-
-- https://threejs.org/examples/
-
-** Shaders
-Functions that operate at the pixel level:
-
-- https://aerotwist.com/tutorials/an-introduction-to-shaders-part-1/
-- https://aerotwist.com/tutorials/an-introduction-to-shaders-part-2/
-- https://webgl2fundamentals.org/webgl/lessons/webgl-shaders-and-glsl.html
-
-** UV mapping
-UV mapping are used to map textures on 3D objects easily:
-
-- https://en.wikipedia.org/wiki/UV_mapping
-- https://cmichel.io/importing-blender-model-with-texture-to-threejs/
-- https://stackoverflow.com/questions/19891507/correct-uv-mapping-three-js
-- https://codepen.io/knee-cola/pen/XMVBwQ
-- https://threejs.org/examples/?q=uv#misc_uv_tests
-
-Going back to the code developed for the fluid mechanics ([[./WEB XR 3D fluid mecanics.pdf]]), we need to map the picture to our surface. We use UV maps to do that. Here's what it gives with 2 different UV maps:
-
-| UV maps designed to repeat texture over surface | UV map designed to stretch texture over surface |
-|-------------------------------------------------+-------------------------------------------------|
-| [[./img/uvmap--with-tiling.png]]                    | [[./img/uvmap--without-tiling.png]]                 |
-
-On the pictures above, the trick is to modify the 2 first parameters of [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L118][this function]] from `(1, 1)` which stretches the textures to (9, 9) which tiles it 9 by 9 times. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L102][This lines]] handles the way the texture repeats (check out wrapping modes on the following [[https://threejs.org/docs/#api/constants/Textures][page]].
-
-Here is a particularly impressive demo of UV mapping a video on cubes:
-- [[https://threejs.org/examples/?q=video#webgl_materials_video][Demo]]
-- [[https://github.com/mrdoob/three.js/blob/master/examples/webgl_materials_video.html#L203][Code]]
-
-*** Shader code
+- map the texture onto the sphere
+- update displacement of sphere vertices with respected to captured audio frequencies.
 
 The mapping of the texture on the UVs can be found [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L45][here]].
 
-** Generating the surface
-
-1. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L115][Create]] a plane using Three.js 
-2. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L77][Calculate displacements]] of the vertices on this plane along a function to shape the plane
-3. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L34][Update]] the geometry in the vertex shader.
-
-*** Changing the geometry
-    
-| Commit                                   | Screenshot           |
-|------------------------------------------+----------------------|
-| [[https://github.com/mecs13/nova-protos/commit/9bd550aabc75bd4ffd6dbbb6049c9619717b4f5c][9bd550aabc75bd4ffd6dbbb6049c9619717b4f5c]] | [[./img/sphere.png]]     |
-| [[https://github.com/mecs13/nova-protos/commit/43a3006dfc192d74edfc679fd48a36a69e705aec][43a3006dfc192d74edfc679fd48a36a69e705aec]] | [[./img/hemisphere.png]] |
-| [[https://github.com/mecs13/nova-protos/commit/4756a7b037b9c578f22f757ccefcdf2987e8f2fb][4756a7b037b9c578f22f757ccefcdf2987e8f2fb]] | [[./img/gemstone.png]]   |
-
-
-
-
+*** Generating the sphere
    
-** Scaling and rotating the surface
-
-1. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L35][Scaling in shader code]]
-2. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L160][Updating]] scaling factor in JS code
-3. [[https://github.com/mecs13/nova-protos/blob/47323c5de0a32cf3fac10884ad820ed2c989f6bb/meca-flu/index.html#L159][Updating]] plane rotating in JS
+- Use THREE.js to generate a sphere geometry. The displacement function displaces the geometry's vertices based on audio frequencies.
 

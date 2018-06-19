@@ -59,8 +59,8 @@ class Bloomaway {
 				this.scene.add(this.light)
     }
     initCamera() {
-				this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.25, 20)
-				this.camera.position.set(0.3, 0, 0)
+				this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 40)
+				this.camera.position.set(0, 0, 0)
         this.camera.lookAt(new THREE.Vector3(-1, 0, 0))
         this.scene.add(this.camera)
 

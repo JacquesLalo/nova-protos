@@ -67,43 +67,42 @@ class Bloomaway {
         this.container.appendChild(this.renderer.domElement)
     }
     initTorus() {
-        const options = {scale: {x: 2, y: 2, z: 2}}
         const cb = attrName => object => {
             this.scene.add(object)
             const d = {}
             d.geometry = object
             this.torus[attrName] = d
         }
+        const getOptions = s => ({
+            scale: {x: s, y: s, z: s},
+        })
 
-        getObj('map/map', cb('map'), options)
-        getObj('ground/ground', cb('ground'), options)
-        getObj('shell/shell', cb('shell'), options)
+        const s = 20
+        getObj('map/map', cb('map'), getOptions(s))
+        getObj('ground/ground', cb('ground'), getOptions(s))
+        getObj('shell/shell', cb('shell'), getOptions(0))
     }
     initScene() {
         this.scene = new THREE.Scene()
 
-        const s = 0.001
+        const s = 2
         const options = {
             scale: {
                 x: s,
                 y: s,
                 z: s,
             },
-            rotation: {
-                axis: new THREE.Vector3(0, 1, 0),
-                angle: Math.PI / 2,
-            },
             position: {
-                x: -5,
-                y: 21,
-                z: 9
+                x: 4,
+                y: 0,
+                z: -15
             }
         }
         const cb = gltf => {
             this.gltf = gltf
             this.scene.add(this.gltf.scene)
         }
-        getGltf('boat/scene', cb, options)
+        getGltf('king/scene', cb, options)
 
     }
     initLight() {

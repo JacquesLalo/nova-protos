@@ -10,6 +10,7 @@
 
  TODO:
  - Take scenes as class parameter
+ - Make a sky for outside scene. It's currently all black
  - Change scene when clicking on torus' map.
    + Detect user click on map
     - Setup raycaster: https://threejs.org/docs/#api/core/Raycaster

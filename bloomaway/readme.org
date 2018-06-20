@@ -32,6 +32,10 @@ Defines a class responsible for control of the camera. So far it's a very easy i
 
 This file defines various functions helpful to the above classes but were cluttering the code too much and therefore have been refactored into their own file. Currently this file defines THREE.js abstractions for model imports more tailored to the Bloomaway classes
 
+*** sceneData.js
+
+Contains scene asset interfaces for bloomaway. Each scene is defined by a url an optional transformation
+
 ** Running the application
 
 Clone this git repo, cd into the bloomaway folder and open index.html in Firefox. Chrome will currently not work:
@@ -62,8 +66,13 @@ They are defined at the top of bloomaway.js, camera.js, and controls.js
 ** Screenshots
 
 
-| Description    | Schreenshots              |
-|----------------+---------------------------|
-| Inspiration    | [[./img/bloomaway-bg.jpg]]    |
-| Photogrammetry | [[./img/bloomaway-proto.png]] |
-| 3D houses      | [[./img/proto-3D.png]]        |
+| Description                | Schreenshots              |
+|----------------------------+---------------------------|
+| Inspiration                | [[./img/bloomaway-bg.jpg]]    |
+| Photogrammetry castle room | [[./img/bloomaway-proto.png]] |
+| Photogrammetry museum      | [[./img/museum.png]]          |
+| Photogrammetry bedroom     | [[./img/bedroom1.png]]        |
+| Photogrammetry building 1  | [[./img/uni1.png]]            |
+| Photogrammetry building 2  | [[./img/uni2.png]]            |
+| Photogrammetry building 2  | [[./img/uni3.png]]            |
+| 3D houses                  | [[./img/proto-3D.png]]        |

@@ -90,8 +90,7 @@ class Bloomaway {
             this.scene.add(this.gltf.scene)
         }
 
-        // getGltf(scenes.king.name, cb, scenes.king.options)
-        getGltf(scenes.archi.name, cb, scenes.archi.options)
+        getGltf(scenes.king.name, cb, scenes.king.options)
 
     }
     initLight() {

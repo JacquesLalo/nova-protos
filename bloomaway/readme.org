@@ -26,7 +26,7 @@ Responsible for instantiating a camera which is what the user will see. This fil
 
 *** controls.js
 
-Defines a class responsible for control of the camera. So far it's a very easy implementation that works with the mouse. But we will modify this file to include VR headset orientation and controllers.
+Defines a class responsible for control of the camera. So far it's a very easy implementation that works with the mouse and keyboard. We will modify this file to include VR headset orientation and controllers. So far, it's convenient enough for development.
 
 *** helpers.js
 
@@ -43,11 +43,21 @@ firefox index.html
 #+end_src
 
 *** Controls
-Moving your mouse over the 3D canvas will rotate the camera. Left clicking will move the camera forward and right clicking backwards. The current controls are the worst and need to be replaced by [[https://threejs.org/examples/?q=controls#misc_controls_pointerlock][these]]. This is something we will be working on shortly and is mentioned in the camera.js file.
+
+Activating:
+- To activate controls, click on the canvas. Your mouse pointer will disappear
+- To deactivate controls, press escape. Your mouse pointer will reappear
+
+Moving around:
+- Arrow keys
+- A, S, D, W
+
+Looking around:
+- the mouse
 
 ** TODOS
 
-They are defined at the top of bloomaway.js and camera.js
+They are defined at the top of bloomaway.js, camera.js, and controls.js
 
 ** Screenshots
 

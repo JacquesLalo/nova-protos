@@ -8,11 +8,18 @@
 
  Use arrow keys or A, S, D, W to move around and use the mouse to look around. They're basically FPS controls for now.
 
+ This class provides a callback Controls.update() tho be called in the main render loop (Bloomaway.animate()) to update the camera
+
  TODO:
  - handle moving up and down with current controls
  - Hook it up with VR inputs (match headset positioning and track controllers)
 */
 
+/**
+ * Handles instantiating a THREE.PointerLockControls instance and hooking it up to the scene, camera, and DOM events
+ * @param {THREE.Camera} camera - Camera to attach controls to
+ * @param {THREE.Scene} scene - Scene to mount controls into
+ */
 class Controls {
     constructor(camera, scene) {
         this.controls = null

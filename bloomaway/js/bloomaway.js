@@ -51,7 +51,7 @@ class Bloomaway {
         this.initRenderer()
         this.initLight()
         this.camera = new Camera(this.scene)
-        this.controls = new Controls(this.camera.getInstance(), this.renderer)
+        this.controls = new Controls(this.camera.getInstance(), this.scene)
     }
     initDOM() {
         this.container = document.createElement('div')

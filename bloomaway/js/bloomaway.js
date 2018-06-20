@@ -85,24 +85,13 @@ class Bloomaway {
     initScene() {
         this.scene = new THREE.Scene()
 
-        const s = 2
-        const options = {
-            scale: {
-                x: s,
-                y: s,
-                z: s,
-            },
-            position: {
-                x: 4,
-                y: 0,
-                z: -15
-            }
-        }
         const cb = gltf => {
             this.gltf = gltf
             this.scene.add(this.gltf.scene)
         }
-        getGltf('king/scene', cb, options)
+
+        // getGltf(scenes.king.name, cb, scenes.king.options)
+        getGltf(scenes.archi.name, cb, scenes.archi.options)
 
     }
     initLight() {

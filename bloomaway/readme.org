@@ -61,6 +61,9 @@ They are defined at the top of bloomaway.js, camera.js, and controls.js
 
 ** Screenshots
 
-| Inspiration            | Prototype                 |
-|------------------------+---------------------------|
-| [[./img/bloomaway-bg.jpg]] | [[./img/bloomaway-proto.png]] |
+
+| Description    | Schreenshots              |
+|----------------+---------------------------|
+| Inspiration    | [[./img/bloomaway-bg.jpg]]    |
+| Photogrammetry | [[./img/bloomaway-proto.png]] |
+| 3D houses      | [[./img/proto-3D.png]]        |

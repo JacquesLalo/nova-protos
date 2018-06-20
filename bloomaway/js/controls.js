@@ -12,6 +12,7 @@
 
  TODO:
  - handle moving up and down with current controls
+   + modify the direction vector in Controls.update to move in the axis of the camera.
  - Hook it up with VR inputs (match headset positioning and track controllers)
 */
 
@@ -106,7 +107,7 @@ class Controls {
                 break
             case 32: // space
                 if (this.canJump === true)
-                    this.velocity.y += 350
+                    this.velocity.y += 100
 
                 this.canJump = false
                 break
@@ -151,16 +152,16 @@ class Controls {
           this.direction.x = Number(this.moveLeft) - Number(this.moveRight)
           this.direction.normalize() // this ensures consistent movements in all directions
 
-          if (this.moveForward || this.moveBackward) this.velocity.z -= this.direction.z * 400.0 * delta
-          if (this.moveLeft || this.moveRight) this.velocity.x -= this.direction.x * 400.0 * delta
+          if (this.moveForward || this.moveBackward) this.velocity.z -= this.direction.z * 100.0 * delta
+          if (this.moveLeft || this.moveRight) this.velocity.x -= this.direction.x * 100.0 * delta
 
           this.controls.getObject().translateX(this.velocity.x * delta)
           this.controls.getObject().translateY(this.velocity.y * delta)
           this.controls.getObject().translateZ(this.velocity.z * delta)
 
-          if (this.controls.getObject().position.y < 10) {
+          if (this.controls.getObject().position.y < 0) {
             this.velocity.y = 0
-            this.controls.getObject().position.y = 10
+            this.controls.getObject().position.y = 0
             this.canJump = true
           }
           this.prevTime = time

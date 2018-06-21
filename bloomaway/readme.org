@@ -18,7 +18,9 @@ Application mountpoint, it setups up the [[https://developer.mozilla.org/en-US/d
 
 Bloomaway mountpoint. It defines the Bloomaway class and instantiates it. This is our high level application class responsible for managing scenes and cameras among other things.
 
-The bloomaway class currently takes care of instantiating the Torus UI but this will be refactored into its own Torus class soon.
+*** torus.js
+    
+This file defines the Torus, which is our our application's UI. It provides the map for transportation and a way to create buttons over this map that send you to a particular scene when clicked over.
 
 *** camera.js
 

@@ -78,3 +78,4 @@ They are defined at the top of bloomaway.js, camera.js, and controls.js
 | Photogrammetry building 2  | [[./img/uni2.png]]            |
 | Photogrammetry building 2  | [[./img/uni3.png]]            |
 | 3D houses                  | [[./img/proto-3D.png]]        |
+| 3D mall                    | [[./img/mall.png]]            |

@@ -33,6 +33,8 @@ class Controls {
         this.moveBackward = false
         this.moveLeft = false
         this.moveRight = false
+        this.moveUp = false
+        this.moveDown = false
         this.canJump = false
 
         this.prevTime = performance.now()
@@ -105,6 +107,15 @@ class Controls {
             case 68: // d
                 this.moveRight = true
                 break
+             case 82: // R
+                this.moveUp = true
+                //camera.translateY(1.0)
+                break
+            case 70: // F
+                this.moveDown = true
+                //camera.translateY(-1.0)
+                break
+            
             case 32: // space
                 if (this.canJump === true)
                     this.velocity.y += 100
@@ -120,20 +131,26 @@ class Controls {
     onKeyUp(event) {
         switch( event.keyCode ) {
             case 38: // up
-            case 87: // w
+            case 87: // W
                 this.moveForward = false
                 break
             case 37: // left
-            case 65: // a
+            case 65: // A
                 this.moveLeft = false
                 break
             case 40: // down
-            case 83: // s
+            case 83: // S
                 this.moveBackward = false
                 break
             case 39: // right
-            case 68: // d
+            case 68: // D
                 this.moveRight = false
+                break
+            case 82: // Q
+                this.moveUp = false
+                break
+            case 70: // E
+                this.moveDown = false
                 break
         }
     }
@@ -147,13 +164,15 @@ class Controls {
 
           this.velocity.x -= this.velocity.x * 10.0 * delta
           this.velocity.z -= this.velocity.z * 10.0 * delta
-          this.velocity.y -= 9.8 * 100.0 * delta // 100.0 = mass
+          this.velocity.y -= this.velocity.y * 10.0 * delta // 100.0 = mass 
           this.direction.z = Number(this.moveForward) - Number(this.moveBackward)
           this.direction.x = Number(this.moveLeft) - Number(this.moveRight)
+          this.direction.y = Number(this.moveDown) - Number(this.moveUp)
           this.direction.normalize() // this ensures consistent movements in all directions
 
           if (this.moveForward || this.moveBackward) this.velocity.z -= this.direction.z * 100.0 * delta
           if (this.moveLeft || this.moveRight) this.velocity.x -= this.direction.x * 100.0 * delta
+          if (this.moveDown || this.moveUp) this.velocity.y -= this.direction.y * 100.0 * delta
 
           this.controls.getObject().translateX(this.velocity.x * delta)
           this.controls.getObject().translateY(this.velocity.y * delta)

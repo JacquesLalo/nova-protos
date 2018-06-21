@@ -8,7 +8,9 @@
 
  Use arrow keys or A, S, D, W to move around and use the mouse to look around. They're basically FPS controls for now.
 
- This class provides a callback Controls.update() tho be called in the main render loop (Bloomaway.animate()) to update the camera
+ This class provides a callback Controls.update() to be called in the main render loop (Bloomaway.animate()) to update the camera
+
+ Finally, this cass provides an intersectObject() method allowing to check if the user's screen's center point is over the provided 3D object.
 
  TODO:
  - handle moving up and down with current controls
@@ -142,6 +144,12 @@ class Controls {
                 break
         }
     }
+    /**
+    * Checks if camera view intersects a 3D object
+    * @param {THREE.Object3D} object - Object to check for intersection against
+    * @param {boolean} recursive - Should search be recursive
+    * @returns {Array<TREE.Object3D>} Array of intersected objects
+    */
     intersectObject(object, recursive = false) {
         this.raycaster.ray.origin.copy(this.controls.getObject().position)
         this.raycaster.setFromCamera(new THREE.Vector2(0, 0), this.camera)

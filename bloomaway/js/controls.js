@@ -26,6 +26,7 @@ class Controls {
         this.controls = null
         this.camera = camera
         this.scene = scene
+        this.raycaster = null
 
         this.controlsEnabled = true
 
@@ -40,8 +41,10 @@ class Controls {
         this.direction = new THREE.Vector3()
 
         this.init = this.init.bind(this)
+        this.intersectObject = this.intersectObject.bind(this)
         this.initDOM = this.initDOM.bind(this)
         this.onKeyDown = this.onKeyDown.bind(this)
+        this.onKeyUp = this.onKeyUp.bind(this)
         this.onKeyUp = this.onKeyUp.bind(this)
 
         this.init()
@@ -49,6 +52,8 @@ class Controls {
     init() {
         this.controls = new THREE.PointerLockControls(this.camera)
         this.scene.add(this.controls.getObject())
+        this.raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, - 1, 0))
+
         this.initDOM()
     }
     /**
@@ -92,7 +97,7 @@ class Controls {
             case 38: // up
             case 87: // w
                 this.moveForward = true
-                break;
+                break
             case 37: // left
             case 65: // a
                 this.moveLeft = true
@@ -137,34 +142,39 @@ class Controls {
                 break
         }
     }
+    intersectObject(object, recursive = false) {
+        this.raycaster.ray.origin.copy(this.controls.getObject().position)
+        this.raycaster.setFromCamera(new THREE.Vector2(0, 0), this.camera)
+        return this.raycaster.intersectObjects([object], recursive)
+    }
     /**
      * Callback to be called in Bloomaway render loop
      */
     update() {
         if (this.controlsEnabled === true) {
-          const time = performance.now()
-          const delta = (time - this.prevTime) / 1000
+            const time = performance.now()
+            const delta = (time - this.prevTime) / 1000
 
-          this.velocity.x -= this.velocity.x * 10.0 * delta
-          this.velocity.z -= this.velocity.z * 10.0 * delta
-          this.velocity.y -= 9.8 * 100.0 * delta // 100.0 = mass
-          this.direction.z = Number(this.moveForward) - Number(this.moveBackward)
-          this.direction.x = Number(this.moveLeft) - Number(this.moveRight)
-          this.direction.normalize() // this ensures consistent movements in all directions
+            this.velocity.x -= this.velocity.x * 10.0 * delta
+            this.velocity.z -= this.velocity.z * 10.0 * delta
+            this.velocity.y -= 9.8 * 100.0 * delta // 100.0 = mass
+            this.direction.z = Number(this.moveForward) - Number(this.moveBackward)
+            this.direction.x = Number(this.moveLeft) - Number(this.moveRight)
+            this.direction.normalize() // this ensures consistent movements in all directions
 
-          if (this.moveForward || this.moveBackward) this.velocity.z -= this.direction.z * 100.0 * delta
-          if (this.moveLeft || this.moveRight) this.velocity.x -= this.direction.x * 100.0 * delta
+            if (this.moveForward || this.moveBackward) this.velocity.z -= this.direction.z * 100.0 * delta
+            if (this.moveLeft || this.moveRight) this.velocity.x -= this.direction.x * 100.0 * delta
 
-          this.controls.getObject().translateX(this.velocity.x * delta)
-          this.controls.getObject().translateY(this.velocity.y * delta)
-          this.controls.getObject().translateZ(this.velocity.z * delta)
+            this.controls.getObject().translateX(this.velocity.x * delta)
+            this.controls.getObject().translateY(this.velocity.y * delta)
+            this.controls.getObject().translateZ(this.velocity.z * delta)
 
-          if (this.controls.getObject().position.y < 0) {
-            this.velocity.y = 0
-            this.controls.getObject().position.y = 0
-            this.canJump = true
-          }
-          this.prevTime = time
+            if (this.controls.getObject().position.y < 0) {
+                this.velocity.y = 0
+                this.controls.getObject().position.y = 0
+                this.canJump = true
+            }
+            this.prevTime = time
         }
     }
 }

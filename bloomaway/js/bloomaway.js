@@ -33,6 +33,7 @@ class Bloomaway {
 
         // Bind functions
         this.init = this.init.bind(this)
+        this.updateScene = this.updateScene.bind(this)
         this.animate = this.animate.bind(this)
         this.onWindowResize = this.onWindowResize.bind(this)
         this.initLight = this.initLight.bind(this)
@@ -82,12 +83,40 @@ class Bloomaway {
         getObj('map/map', cb('map'), getOptions(s))
         getObj('ground/ground', cb('ground'), getOptions(s))
         getObj('shell/shell', cb('shell'), getOptions(0))
+
+        var geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2)
+        var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} )
+        var cube = new THREE.Mesh(geometry, material)
+        cube.position.x = -1.5
+        cb('cube')(cube)
+        let i = true
+        document.addEventListener('click', () => {
+            if(this.controls.intersectObject(this.torus.cube.geometry).length) {
+                cube.material = new THREE.MeshBasicMaterial( {color: i ? 0x00ff00 : 0x00ffff} )
+                this.updateScene(i ? 'bedroom1' : 'king')
+                i = !i
+            }
+        })
+    }
+    updateScene(sceneName = 'king') {
+        var selectedObject = this.scene.getObjectByName('scene')
+        this.scene.remove(selectedObject)
+
+        const cb = gltf => {
+            this.gltf = gltf
+            this.gltf.scene.name = 'scene'
+            this.scene.add(this.gltf.scene)
+        }
+
+        getGltf(scenes[sceneName].name, cb, scenes[sceneName].options)
+
     }
     initScene() {
         this.scene = new THREE.Scene()
 
         const cb = gltf => {
             this.gltf = gltf
+            this.gltf.scene.name = 'scene'
             this.scene.add(this.gltf.scene)
         }
 

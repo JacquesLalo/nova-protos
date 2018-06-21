@@ -47,7 +47,7 @@ class Bloomaway {
         this.initLight()
         this.camera = new Camera(this.scene)
         this.controls = new Controls(this.camera.getInstance(), this.scene)
-        this.initTorus(this.scene, this.controls)
+        this.initTorus()
     }
     initDOM() {
         this.container = document.createElement('div')
@@ -62,7 +62,7 @@ class Bloomaway {
         this.renderer.gammaOutput = true
         this.container.appendChild(this.renderer.domElement)
     }
-    initTorus(scene, controls) {
+    initTorus() {
         this.torus = new Torus(scene, controls)
 
         this.torus.createButton(() => this.updateScene('bedroom1'), {

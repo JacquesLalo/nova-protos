@@ -62,6 +62,9 @@ class Bloomaway {
         this.renderer.gammaOutput = true
         this.container.appendChild(this.renderer.domElement)
     }
+    /**
+    * Instantiates a Torus and creates buttons allowing for changing scenes
+    */
     initTorus() {
         this.torus = new Torus(this.scene, this.controls)
 
@@ -82,6 +85,10 @@ class Bloomaway {
             color: 0x0000ff,
         })
     }
+    /**
+    * Handles importing scenes defined in sceneData.js, it takes care of importing both GLTF and OBJ scene formats
+    * @param {string} sceneName - Name of scene to import
+    */
     updateScene(sceneName) {
         var selectedObject = this.scene.getObjectByName('scene')
         this.scene.remove(selectedObject)

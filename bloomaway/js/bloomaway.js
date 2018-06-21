@@ -23,7 +23,7 @@ class Bloomaway {
         this.scene = null
         this.renderer = null
         this.light = null
-        this.torus = {}
+        this.torus = null
 
         // Bind functions
         this.init = this.init.bind(this)
@@ -63,7 +63,7 @@ class Bloomaway {
         this.container.appendChild(this.renderer.domElement)
     }
     initTorus() {
-        this.torus = new Torus(scene, controls)
+        this.torus = new Torus(this.scene, this.controls)
 
         this.torus.createButton(() => this.updateScene('bedroom1'), {
             position: new THREE.Vector3(-1.5, 0, 0),

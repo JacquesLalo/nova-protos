@@ -28,7 +28,6 @@ class Bloomaway {
         this.scene = null
         this.renderer = null
         this.light = null
-        this.gltf = null
         this.torus = {}
 
         // Bind functions
@@ -81,19 +80,32 @@ class Bloomaway {
             scale: 0.2,
             color: 0xff0000,
         })
+
+        this.torus.createButton(() => this.updateScene('mall'), {
+            position: new THREE.Vector3(-1, 1, 1),
+            scale: 0.2,
+            color: 0x0000ff,
+        })
     }
     updateScene(sceneName) {
         var selectedObject = this.scene.getObjectByName('scene')
         this.scene.remove(selectedObject)
 
-        const cb = gltf => {
-            this.gltf = gltf
-            this.gltf.scene.name = 'scene'
-            this.scene.add(this.gltf.scene)
+        const cbGltf = gltf => {
+            gltf.scene.name = 'scene'
+            this.scene.add(gltf.scene)
         }
 
-        getGltf(scenes[sceneName].name, cb, scenes[sceneName].options)
+        const cbObj = object => {
+            object.name = 'scene'
+            this.scene.add(object)
+        }
 
+        const scene = scenes[sceneName]
+        if(scene.format === 'gltf')
+            getGltf(scene.name, cbGltf, scene.options)
+        else
+            getObj(scene.name, cbObj, scene.options)
     }
     initScene() {
         this.scene = new THREE.Scene()

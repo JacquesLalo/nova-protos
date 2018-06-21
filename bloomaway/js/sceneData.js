@@ -12,6 +12,7 @@ let s
 s = 2
 const king = {
     name: 'king/scene',
+    format: 'gltf',
     options: {
         scale: {
             x: s,
@@ -30,6 +31,7 @@ const king = {
 s = 0.1
 const archi = {
     name: 'archi/scene',
+    format: 'gltf',
     options: {
         scale: {
             x: s,
@@ -48,6 +50,7 @@ const archi = {
 s = 2
 const museum = {
     name: 'museum/scene',
+    format: 'gltf',
     options: {
         scale: {
             x: s,
@@ -66,6 +69,7 @@ const museum = {
 s = 0.2
 const bedroom1 = {
     name: 'bedroom1/scene',
+    format: 'gltf',
     options: {
         scale: {
             x: s,
@@ -80,10 +84,11 @@ const bedroom1 = {
     },
 }
 
-// nye
+// university
 s = 0.2
 const nye = {
     name: 'uni/scene',
+    format: 'gltf',
     options: {
         scale: {
             x: s,
@@ -98,10 +103,30 @@ const nye = {
     },
 }
 
+// mall
+s = 2
+const mall = {
+    name: 'mall/mall',
+    format: 'obj',
+    options: {
+        scale: {
+            x: s,
+            y: s,
+            z: s,
+        },
+        position: {
+            x: 47,
+            y: 28.4,
+            z: 2
+        },
+    },
+}
+
 const scenes = {
     king,
     archi,
     museum,
     bedroom1,
     nye,
+    mall,
 }

@@ -9,6 +9,7 @@
  TODO:
  - refactor a button in its own class
  - make buttons prettier
+   + provide visual feedback when hovered
  */
 
 

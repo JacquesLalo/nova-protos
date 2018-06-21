@@ -49,11 +49,11 @@ class Bloomaway {
     init() {
         this.initDOM()
         this.initScene()
-        this.initTorus()
         this.initRenderer()
         this.initLight()
         this.camera = new Camera(this.scene)
         this.controls = new Controls(this.camera.getInstance(), this.scene)
+        this.initTorus(this.scene, this.controls)
     }
     initDOM() {
         this.container = document.createElement('div')
@@ -68,37 +68,21 @@ class Bloomaway {
         this.renderer.gammaOutput = true
         this.container.appendChild(this.renderer.domElement)
     }
-    initTorus() {
-        const cb = attrName => object => {
-            this.scene.add(object)
-            const d = {}
-            d.geometry = object
-            this.torus[attrName] = d
-        }
-        const getOptions = s => ({
-            scale: {x: s, y: s, z: s},
+    initTorus(scene, controls) {
+        this.torus = new Torus(scene, controls)
+
+        this.torus.createButton(() => this.updateScene('bedroom1'), {
+            position: new THREE.Vector3(-1.5, 0, 0),
+            scale: 0.2,
         })
 
-        const s = 20
-        getObj('map/map', cb('map'), getOptions(s))
-        getObj('ground/ground', cb('ground'), getOptions(s))
-        getObj('shell/shell', cb('shell'), getOptions(0))
-
-        var geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2)
-        var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} )
-        var cube = new THREE.Mesh(geometry, material)
-        cube.position.x = -1.5
-        cb('cube')(cube)
-        let i = true
-        document.addEventListener('click', () => {
-            if(this.controls.intersectObject(this.torus.cube.geometry).length) {
-                cube.material = new THREE.MeshBasicMaterial( {color: i ? 0x00ff00 : 0x00ffff} )
-                this.updateScene(i ? 'bedroom1' : 'king')
-                i = !i
-            }
+        this.torus.createButton(() => this.updateScene('king'), {
+            position: new THREE.Vector3(-1.5, 1, 0),
+            scale: 0.2,
+            color: 0xff0000,
         })
     }
-    updateScene(sceneName = 'king') {
+    updateScene(sceneName) {
         var selectedObject = this.scene.getObjectByName('scene')
         this.scene.remove(selectedObject)
 
@@ -114,14 +98,7 @@ class Bloomaway {
     initScene() {
         this.scene = new THREE.Scene()
 
-        const cb = gltf => {
-            this.gltf = gltf
-            this.gltf.scene.name = 'scene'
-            this.scene.add(this.gltf.scene)
-        }
-
-        getGltf(scenes.king.name, cb, scenes.king.options)
-
+        this.updateScene('king')
     }
     initLight() {
         this.light = new THREE.HemisphereLight(0xbbbbff, 0x444422)

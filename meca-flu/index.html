@@ -1,206 +1,169 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Sample Three.js</title>
-    <style>
-      #container {
-        background: #000;
-        width: 100vw;
-        height: 100vh;
-      }
-    </style>
-  </head>
-  <body>
+<!DOCTYPE html>
+<html lang="en">
 
-    <div id="container">
-        <!-- Mount Point -->
-    </div>
+<head>
+    <title>three.js webgl - custom attributes</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+</head>
 
-  </body>
-  <!-- Shaders -->
-  <script type="x-shader/x-vertex" id="vertexshader">
+<body>
+    <!-- JS dependencies -->
+    <script src="./js/Three.js"></script>
 
-    // switch on high precision floats
-    #ifdef GL_ES
-    precision highp float;
-    #endif
+    <!-- WEBGL mountpoint -->
+    <div id="container"></div>
 
-    uniform float amplitude;
-    uniform float angle;
-    attribute float displacement;
-    varying vec3 vNormal;
+    <!-- Vertex shader -->
+    <script type="x-shader/x-vertex" id="vertexshader">
+     uniform float amplitude;
+     uniform float scaleFactor;
+     attribute float displacement;
+     varying vec2 vUv;
 
-    void main() {
-      // multiply our displacement by the
-      // amplitude. The amp will get animated
-      // so we'll have animated displacement
-      vec3 newPosition = position +
-                 normal *
-                 vec3(displacement *
-                  amplitude);
+     void main() {
+         vUv = uv;
 
-      vec3 column0 = vec3(cos(angle), -sin(angle), 0.0);
-      vec3 column1 = vec3(sin(angle), cos(angle), 0.0);
-      vec3 column2 = vec3(0.0, 0.0, 1.0);
-      mat3 Rz = mat3(column0, column1, column2);
-
-      vec3 column0x = vec3(1.0, 0.0, 0.0);
-      vec3 column1x = vec3(0.0, cos(angle), sin(angle));
-      vec3 column2x = vec3(0.0, -sin(angle), cos(angle));
-      mat3 Rx = mat3(column0x, column1x, column2x);
-
-        vec3 newPosition2 = Rz * Rx * newPosition;
-      // vNormal = Rz * normal;
-        vNormal = Rz * Rx * normal;
+         mat3 scaleZ = mat3(
+            vec3(1, 0, 0),
+            vec3(0, 1, 0),
+            vec3(0, 0, scaleFactor)
+         );
 
 
-      gl_Position = projectionMatrix *
-              modelViewMatrix *
-              vec4(newPosition2,1.0);
+         vec3 newPosition = position + amplitude * normal * vec3( displacement );
+         vec3 newPosition2 = scaleZ * ( newPosition );
+         gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition2, 1.0 );
+     }
+    </script>
 
-    }
-  </script>
+    <!-- Fragment shader -->
+    <script type="x-shader/x-fragment" id="fragmentshader">
+     varying vec2 vUv;
+     uniform sampler2D texture;
+     void main() {
+         gl_FragColor = texture2D(texture, vUv);
+     }
+    </script>
 
-  <script type="x-shader/x-fragment" id="fragmentshader">
+    <!-- JS setup code -->
+    <script>
+        var renderer, scene, camera, stats
+        var sphere, uniforms
+        var displacement, noise
+        var meshLengthSegments
+        var meshWidthSegments
 
-    #ifdef GL_ES
-    precision highp float;
-    #endif
+        init()
+        animate()
 
-    // same name and type as VS
-    varying vec3 vNormal;
+        // Function to change uv mapping
+        function change_uvs(geometry, unitx, unity, offsetx, offsety) {
+            var uvs = geometry.attributes.uv.array
+            for (var i = 0; i < uvs.length; i += 2) {
+                uvs[i] = (uvs[i] + offsetx) * unitx
+                uvs[i + 1] = (uvs[i + 1] + offsety) * unity
+            }
+        }
 
-    void main() {
+        // Displaces calculates displacements for each vertices of a mesh
+        function applyDisplacements(displacement) {
+            var x, y
+            var alpha = 0.5
+            var beta = alpha
+            for (var i = 0; i < displacement.length; i++) {
+                x = i / meshWidthSegments
+                y = i % meshWidthSegments
+                displacement[i] = 2 * Math.sin(alpha * x) * Math.sin(beta * y)
+            }
+        }
 
-      // calc the dot product and clamp
-      // 0 -> 1 rather than -1 -> 1
-      vec3 light = vec3(0.5,0.2,1.0);
+        function init() {
+            // Camera setup
+            camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 10000)
+            camera.position.z = 30
+            camera.position.x = 5
 
-      // ensure it's normalized
-      light = normalize(light);
+            // Scene setup
+            scene = new THREE.Scene()
 
-      float dProd = max(0.0, dot(vNormal, light));
+            // Shader variables setup
+            uniforms = {
+                amplitude: {
+                    value: 10,
+                },
+                scaleFactor: {
+                    value: 1.0,
+                },
+                texture: {
+                    value: new THREE.TextureLoader().load("textures/about-us.png"),
+                }
+            }
+            uniforms.texture.value.wrapS = uniforms.texture.value.wrapT = THREE.MirroredRepeatWrapping
+            var shaderMaterial = new THREE.ShaderMaterial({
+                uniforms: uniforms,
+                vertexShader: document.getElementById('vertexshader').textContent,
+                fragmentShader: document.getElementById('fragmentshader').textContent,
+            })
 
-      // feed into our frag colour
-      gl_FragColor = vec4(dProd, dProd, dProd, 1.0);
+            // setting up the geometry
+            // play with controls on: https://threejs.org/docs/#api/geometries/PlaneBufferGeometry
+            meshLengthSegments = 100
+            meshWidthSegments = meshLengthSegments
+            meshWidth = 50
+            meshLength = meshWidth
+            var geometry = new THREE.PlaneBufferGeometry(meshLength, meshWidth, meshLengthSegments, meshWidthSegments)
 
-    }
+            // Changing uv mapping of current geometry
+            change_uvs(geometry, 1, 1, 0, 0)
 
-  </script>
+            // Deforming plane with displacements
+            displacement = new Float32Array(geometry.attributes.position.count)
+            applyDisplacements(displacement)
 
-  <!-- End Shaders -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-  <script src="js/Three.js"></script>
+            // Setting up the shaders' attributes
+            geometry.addAttribute('displacement', new THREE.BufferAttribute(displacement, 1))
 
-  <script type="text/javascript">
+            // Creating the mesh
+            plane = new THREE.Mesh(geometry, shaderMaterial)
 
-  // @see http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-  window.requestAnimFrame = (function(){
-      return  window.requestAnimationFrame       ||
-              window.webkitRequestAnimationFrame ||
-              window.mozRequestAnimationFrame    ||
-              window.oRequestAnimationFrame      ||
-              window.msRequestAnimationFrame     ||
-              function(/* function */ callback, /* DOMElement */ element){
-                window.setTimeout(callback, 1000 / 60);
-              };
-    })();
+            // Adding the mesh to our scene
+            scene.add(plane)
 
+            // Rendering
+            renderer = new THREE.WebGLRenderer()
+            renderer.setPixelRatio(window.devicePixelRatio)
+            renderer.setSize(window.innerWidth, window.innerHeight)
+            var container = document.getElementById('container')
+            container.appendChild(renderer.domElement)
 
+            // Event listeneres
+            window.addEventListener('resize', onWindowResize, false)
+        }
 
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight
+            camera.updateProjectionMatrix()
+            renderer.setSize(window.innerWidth, window.innerHeight)
+        }
 
-  // set the scene size
-  var WIDTH = window.document.documentElement.clientWidth,
-      HEIGHT = window.document.documentElement.clientHeight;
+        function animate() {
+            requestAnimationFrame(animate)
+            render()
+        }
 
-  // set some camera attributes
-  var VIEW_ANGLE = 45,
-      ASPECT = WIDTH / HEIGHT,
-      NEAR = 0.1,
-      FAR = 10000;
+        function render() {
+            var time = Date.now() * 0.0001
 
-  // get the DOM element to attach to
-  // - assume we've got jQuery to hand
-  var $container = $('#container');
+            // Rotating and scaling plane wrt time
+            plane.rotation.z = 0.5 * time
+            uniforms.scaleFactor.value = 0.5 * Math.sin(time)
 
-  // create a WebGL renderer, camera
-  // and a scene
-  var renderer = new THREE.WebGLRenderer();
-  var camera = new THREE.Camera(  VIEW_ANGLE,
-                                  ASPECT,
-                                  NEAR,
-                                  FAR  );
-   var scene = new THREE.Scene();
+            // Render
+            renderer.render(scene, camera)
+        }
+    </script>
 
-  // the camera starts at 0,0,0 so pull it back
-  camera.position.z = 300;
+</body>
 
-  // start the renderer
-  renderer.setSize(WIDTH, HEIGHT);
-
-  // attach the render-supplied DOM element
-  $container.append(renderer.domElement);
-
-  var attributes = {
-    displacement: {
-      type: 'f', // a float
-      value: [] // an empty array
-    }
-  };
-
-  var uniforms = {
-    amplitude: {
-      type: 'f', // a float
-      value: 0
-    },
-    angle: {
-        type: 'f', // a float
-        value: 0
-    }
-  };
-
-  // create the sphere's material
-  var shaderMaterial = new THREE.MeshShaderMaterial({
-    uniforms:       uniforms,
-    attributes:     attributes,
-    vertexShader:   $('#vertexshader').text(),
-    fragmentShader: $('#fragmentshader').text()
-  });
-
-  // set up the sphere vars
-  var radius = 75, segments = 14, rings = 14;
-
-  // create a new mesh with sphere geometry -
-  // we will cover the sphereMaterial next!
-  var sphere = new THREE.Mesh(
-     new THREE.Sphere(radius, segments, rings),
-     shaderMaterial);
-
-  // now populate the array of attributes
-  var vertices = sphere.geometry.vertices;
-  var values = attributes.displacement.value
-  for(var v = 0; v < vertices.length; v++) {
-    values.push(Math.random() * 30);
-  }
-
-  // add the sphere to the scene
-  scene.addChild(sphere);
-
-  var frame = 0;
-
-  // draw!
-  function update() {
-
-    uniforms.amplitude.value = Math.sin(frame);
-    uniforms.angle.value = uniforms.angle.value + 0.01;
-    frame += 0.1;
-
-    renderer.render(scene, camera);
-
-    // set up the next call
-    requestAnimFrame(update);
-  }
-  requestAnimFrame(update);
-  </script>
 </html>

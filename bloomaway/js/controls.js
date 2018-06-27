@@ -20,6 +20,7 @@
 class Controls {
     constructor(camera, scene) {
         this.controls = null
+        this.raycaster = null
         this.camera = camera
         this.scene = scene
 
@@ -41,6 +42,8 @@ class Controls {
         this.initDOM = this.initDOM.bind(this)
         this.onKeyDown = this.onKeyDown.bind(this)
         this.onKeyUp = this.onKeyUp.bind(this)
+        this.intersectObject = this.intersectObject.bind(this)
+        this.onKeyUp = this.onKeyUp.bind(this)
 
         this.init()
     }
@@ -48,6 +51,7 @@ class Controls {
         this.controls = new THREE.PointerLockControls(this.camera)
         this.scene.add(this.controls.getObject())
         this.controls.getObject().position.y = 0
+        this.raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, - 1, 0))
         this.initDOM()
     }
     /**
@@ -150,6 +154,17 @@ class Controls {
                 this.moveDown = false
                 break
         }
+    }
+    /**
+        * Checks if camera view intersects a 3D object
+        * @param {THREE.Object3D} object - Object to check for intersection against
+        * @param {boolean} recursive - Should search be recursive
+        * @returns {Array<TREE.Object3D>} Array of intersected objects
+    */
+    intersectObject(object, recursive = false) {
+        this.raycaster.ray.origin.copy(this.controls.getObject().position)
+        this.raycaster.setFromCamera(new THREE.Vector2(0, 0), this.camera)
+        return this.raycaster.intersectObjects([object], recursive)
     }
     /**
      * Callback to be called in Bloomaway render loop

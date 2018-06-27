@@ -3,15 +3,9 @@
  * @name controls.js
  * @author Nova Media LLc
  * @license TBD
-
  This is our user controls class for Bloomaway. It is how the user will control the camera. It currently uses a THREE.PointerLockControls instance binded to the camera to control it. Click the canvas to activate controls.
-
  Use arrow keys or A, S, D, W to move around and use the mouse to look around. They're basically FPS controls for now.
-
- This class provides a callback Controls.update() to be called in the main render loop (Bloomaway.animate()) to update the camera
-
- Finally, this cass provides an intersectObject() method allowing to check if the user's screen's center point is over the provided 3D object.
-
+ This class provides a callback Controls.update() tho be called in the main render loop (Bloomaway.animate()) to update the camera
  TODO:
  - handle moving up and down with current controls
    + modify the direction vector in Controls.update to move in the axis of the camera.
@@ -28,7 +22,6 @@ class Controls {
         this.controls = null
         this.camera = camera
         this.scene = scene
-        this.raycaster = null
 
         this.controlsEnabled = true
 
@@ -36,6 +29,8 @@ class Controls {
         this.moveBackward = false
         this.moveLeft = false
         this.moveRight = false
+        this.moveUp = false
+        this.moveDown = false
         this.canJump = false
 
         this.prevTime = performance.now()
@@ -43,10 +38,8 @@ class Controls {
         this.direction = new THREE.Vector3()
 
         this.init = this.init.bind(this)
-        this.intersectObject = this.intersectObject.bind(this)
         this.initDOM = this.initDOM.bind(this)
         this.onKeyDown = this.onKeyDown.bind(this)
-        this.onKeyUp = this.onKeyUp.bind(this)
         this.onKeyUp = this.onKeyUp.bind(this)
 
         this.init()
@@ -54,8 +47,7 @@ class Controls {
     init() {
         this.controls = new THREE.PointerLockControls(this.camera)
         this.scene.add(this.controls.getObject())
-        this.raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, - 1, 0))
-
+        this.controls.getObject().position.y = 0
         this.initDOM()
     }
     /**
@@ -99,7 +91,7 @@ class Controls {
             case 38: // up
             case 87: // w
                 this.moveForward = true
-                break
+                break;
             case 37: // left
             case 65: // a
                 this.moveLeft = true
@@ -112,6 +104,15 @@ class Controls {
             case 68: // d
                 this.moveRight = true
                 break
+             case 82: // R
+                this.moveUp = true
+                //camera.translateY(1.0)
+                break
+            case 70: // F
+                this.moveDown = true
+                //camera.translateY(-1.0)
+                break
+            
             case 32: // space
                 if (this.canJump === true)
                     this.velocity.y += 100
@@ -127,62 +128,59 @@ class Controls {
     onKeyUp(event) {
         switch( event.keyCode ) {
             case 38: // up
-            case 87: // w
+            case 87: // W
                 this.moveForward = false
                 break
             case 37: // left
-            case 65: // a
+            case 65: // A
                 this.moveLeft = false
                 break
             case 40: // down
-            case 83: // s
+            case 83: // S
                 this.moveBackward = false
                 break
             case 39: // right
-            case 68: // d
+            case 68: // D
                 this.moveRight = false
                 break
+            case 82: // Q
+                this.moveUp = false
+                break
+            case 70: // E
+                this.moveDown = false
+                break
         }
-    }
-    /**
-    * Checks if camera view intersects a 3D object
-    * @param {THREE.Object3D} object - Object to check for intersection against
-    * @param {boolean} recursive - Should search be recursive
-    * @returns {Array<TREE.Object3D>} Array of intersected objects
-    */
-    intersectObject(object, recursive = false) {
-        this.raycaster.ray.origin.copy(this.controls.getObject().position)
-        this.raycaster.setFromCamera(new THREE.Vector2(0, 0), this.camera)
-        return this.raycaster.intersectObjects([object], recursive)
     }
     /**
      * Callback to be called in Bloomaway render loop
      */
     update() {
         if (this.controlsEnabled === true) {
-            const time = performance.now()
-            const delta = (time - this.prevTime) / 1000
+          const time = performance.now()
+          const delta = (time - this.prevTime) / 1000
 
-            this.velocity.x -= this.velocity.x * 10.0 * delta
-            this.velocity.z -= this.velocity.z * 10.0 * delta
-            this.velocity.y -= 9.8 * 100.0 * delta // 100.0 = mass
-            this.direction.z = Number(this.moveForward) - Number(this.moveBackward)
-            this.direction.x = Number(this.moveLeft) - Number(this.moveRight)
-            this.direction.normalize() // this ensures consistent movements in all directions
+          this.velocity.x -= this.velocity.x * 10.0 * delta
+          this.velocity.z -= this.velocity.z * 10.0 * delta
+          this.velocity.y -= this.velocity.y * 10.0 * delta // 100.0 = mass 
+          this.direction.z = Number(this.moveForward) - Number(this.moveBackward)
+          this.direction.x = Number(this.moveLeft) - Number(this.moveRight)
+          this.direction.y = Number(this.moveDown) - Number(this.moveUp)
+          this.direction.normalize() // this ensures consistent movements in all directions
 
-            if (this.moveForward || this.moveBackward) this.velocity.z -= this.direction.z * 100.0 * delta
-            if (this.moveLeft || this.moveRight) this.velocity.x -= this.direction.x * 100.0 * delta
+          if (this.moveForward || this.moveBackward) this.velocity.z -= this.direction.z * 100.0 * delta
+          if (this.moveLeft || this.moveRight) this.velocity.x -= this.direction.x * 100.0 * delta
+          if (this.moveDown || this.moveUp) this.velocity.y -= this.direction.y * 100.0 * delta
 
-            this.controls.getObject().translateX(this.velocity.x * delta)
-            this.controls.getObject().translateY(this.velocity.y * delta)
-            this.controls.getObject().translateZ(this.velocity.z * delta)
+          this.controls.getObject().translateX(this.velocity.x * delta)
+          this.controls.getObject().translateY(this.velocity.y * delta)
+          this.controls.getObject().translateZ(this.velocity.z * delta)
 
-            if (this.controls.getObject().position.y < 0) {
-                this.velocity.y = 0
-                this.controls.getObject().position.y = 0
-                this.canJump = true
-            }
-            this.prevTime = time
+          if (this.controls.getObject().position.y < 0) {
+            this.velocity.y = 0
+            this.controls.getObject().position.y = 0
+            this.canJump = true
+          }
+          this.prevTime = time
         }
     }
 }

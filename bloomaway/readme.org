@@ -38,6 +38,10 @@ This file defines various functions helpful to the above classes but were clutte
 
 Contains scene asset interfaces for bloomaway. Each scene is defined by a url an optional transformation
 
+*** button.js
+
+Defines a class allowing for the creating button. Does not mount the button into the scene, this is left for the user the do.
+
 ** Running the application
 
 Clone this git repo, cd into the bloomaway folder and open index.html in Firefox. Chrome will currently not work:

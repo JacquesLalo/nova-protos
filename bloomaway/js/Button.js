@@ -1,4 +1,19 @@
 /**
+ * @fileOverview
+ * @name Button.js
+ * @author Nova Media LLC
+ * @license TBD
+
+ TODO:
+ - allow for positioning button in spherical coords to they all lay on Torus
+ - provide for more options
+ - allow for other geometries (allow for both THREE.BoxGeometry and THREE.SphereGeometry)
+
+ */
+
+
+
+/**
  * Class defining a Torus button
  * @param {THREE.Control} controls - THREE controls objects used for onClick callback
  * @param {function} onClick - Callback to execute on user click

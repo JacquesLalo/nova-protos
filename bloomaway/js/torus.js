@@ -6,10 +6,6 @@
 
  This class defines the Torus, our UI for VR applications. So far, it handles mounting the Torus interface (map, ground, and shell) and provides an API for creating basic buttons that respond to clicks
 
- TODO:
- - refactor a button in its own class
- - make buttons prettier
-   + provide visual feedback when hovered
  */
 
 import Button from './Button.js'

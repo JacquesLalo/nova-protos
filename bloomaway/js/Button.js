@@ -39,7 +39,7 @@ class Button {
     }
     init(_options) {
         this.initOptions(_options)
-        this.initGeometry()
+        this.initGeometry(_options)
         this.initEvents()
     }
     initOptions(_options) {
@@ -52,7 +52,6 @@ class Button {
         }
     }
     initGeometry() {
-
         let geometry = null
         if(this.options.shape === 'sphere' || this.options.shape === 'Sphere'){
         // Apply transformations

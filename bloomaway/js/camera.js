@@ -43,3 +43,5 @@ class Camera {
         return this.camera
     }
 }
+
+export default Camera

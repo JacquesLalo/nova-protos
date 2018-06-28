@@ -107,5 +107,10 @@ const getGltf = (name, cb = defaultCallback, _options) => {
 
         // Pass object to user callback
         cb(gltf)
-    });
+    })
+}
+
+export {
+    getGltf,
+    getObj,
 }

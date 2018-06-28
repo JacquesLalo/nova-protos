@@ -12,6 +12,9 @@
    + provide visual feedback when hovered
  */
 
+import {
+    getObj,
+} from './helpers.js'
 
 /**
  * Handles instantiating a Torus UI
@@ -83,3 +86,5 @@ class Torus {
         })
     }
 }
+
+export default Torus

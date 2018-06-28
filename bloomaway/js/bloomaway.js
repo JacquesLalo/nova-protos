@@ -13,6 +13,14 @@
  - Make a sky for outside scene. It's currently all black
  */
 
+import Camera from './camera.js'
+import * as scenes from './sceneData.js'
+import {
+    getGltf,
+    getObj,
+} from './helpers.js'
+import Controls from './controls.js'
+import Torus from './torus.js'
 
 class Bloomaway {
     constructor() {

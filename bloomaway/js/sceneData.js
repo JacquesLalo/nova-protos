@@ -122,7 +122,7 @@ const mall = {
     },
 }
 
-const scenes = {
+export {
     king,
     archi,
     museum,

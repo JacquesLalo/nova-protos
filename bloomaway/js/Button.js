@@ -8,6 +8,7 @@
  - allow for positioning button in spherical coords to they all lay on Torus
  - provide for more options
  - allow for other geometries (allow for both THREE.BoxGeometry and THREE.SphereGeometry)
+   + don't forget to provide a default value !
 
  */
 
@@ -21,7 +22,7 @@
  */
 class Button {
     constructor(controls, onClick, _options = {}) {
-        this.button = null // private, use geter
+        this.button = null // private, use getter
         this.onClick = onClick
         this.options = null
         this.controls = controls

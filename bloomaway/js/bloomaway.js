@@ -79,12 +79,14 @@ class Bloomaway {
         this.torus.createButton(() => this.updateScene('bedroom1'), {
             position: new THREE.Vector3(-1.5, 0, 0),
             scale: 0.5,
+            geometry: 'sphere',
         })
 
         this.torus.createButton(() => this.updateScene('king'), {
             position: new THREE.Vector3(-1.5, 1, 0),
             scale: 0.5,
             color: 0xff0000,
+            geometry: 'box',
         })
 
         this.torus.createButton(() => this.updateScene('mall'), {

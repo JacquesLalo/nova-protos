@@ -53,7 +53,6 @@ class Torus {
         getObj('map/map', cb('map'), getOptions(s))
         getObj('ground/ground', cb('ground'), getOptions(s))
         getObj('shell/shell', cb('shell'), getOptions(0))
-
     }
     /**
     * Creates a button on the Torus

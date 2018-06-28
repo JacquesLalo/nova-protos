@@ -21,7 +21,8 @@ module.exports = {
     "rules": {
         "indent": [
             "error",
-            4
+            4,
+            { SwitchCase: 1 }
         ],
         "linebreak-style": [
             "error",
@@ -34,6 +35,7 @@ module.exports = {
         "semi": [
             "error",
             "never"
-        ]
+        ],
+        "no-trailing-spaces": ["error", { "ignoreComments": false }],
     }
 };

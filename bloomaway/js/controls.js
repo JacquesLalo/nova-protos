@@ -61,25 +61,23 @@ class Controls {
         const element = document.body
 
         /* Mouse Events */
-        const pointerlockchange = event => {
-          if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
-            this.controlsEnabled = true
-            this.controls.enabled = true
-          } else {
-            this.controls.enabled = false
-            this.controlsEnabled = false
-          }
+        const pointerlockchange = () => {
+            if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
+                this.controlsEnabled = true
+                this.controls.enabled = true
+            } else {
+                this.controls.enabled = false
+                this.controlsEnabled = false
+            }
         }
-        var pointerlockerror = function (event) {
-            console.log('pointer lock event error')
-        }
+
         // Hook pointer lock state change events
         document.addEventListener('pointerlockchange', pointerlockchange, false)
 
-        element.addEventListener('click', function (event) {
-          // Ask the browser to lock the pointer
-          element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock
-          element.requestPointerLock()
+        element.addEventListener('click', () => {
+            // Ask the browser to lock the pointer
+            element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock
+            element.requestPointerLock()
         }, false)
 
         /* KeyboardEvents */
@@ -95,7 +93,7 @@ class Controls {
             case 38: // up
             case 87: // w
                 this.moveForward = true
-                break;
+                break
             case 37: // left
             case 65: // a
                 this.moveLeft = true
@@ -108,7 +106,7 @@ class Controls {
             case 68: // d
                 this.moveRight = true
                 break
-             case 82: // R
+            case 82: // R
                 this.moveUp = true
                 //camera.translateY(1.0)
                 break
@@ -116,7 +114,6 @@ class Controls {
                 this.moveDown = true
                 //camera.translateY(-1.0)
                 break
-            
             case 32: // space
                 if (this.canJump === true)
                     this.velocity.y += 100
@@ -171,31 +168,31 @@ class Controls {
      */
     update() {
         if (this.controlsEnabled === true) {
-          const time = performance.now()
-          const delta = (time - this.prevTime) / 1000
+            const time = performance.now()
+            const delta = (time - this.prevTime) / 1000
 
-          this.velocity.x -= this.velocity.x * 10.0 * delta
-          this.velocity.z -= this.velocity.z * 10.0 * delta
-          this.velocity.y -= this.velocity.y * 10.0 * delta // 100.0 = mass 
-          this.direction.z = Number(this.moveForward) - Number(this.moveBackward)
-          this.direction.x = Number(this.moveLeft) - Number(this.moveRight)
-          this.direction.y = Number(this.moveDown) - Number(this.moveUp)
-          this.direction.normalize() // this ensures consistent movements in all directions
+            this.velocity.x -= this.velocity.x * 10.0 * delta
+            this.velocity.z -= this.velocity.z * 10.0 * delta
+            this.velocity.y -= this.velocity.y * 10.0 * delta // 100.0 = mass
+            this.direction.z = Number(this.moveForward) - Number(this.moveBackward)
+            this.direction.x = Number(this.moveLeft) - Number(this.moveRight)
+            this.direction.y = Number(this.moveDown) - Number(this.moveUp)
+            this.direction.normalize() // this ensures consistent movements in all directions
 
-          if (this.moveForward || this.moveBackward) this.velocity.z -= this.direction.z * 100.0 * delta
-          if (this.moveLeft || this.moveRight) this.velocity.x -= this.direction.x * 100.0 * delta
-          if (this.moveDown || this.moveUp) this.velocity.y -= this.direction.y * 100.0 * delta
+            if (this.moveForward || this.moveBackward) this.velocity.z -= this.direction.z * 100.0 * delta
+            if (this.moveLeft || this.moveRight) this.velocity.x -= this.direction.x * 100.0 * delta
+            if (this.moveDown || this.moveUp) this.velocity.y -= this.direction.y * 100.0 * delta
 
-          this.controls.getObject().translateX(this.velocity.x * delta)
-          this.controls.getObject().translateY(this.velocity.y * delta)
-          this.controls.getObject().translateZ(this.velocity.z * delta)
+            this.controls.getObject().translateX(this.velocity.x * delta)
+            this.controls.getObject().translateY(this.velocity.y * delta)
+            this.controls.getObject().translateZ(this.velocity.z * delta)
 
-          if (this.controls.getObject().position.y < 0) {
-            this.velocity.y = 0
-            this.controls.getObject().position.y = 0
-            this.canJump = true
-          }
-          this.prevTime = time
+            if (this.controls.getObject().position.y < 0) {
+                this.velocity.y = 0
+                this.controls.getObject().position.y = 0
+                this.canJump = true
+            }
+            this.prevTime = time
         }
     }
 }

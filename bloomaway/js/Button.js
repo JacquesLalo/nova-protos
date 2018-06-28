@@ -39,7 +39,7 @@ class Button {
     }
     init(_options) {
         this.initOptions(_options)
-        this.initGeometry()
+        this.initGeometry(_options)
         this.initEvents()
     }
     initOptions(_options) {
@@ -48,15 +48,27 @@ class Button {
             scale: _options.scale || 1,
             color: _options.color || 0x00ff00,
             position: _options.position || new THREE.Vector3(0, 0, 0),
+            shape: _options.shape || 'box',
         }
     }
-    initGeometry() {
+    initGeometry(_options) {
+        let geometry = null
         // Apply transformations
-        const geometry = new THREE.BoxGeometry(
-            this.options.scale,
-            this.options.scale,
-            this.options.scale
-        )
+        if (this.options.shape === 'sphere' || this.options.shape === 'Sphere') {
+                geometry = new THREE.SphereGeometry(
+                    this.options.scale,
+                    this.options.scale,
+                    this.options.scale
+            )
+        }
+        else {
+            geometry = new THREE.BoxGeometry(
+                this.options.scale,
+                this.options.scale,
+                this.options.scale
+            )
+        }
+    
         const material = new THREE.MeshBasicMaterial({ color: this.options.color })
         this.button = new THREE.Mesh(geometry, material)
         this.button.position.x = this.options.position.x

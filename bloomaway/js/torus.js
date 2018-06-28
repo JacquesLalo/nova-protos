@@ -12,6 +12,7 @@
    + provide visual feedback when hovered
  */
 
+import Button from './Button.js'
 import {
     getObj,
 } from './helpers.js'
@@ -60,30 +61,11 @@ class Torus {
     * @param {dict} _options - Button options
     */
     createButton(onClick, _options = {}) {
-        // Provide default options
-        const scale = _options.scale || 1
-        const color = _options.color || 0x00ff00
-        const position = _options.position || new THREE.Vector3(0, 0, 0)
-
-        // Apply transformations
-        const geometry = new THREE.BoxGeometry(scale, scale, scale)
-        const material = new THREE.MeshBasicMaterial({ color })
-        const button = new THREE.Mesh(geometry, material)
-        button.position.x = position.x
-        button.position.y = position.y
-        button.position.z = position.z
+        const button = new Button(this.controls, onClick, _options)
 
         // Add to scene and keep reference
-        this.scene.add(button)
+        this.scene.add(button.getInstance())
         this.torus.buttons.push(button)
-
-        // Bind to click event
-        document.addEventListener('click', () => {
-            // Check for camera view / button intersection on user click
-            if(this.controls.intersectObject(button).length) {
-                onClick(button)
-            }
-        })
     }
 }
 

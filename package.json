@@ -1,0 +1,23 @@
+{
+  "name": "nova-protos",
+  "version": "1.0.0",
+  "description": "* Resources",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mecs13/nova-protos.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mecs13/nova-protos/issues"
+  },
+  "homepage": "https://github.com/mecs13/nova-protos#readme",
+  "devDependencies": {
+    "eslint": "^5.0.1",
+    "eslint-plugin-react": "^7.10.0"
+  }
+}

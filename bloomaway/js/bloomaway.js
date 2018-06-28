@@ -95,6 +95,7 @@ class Bloomaway {
     }
     /**
     * Handles importing scenes defined in sceneData.js, it takes care of importing both GLTF and OBJ scene formats
+    * TODO: optimize this function
     * @param {string} sceneName - Name of scene to import
     */
     updateScene(sceneName) {

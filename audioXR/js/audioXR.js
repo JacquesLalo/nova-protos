@@ -1,3 +1,6 @@
+import Torus from '../../bloomaway/js/torus.js'
+import Controls from '../../bloomaway/js/controls.js'
+
 class audioXR {
     constructor() {
         this.renderer = null
@@ -7,7 +10,10 @@ class audioXR {
         this.displacement = null
         this.geometry = null
         this.plane = null
+        this.torus = null
+        this.controls = null
 
+        this.init = this.init.bind(this)
         this.init = this.init.bind(this)
         this.animate = this.animate.bind(this)
         this.applyDisplacements = this.applyDisplacements.bind(this)
@@ -25,6 +31,8 @@ class audioXR {
 
         // Scene setup
         this.scene = new THREE.Scene()
+
+        this.controls = new Controls(this.camera, this.scene)
 
         // Shader variables setup
         this.uniforms = {

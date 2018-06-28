@@ -32,7 +32,7 @@ class Camera {
     * Method to call in onWindowResize DOM event to update camera on screen resizes.
     */
     onWindowResize() {
-        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.aspect = window.innerWidth / window.innerHeight
         this.camera.updateProjectionMatrix()
     }
     /**

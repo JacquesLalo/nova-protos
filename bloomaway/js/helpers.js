@@ -11,7 +11,7 @@
 // Defaults
 const defaultCb = () => {}
 const defaultOnProgress = defaultCb
-const defaultOnError = e => console.log(e)
+const defaultOnError = () => {}
 /**
  * Default import options. It includes transformation options to apply to the imported model
  */
@@ -55,10 +55,10 @@ const prepareOptions = options => {
 /**
  * Imports an OBJ and MTL defined model.
  * @param {string} name - name of obj/mtl pair to look up
- * @param {function} defaultCallback - called after loading and application of 3D transforms of the imported model. Passes loaded object as argument.
+ * @param {function} callback - called after loading and application of 3D transforms of the imported model. Passes loaded object as argument.
  * @param {dict} _options - other options. See defaultOptions
  */
-const getObj = (name, callback = defaultCallback, _options) => {
+const getObj = (name, callback = defaultCb, _options) => {
     const options = prepareOptions(_options)
 
     new THREE.MTLLoader()
@@ -80,16 +80,16 @@ const getObj = (name, callback = defaultCallback, _options) => {
                     // Pass object to user callback
                     callback(object)
                 }, options.onProgress, options.onError)
-        });
+        })
 }
 
 /**
  * Imports a GLTF defined model.
  * @param {string} name - name of obj/mtl pair to look up
- * @param {function} defaultCallback - called after loading and application of 3D transforms of the imported model. Passes loaded object as argument.
+ * @param {function} callback - called after loading and application of 3D transforms of the imported model. Passes loaded object as argument.
  * @param {dict} _options - other options. See defaultOptions
  */
-const getGltf = (name, cb = defaultCallback, _options) => {
+const getGltf = (name, cb = defaultCb, _options) => {
     const options = prepareOptions(_options)
 
     const loader = new THREE.GLTFLoader()

@@ -62,12 +62,12 @@ const getObj = (name, callback = defaultCb, _options) => {
     const options = prepareOptions(_options)
 
     new THREE.MTLLoader()
-        .setPath('obj/')
+        .setPath('bloomaway/obj/')
         .load(name + '.mtl', materials => {
             materials.preload()
             new THREE.OBJLoader()
                 .setMaterials(materials)
-                .setPath('obj/')
+                .setPath('bloomaway/obj/')
                 .load( name + '.obj', object => {
                     // Position model
                     object.position.x = options.position.x
@@ -93,7 +93,7 @@ const getGltf = (name, cb = defaultCb, _options) => {
     const options = prepareOptions(_options)
 
     const loader = new THREE.GLTFLoader()
-    loader.load('gltf/' + name + '.gltf', gltf => {
+    loader.load('bloomaway/gltf/' + name + '.gltf', gltf => {
         // Position model
         gltf.scene.position.x = options.position.x
         gltf.scene.position.y = options.position.y

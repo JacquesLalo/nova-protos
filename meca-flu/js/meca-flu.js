@@ -59,7 +59,7 @@ class mecaflu{
                 value: 1.0,
             },
             texture: {
-                value: new THREE.TextureLoader().load('textures/about-us.png'),
+                value: new THREE.TextureLoader().load('meca-flu/textures/about-us.png'),
             }
         }
         this.uniforms.texture.value.wrapS = this.uniforms.texture.value.wrapT = THREE.MirroredRepeatWrapping

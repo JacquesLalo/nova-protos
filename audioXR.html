@@ -9,15 +9,18 @@
 
 <body>
     <!-- JS dependencies -->
-    <script src="./js/THREE/Three.js"></script>
+    <script src="./audioXR/js/THREE/Three.js"></script>
+    <script src="./bloomaway/js/THREE/PointerLockControls.js"></script>
+    <script src="./bloomaway/js/THREE/MTLLoader.js"></script>
+    <script src="./bloomaway/js/THREE/OBJLoader.js"></script>
 
     <!-- WEBGL mountpoint -->
     <div id="container" style="display"></div>
 
     <!-- audio mountpoint -->
     <audio id="audio" controls>
-        <source src="audio/ledzep.ogg" type="audio/ogg">
-        <source src="audio/ledzep.mp3" type="audio/mpeg">
+        <source src="audioXR/audio/ledzep.ogg" type="audio/ogg">
+        <source src="audioXR/audio/ledzep.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
@@ -55,9 +58,7 @@
     </script>
 
     <!-- JS setup code -->
-    <script src="./js/audioXR.js" type="module"></script>
-    <script src="../../bloomaway/js/controls.js" type="module"></script>
-    <script src="../../bloomaway/js/torus.js" type="module"></script>
-    <script src="./js/audio.js"></script>
+    <script src="./audioXR/js/audioXR.js" type="module"></script>
+    <script src="./audioXR/js/audio.js"></script>
 </body>
 </html>

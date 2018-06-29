@@ -42,7 +42,7 @@ class mecaflu{
     }
 
     init() {
-    // Camera setup
+        // Camera setup
         this.camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 10000)
         this.camera.position.z = 30
         this.camera.position.x = 5

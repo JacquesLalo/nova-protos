@@ -123,7 +123,7 @@ class Bloomaway {
     initScene() {
         this.scene = new THREE.Scene()
 
-        this.updateScene('king')
+        this.updateScene('stadium')
     }
     initLight() {
         this.light = new THREE.HemisphereLight(0xbbbbff, 0x444422)

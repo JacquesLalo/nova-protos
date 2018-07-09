@@ -122,7 +122,27 @@ const mall = {
     },
 }
 
+// mall
+s = 0.1
+const stadium = {
+    name: 'stadium/scene',
+    format: 'gltf',
+    options: {
+        scale: {
+            x: s,
+            y: s,
+            z: s,
+        },
+        position: {
+            x: 0,
+            y: -23,
+            z: 0
+        },
+    },
+}
+
 export {
+    stadium,
     king,
     archi,
     museum,

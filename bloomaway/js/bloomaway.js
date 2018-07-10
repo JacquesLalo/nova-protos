@@ -21,9 +21,15 @@ import {
 } from './helpers.js'
 import Controls from './controls.js'
 import Torus from './torus.js'
+import Super from './super.js'
 
-class Bloomaway {
+class Bloomaway extends Super {
     constructor() {
+        // Calling super constructor
+        const bar = {a: "hey", b: " nova"}
+        super(bar)
+        console.log(this.foo)
+
         // Initialize attributes
         this.container = null
         this.camera = null
@@ -49,6 +55,9 @@ class Bloomaway {
         this.animate()
     }
     init() {
+        // Calling super init method
+        super.init()
+
         this.initDOM()
         this.initScene()
         this.initRenderer()
@@ -58,6 +67,9 @@ class Bloomaway {
         this.initTorus()
     }
     initDOM() {
+        // Calling super initDom method
+        super.initDOM()
+
         this.container = document.createElement('div')
         document.body.appendChild(this.container)
         window.addEventListener('resize', this.onWindowResize, false)

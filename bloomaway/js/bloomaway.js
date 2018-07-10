@@ -38,7 +38,6 @@ class Bloomaway extends Super {
         this.torus = null
 
         // Bind functions
-        //this.initDOM = this.initDOM.bind(this)
 
         // Run
         this.init()

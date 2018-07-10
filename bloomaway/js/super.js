@@ -1,7 +1,5 @@
 class Super {
-    constructor(foo) {
-        console.log('super class instancing')
-        this.foo = foo
+    constructor() {
 
         // bindings
         this.init = this.init.bind(this)
@@ -14,18 +12,41 @@ class Super {
         this.initRenderer = this.initRenderer.bind(this)
     }
     init() {
+        this.initDOM()
+        this.initScene()
+        this.initRenderer()
+        this.initLight()
     }
     initDOM() {
+        this.container = document.createElement('div')
+        document.body.appendChild(this.container)
+        window.addEventListener('resize', this.onWindowResize, false)
     }
     initRenderer() {
+        this.renderer = new THREE.WebGLRenderer({ antialias: true })
+        this.renderer.setPixelRatio(window.devicePixelRatio)
+        this.renderer.setSize(window.innerWidth, window.innerHeight)
+        this.renderer.gammaOutput = true
+        this.container.appendChild(this.renderer.domElement)
     }
     initScene() {
+        this.scene = new THREE.Scene()
+
+        this.updateScene('stadium')
     }
     initLight() {
+        this.light = new THREE.HemisphereLight(0xbbbbff, 0x444422)
+        this.light.position.set(0, 1, 0)
+        this.scene.add(this.light)
     }
     onWindowResize() {
+        this.camera.onWindowResize()
+        this.renderer.setSize(window.innerWidth, window.innerHeight)
     }
     animate() {
+        requestAnimationFrame(this.animate)
+        this.renderer.render(this.scene, this.camera.getInstance())
+        this.controls.update()
     }
 }
 

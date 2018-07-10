@@ -26,9 +26,7 @@ import Super from './super.js'
 class Bloomaway extends Super {
     constructor() {
         // Calling super constructor
-        const bar = {a: "hey", b: " nova"}
-        super(bar)
-        console.log(this.foo)
+        super()
 
         // Initialize attributes
         this.container = null
@@ -40,39 +38,20 @@ class Bloomaway extends Super {
         this.torus = null
 
         // Bind functions
-        this.initDOM = this.initDOM.bind(this)
+        //this.initDOM = this.initDOM.bind(this)
 
         // Run
         this.init()
-        this.animate()
+        super.animate()
     }
     init() {
         // Calling super init method
         super.init()
 
-        this.initDOM()
-        this.initScene()
-        this.initRenderer()
-        this.initLight()
+        //innitializing camera of bloomaway class
         this.camera = new Camera(this.scene)
         this.controls = new Controls(this.camera.getInstance(), this.scene)
         this.initTorus()
-    }
-    initDOM() {
-        // Calling super initDom method
-        super.initDOM()
-
-        this.container = document.createElement('div')
-        document.body.appendChild(this.container)
-        window.addEventListener('resize', this.onWindowResize, false)
-
-    }
-    initRenderer() {
-        this.renderer = new THREE.WebGLRenderer({ antialias: true })
-        this.renderer.setPixelRatio(window.devicePixelRatio)
-        this.renderer.setSize(window.innerWidth, window.innerHeight)
-        this.renderer.gammaOutput = true
-        this.container.appendChild(this.renderer.domElement)
     }
     /**
     * Instantiates a Torus and creates buttons allowing for changing scenes
@@ -123,26 +102,6 @@ class Bloomaway extends Super {
             getGltf(scene.name, cbGltf, scene.options)
         else
             getObj(scene.name, cbObj, scene.options)
-    }
-    initScene() {
-        this.scene = new THREE.Scene()
-
-        this.updateScene('stadium')
-    }
-    initLight() {
-        this.light = new THREE.HemisphereLight(0xbbbbff, 0x444422)
-        this.light.position.set(0, 1, 0)
-        this.scene.add(this.light)
-    }
-    onWindowResize() {
-        this.camera.onWindowResize()
-        this.renderer.setSize(window.innerWidth, window.innerHeight)
-    }
-    animate() {
-        requestAnimationFrame(this.animate)
-        this.renderer.render(this.scene, this.camera.getInstance())
-
-        this.controls.update()
     }
 }
 

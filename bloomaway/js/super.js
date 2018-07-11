@@ -1,5 +1,15 @@
+import Camera from './camera.js'
+import Controls from './controls.js'
+
 class Super {
     constructor() {
+        // Initialize attributes
+        this.container = null
+        this.camera = null
+        this.controls = null
+        this.scene = null
+        this.renderer = null
+        this.light = null
 
         // bindings
         this.init = this.init.bind(this)
@@ -16,6 +26,10 @@ class Super {
         this.initScene()
         this.initRenderer()
         this.initLight()
+
+        //innitializing camera of bloomaway class
+        this.camera = new Camera(this.scene)
+        this.controls = new Controls(this.camera.getInstance(), this.scene)
     }
     initDOM() {
         this.container = document.createElement('div')
@@ -31,8 +45,6 @@ class Super {
     }
     initScene() {
         this.scene = new THREE.Scene()
-
-        this.updateScene('stadium')
     }
     initLight() {
         this.light = new THREE.HemisphereLight(0xbbbbff, 0x444422)

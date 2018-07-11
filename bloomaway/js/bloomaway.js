@@ -13,13 +13,11 @@
  - Make a sky for outside scene. It's currently all black
  */
 
-import Camera from './camera.js'
 import * as scenes from './sceneData.js'
 import {
     getGltf,
     getObj,
 } from './helpers.js'
-import Controls from './controls.js'
 import Torus from './torus.js'
 import Super from './super.js'
 
@@ -29,15 +27,11 @@ class Bloomaway extends Super {
         super()
 
         // Initialize attributes
-        this.container = null
-        this.camera = null
-        this.controls = null
-        this.scene = null
-        this.renderer = null
-        this.light = null
         this.torus = null
 
         // Bind functions
+        this.initTorus = this.initTorus.bind(this)
+        this.updateScene = this.updateScene.bind(this)
 
         // Run
         this.init()
@@ -47,10 +41,12 @@ class Bloomaway extends Super {
         // Calling super init method
         super.init()
 
-        //innitializing camera of bloomaway class
-        this.camera = new Camera(this.scene)
-        this.controls = new Controls(this.camera.getInstance(), this.scene)
         this.initTorus()
+    }
+    initScene() {
+        super.initScene()
+
+        this.updateScene('stadium')
     }
     /**
     * Instantiates a Torus and creates buttons allowing for changing scenes

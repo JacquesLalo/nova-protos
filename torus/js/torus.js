@@ -11,7 +11,7 @@
 import Button from './Button.js'
 import {
     getObj,
-} from './helpers.js'
+} from '../../bloomaway/js/helpers.js'
 
 /**
  * Handles instantiating a Torus UI

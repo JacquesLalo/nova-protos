@@ -18,7 +18,7 @@ import {
     getGltf,
     getObj,
 } from './helpers.js'
-import Torus from './torus.js'
+import Torus from '../../torus/js/torus.js'
 import Super from './super.js'
 
 class Bloomaway extends Super {

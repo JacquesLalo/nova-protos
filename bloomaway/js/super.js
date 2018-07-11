@@ -13,7 +13,7 @@ class Super {
 
         // bindings
         this.init = this.init.bind(this)
-        this.updateScene = this.updateScene.bind(this)
+        //this.updateScene = this.updateScene.bind(this)
         this.animate = this.animate.bind(this)
         this.onWindowResize = this.onWindowResize.bind(this)
         this.initLight = this.initLight.bind(this)

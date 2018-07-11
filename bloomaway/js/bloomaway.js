@@ -17,9 +17,9 @@ import * as scenes from './sceneData.js'
 import {
     getGltf,
     getObj,
-} from './helpers.js'
+} from '../../engine/helpers.js'
 import Torus from '../../torus/js/torus.js'
-import Super from './super.js'
+import Super from '../../engine/super.js'
 
 class Bloomaway extends Super {
     constructor() {

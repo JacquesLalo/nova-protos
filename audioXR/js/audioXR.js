@@ -4,7 +4,7 @@
   TODO: isulate visualier in new class to be called form audioXR after initTorus.
 */
 import Torus from '../../torus/js/torus.js'
-import Super from '../../bloomaway/js/super.js'
+import Super from '../../engine/super.js'
 
 class audioXR extends Super {
     constructor() {

@@ -27,6 +27,12 @@ TODO:
  */
 class AbstractButton {
     constructor(controls, onClick, _options = {}) {
+        this.createGeometry = this.createGeometry.bind(this)
+    }
+    initGeometry() {
+        const geometry = this.createGeometry()
+
+        // scale the geometry here
     }
 }
 
@@ -70,10 +76,13 @@ class SphereButton extends AbstractButton {
             shape: _options.shape || 'box',
         }
     }
+    createGeometry() {
+        return new THREE.SphereGeometry()
+    }
     initGeometry() {
         let geometry = null
         if(this.options.shape === 'sphere' || this.options.shape === 'Sphere'){
-        // Apply transformations
+        // Move this into create geometry
             geometry = new THREE.SphereGeometry(
                 this.options.scale,
                 this.options.scale,
@@ -82,7 +91,7 @@ class SphereButton extends AbstractButton {
         }
 
         else{
-        // Apply transformations
+            // Move this into create geometry
             geometry = new THREE.BoxGeometry(
                 this.options.scale,
                 this.options.scale,
@@ -127,6 +136,9 @@ class SphereButton extends AbstractButton {
 class CubeButton extends AbstractButton {
     constructor() {
         super()
+    }
+    createGeometry() {
+        return new THREE.CubeGeometry()
     }
 }
 

@@ -8,7 +8,12 @@
 
  */
 
-import Button from './Button.js'
+import {
+    SphereButton,
+    CubeButton,
+    TorusButton,
+} from './Button.js'
+
 import {
     getObj,
 } from './helpers.js'
@@ -55,8 +60,15 @@ class Torus {
     * @param {funciton} onClick - Callback to be called when button is clicked
     * @param {dict} _options - Button options
     */
-    createButton(onClick, _options = {}) {
-        const button = new Button(this.controls, onClick, _options)
+    createButton(onClick, options = {}) {
+        let button
+
+        if(options.shape === 'sphere')
+            button = new SphereButton(this.controls, onClick, options)
+        else if(options.shape === 'torus')
+            button = new TorusButton(this.controls, onClick, options)
+        else
+            button = new CubeButton(this.controls, onClick, options)
 
         // Add to scene and keep reference
         this.scene.add(button.getInstance())

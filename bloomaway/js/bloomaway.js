@@ -54,23 +54,15 @@ class Bloomaway extends Super {
     initTorus() {
         this.torus = new Torus(this.scene, this.controls)
 
-        this.torus.createButton(() => this.updateScene('bedroom1'), {
-            position: new THREE.Vector3(-1.5, 0, 0),
-            scale: 0.5,
-            shape: 'box',
-        })
-
-        this.torus.createButton(() => this.updateScene('king'), {
-            position: new THREE.Vector3(-1.5, 1, 0),
-            scale: 0.5,
-            color: 0xff0000,
-            shape: 'sphere',
-        })
-
         this.torus.createButton(() => this.updateScene('mall'), {
-            position: new THREE.Vector3(-1, 1, 1),
-            scale: 0.5,
+            position: new THREE.Vector3(-1.5, 0, 0),
+            scale: 0.2,
             color: 0x0000ff,
+            shape: 'torus',
+            rotation: {
+                axis: new THREE.Vector3(0, 1, 0),
+                angle: -Math.PI / 2,
+            }
         })
     }
     /**

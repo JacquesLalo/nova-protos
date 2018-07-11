@@ -1,6 +1,6 @@
 import Super from '../../engine/super.js'
 
-class audioXR extends Super {
+class Template extends Super {
     constructor() {
         //calling Super constructor
         super()
@@ -20,4 +20,4 @@ class audioXR extends Super {
     }
 }
 
-window.audioXR = new audioXR()
+window.template = new Template()

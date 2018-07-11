@@ -10,8 +10,25 @@
  - allow for other geometries (allow for both THREE.BoxGeometry and THREE.SphereGeometry)
    + don't forget to provide a default value !
 
+TODO:
+ We'd like to refactor this button class into a Button abstract class [1] which we'll use to inherit from to create new Buttons with various geometries. So we're looking for an AbstractButton class which we'll extend to create a SphereButton and a CubeButton classx.
+
+ This requires designing an AbstractClass that does the button transforms in it but requies a geometry provided from the inherited class. The AbstractButton class should call a createGeometry provided by the child class which returns a THREE.Geometry object. The transform is then applied to this geometry from the abstract class
+
+ [1] https://en.cppreference.com/w/cpp/language/abstract_class
+
  */
 
+/**
+ * Creates the boiler plate for creating other buttons. It handles everything in the button creation (including event subscriptions). However, all button geometry relative code should go in the inherited class.
+ * @param {Controls} controls - Parameter description.
+ * @param {function} onClick - callback to exectue on button click
+ * @param {dict} _options - Transform options
+ */
+class AbstractButton {
+    constructor(controls, onClick, _options = {}) {
+    }
+}
 
 
 /**
@@ -20,8 +37,10 @@
  * @param {function} onClick - Callback to execute on user click
  * @param {dict} _options - Button geometry options
  */
-class Button {
+class SphereButton extends AbstractButton {
     constructor(controls, onClick, _options = {}) {
+        super()
+
         this.button = null // private, use getter
         this.onClick = onClick
         this.options = null
@@ -101,6 +120,13 @@ class Button {
     }
     getInstance() {
         return this.button // returns a THREE.mesh object
+    }
+}
+
+
+class CubeButton extends AbstractButton {
+    constructor() {
+        super()
     }
 }
 

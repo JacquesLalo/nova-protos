@@ -94,9 +94,9 @@ class Bloomaway extends Super {
 
         const scene = scenes[sceneName]
         if(scene.format === 'gltf')
-            getGltf(scene.name, cbGltf, scene.options)
+            getGltf('bloomaway/gltf', scene.name, cbGltf, scene.options)
         else
-            getObj(scene.name, cbObj, scene.options)
+            getObj('bloomaway/obj', scene.name, cbObj, scene.options)
     }
 }
 

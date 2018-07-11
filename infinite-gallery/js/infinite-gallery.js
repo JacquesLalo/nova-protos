@@ -2,13 +2,14 @@ import Super from '../../engine/super.js'
 
 class InfiniteGallery extends Super {
     constructor() {
-        //calling Super constructor
+        // Calling Super constructor
         super()
 
-        //initializing attributes
+        // Initializing attributes
 
-        //bindings
+        // Function bindings
 
+        // Init
         this.init()
         super.animate()
     }

@@ -58,16 +58,16 @@ const prepareOptions = options => {
  * @param {function} callback - called after loading and application of 3D transforms of the imported model. Passes loaded object as argument.
  * @param {dict} _options - other options. See defaultOptions
  */
-const getObj = (name, callback = defaultCb, _options) => {
+const getObj = (path, name, callback = defaultCb, _options) => {
     const options = prepareOptions(_options)
 
     new THREE.MTLLoader()
-        .setPath('bloomaway/obj/')
+        .setPath(path + '/')
         .load(name + '.mtl', materials => {
             materials.preload()
             new THREE.OBJLoader()
                 .setMaterials(materials)
-                .setPath('bloomaway/obj/')
+                .setPath(path + '/')
                 .load( name + '.obj', object => {
                     // Position model
                     object.position.x = options.position.x
@@ -89,11 +89,11 @@ const getObj = (name, callback = defaultCb, _options) => {
  * @param {function} callback - called after loading and application of 3D transforms of the imported model. Passes loaded object as argument.
  * @param {dict} _options - other options. See defaultOptions
  */
-const getGltf = (name, cb = defaultCb, _options) => {
+const getGltf = (path, name, cb = defaultCb, _options) => {
     const options = prepareOptions(_options)
 
     const loader = new THREE.GLTFLoader()
-    loader.load('bloomaway/gltf/' + name + '.gltf', gltf => {
+    loader.load(path + '/' + name + '.gltf', gltf => {
         // Position model
         gltf.scene.position.x = options.position.x
         gltf.scene.position.y = options.position.y

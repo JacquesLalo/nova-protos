@@ -46,9 +46,9 @@ class Torus {
         })
 
         const s = 20
-        getObj('map/map', cb('map'), getOptions(s))
-        getObj('ground/ground', cb('ground'), getOptions(s))
-        getObj('shell/shell', cb('shell'), getOptions(0))
+        getObj('torus/obj', 'map/map', cb('map'), getOptions(s))
+        getObj('torus/obj', 'ground/ground', cb('ground'), getOptions(s))
+        getObj('torus/obj', 'shell/shell', cb('shell'), getOptions(0))
     }
     /**
     * Creates a button on the Torus

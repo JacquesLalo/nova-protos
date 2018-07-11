@@ -45,3 +45,7 @@ UV mapping are used to map textures on 3D objects easily:
 Here is a particularly impressive demo of UV mapping a video on cubes:
 - [[https://threejs.org/examples/?q=video#webgl_materials_video][Demo]]
 - [[https://github.com/mrdoob/three.js/blob/master/examples/webgl_materials_video.html#L203][Code]]
+
+** Materials
+*** Threejs
+- Relective materials on Threejs: https://medium.com/@soffritti.pierfrancesco/glossy-spheres-in-three-js-bfd2785d4857

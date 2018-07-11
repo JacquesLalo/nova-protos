@@ -1,13 +1,5 @@
 /*
-  TODO: Md, I've imported our Super class in setup the boiler plate so you can call it from this file.
-
-  I'm going to need you guys to refactor the AudioXR class to inherit from the Super class please. You will need to:
-  - remove all code that is redunant with that of the Super class
-  - keep all code specific to audioXR in this file
-
-  After this is done, you will finish refactoring audioXR's init method so that all torus setup code is in a new audioXR method called initTorus (similar to how the Bloomaway class is setup)
-
-  This will allow you for example to inherit the animate method from Super in audioXR and call audioXR's render in it.
+  TODO: Currently, in the initTorus method, we initialize both the torus and the spherical visualier. We want to isolate the visalier in a new method initVisualier.
 */
 import Torus from '../../bloomaway/js/torus.js'
 import Super from '../../bloomaway/js/super.js'

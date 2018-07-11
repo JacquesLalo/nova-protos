@@ -1,5 +1,7 @@
 /*
   TODO: Currently, in the initTorus method, we initialize both the torus and the spherical visualier. We want to isolate the visalier in a new method initVisualier.
+
+  TODO: isulate visualier in new class to be called form audioXR after initTorus.
 */
 import Torus from '../../bloomaway/js/torus.js'
 import Super from '../../bloomaway/js/super.js'

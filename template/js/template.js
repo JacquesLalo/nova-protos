@@ -2,13 +2,14 @@ import Super from '../../engine/super.js'
 
 class Template extends Super {
     constructor() {
-        //calling Super constructor
+        // Calling Super constructor
         super()
 
-        //initializing attributes
+        // Initializing attributes
 
-        //bindings
+        // Method bindings
 
+        // Init code
         this.init()
         super.animate()
     }

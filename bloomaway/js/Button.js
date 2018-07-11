@@ -7,6 +7,10 @@
  TODO:
  - allow for positioning button in spherical coords to they all lay on Torus
  - provide for more options
+
+ TODO: We want that when you look at a TorusButton, it scales and becomes bigger but stays in position. It currently rotates and translates when you hover over it.
+
+ This link can be helpful
  */
 
 /**

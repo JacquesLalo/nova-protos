@@ -9,43 +9,35 @@
 
   This will allow you for example to inherit the animate method from Super in audioXR and call audioXR's render in it.
 */
-import Controls from '../../bloomaway/js/controls.js'
 import Torus from '../../bloomaway/js/torus.js'
 import Super from '../../bloomaway/js/super.js'
 
 class audioXR extends Super {
     constructor() {
-
         //calling Super constructor
         super()
-        //initializing attributes
 
-        //this.renderer = null
-        //this.scene = null
-        //this.camera = null
+        //initializing attributes
         this.uniforms = null
         this.displacement = null
         this.geometry = null
         this.plane = null
         this.torus = null
-        //this.controls = null
 
         //bindings
-        
-        //this.init = this.init.bind(this)
-        //this.animate = this.animate.bind(this)
         this.applyDisplacements = this.applyDisplacements.bind(this)
-        //this.onWindowResize = this.onWindowResize.bind(this)
         this.render = this.render.bind(this)
+        this.initTorus = this.initTorus.bind(this)
 
-
-
+        this.init()
+        super.animate()
     }
     init() {
         super.init()
-        
+        this.initTorus()
+    }
+    initTorus() {
         // Setup Torus
- 
         this.torus = new Torus(this.scene, this.controls)
 
 
@@ -93,16 +85,6 @@ class audioXR extends Super {
 
         // Adding the mesh to our scene
         this.scene.add(this.plane)
-
-        // Rendering
-        this.renderer = new THREE.WebGLRenderer()
-        this.renderer.setPixelRatio(window.devicePixelRatio)
-        this.renderer.setSize(window.innerWidth, window.innerHeight)
-        const container = document.getElementById('container')
-        container.appendChild(this.renderer.domElement)
-
-        // Event listeners
-        window.addEventListener('resize', this.onWindowResize, false)
     }
     applyDisplacements(displacement) {
         for (let i = 0; i < displacement.length; i++) {
@@ -126,9 +108,6 @@ class audioXR extends Super {
 
         this.applyDisplacements(this.displacement)
         this.geometry.attributes.displacement.needsUpdate = true
-
-        // Render
-        this.renderer.render(this.scene, this.camera)
     }
 }
 

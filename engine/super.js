@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-import Camera from './camera.js'
+import Camera from './camera.ts'
 import Controls from './controls.ts'
 
 class Super {

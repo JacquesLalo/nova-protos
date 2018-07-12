@@ -14,8 +14,6 @@
 
 import * as THREE from 'three'
 import PointerLockControls from '../THREE/PointerLockControls.js'
-import Camera from './camera.js'
-
 
 /**
  * Handles instantiating a THREE.PointerLockControls instance and hooking it up to the scene, camera, and DOM events
@@ -25,7 +23,7 @@ import Camera from './camera.js'
 class Controls {
     controls: PointerLockControls
     raycaster: THREE.Raycaster
-    camera: Camera
+    camera: THREE.Camera
     scene: THREE.Scene
     controlsEnabled: boolean
     moveForward: boolean

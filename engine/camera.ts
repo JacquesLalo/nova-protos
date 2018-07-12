@@ -14,7 +14,9 @@ import * as THREE from 'three'
  * @param {THREE.Scene} scene - Scene to mount camera into
  */
 class Camera {
-    constructor(scene) {
+    scene: THREE.Scene
+    camera: THREE.PerspectiveCamera
+    constructor(scene: THREE.Scene) {
         this.scene = scene
         this.camera = null // private ; use this.getInstance() getter
 

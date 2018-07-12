@@ -2,6 +2,8 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import * as THREE from 'three'
+
 THREE.OBJLoader = ( function () {
 
 	// o object_name | g group_name

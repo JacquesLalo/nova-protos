@@ -13,6 +13,8 @@
  - Make a sky for outside scene. It's currently all black
  */
 
+import * as THREE from 'three'
+
 import * as scenes from './sceneData.js'
 import {
     getGltf,

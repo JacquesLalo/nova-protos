@@ -12,7 +12,7 @@
 
  */
 
-
+import * as THREE from 'three'
 
 /**
  * Class defining a Torus button

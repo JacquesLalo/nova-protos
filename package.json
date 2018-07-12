@@ -34,6 +34,6 @@
     "webpack-cli": "^3.0.8"
   },
   "dependencies": {
-    "three.js": "^0.77.1"
+    "three": "^0.94.0"
   }
 }

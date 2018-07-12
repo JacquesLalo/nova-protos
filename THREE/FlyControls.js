@@ -1,6 +1,7 @@
 /**
  * @author James Baicoianu / http://www.baicoianu.com/
  */
+import * as THREE from 'three'
 
 THREE.FlyControls = function ( object, domElement ) {
 

@@ -7,6 +7,8 @@
  This is our camera class for Bloomaway. It is what the user will see in VR. It uses a THREE.PerspectiveCamera.
  */
 
+import * as THREE from 'three'
+
 /**
  * Handles instantiating a THREE.js camera and hooking it up to the scene
  * @param {THREE.Scene} scene - Scene to mount camera into

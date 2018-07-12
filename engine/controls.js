@@ -12,6 +12,8 @@
  - Hook it up with VR inputs (match headset positioning and track controllers)
 */
 
+import * as THREE from 'three'
+
 /**
  * Handles instantiating a THREE.PointerLockControls instance and hooking it up to the scene, camera, and DOM events
  * @param {THREE.Camera} camera - Camera to attach controls to

@@ -7,6 +7,11 @@
  This file groups general helpers useful to Bloomaway specific code. They abstract away some of the more complex aspects on THREE.js such as importing 3D models and their textures from various file formats.
  */
 
+import * as THREE from 'three'
+import '../THREE/PointerLockControls.js'
+import '../THREE/GLTFLoader.js'
+import '../THREE/OBJLoader.js'
+import '../THREE/MTLLoader.js'
 
 // Defaults
 const defaultCb = () => {}

@@ -4,6 +4,8 @@
  * @author angelxuanchang
  */
 
+import * as THREE from 'three'
+
 THREE.MTLLoader = function ( manager ) {
 
 	this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;

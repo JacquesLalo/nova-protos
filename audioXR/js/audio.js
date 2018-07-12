@@ -1,3 +1,5 @@
+let visualizerData
+
 // https://www.michaelbromley.co.uk/blog/audio-visualization-with-web-audio-canvas-and-the-soundcloud-api/
 const visualizer = function(audioElement) {
     const player = document.getElementById(audioElement)
@@ -25,6 +27,7 @@ const visualizer = function(audioElement) {
         const dataArray = new Uint8Array(bufferLength)
         analyser.getByteTimeDomainData(dataArray)
         window.data = dataArray
+        visualizerData = dataArray
     }
     setInterval(sampleAudioStream, 20) //
     // public properties and methods
@@ -39,3 +42,7 @@ const visualizer = function(audioElement) {
 
 const vis = new visualizer('audio')
 vis.playStream()
+
+export {
+    visualizerData,
+}

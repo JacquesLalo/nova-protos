@@ -6,13 +6,32 @@
 
 import * as THREE from 'three'
 
-import Torus from '../../torus/js/torus.ts'
-import Super from '../../engine/super.ts'
-import ShaderObject from '../../engine/shaderObject.ts'
+import Torus from '../../torus/js/torus'
+import Super from '../../engine/super'
+import ShaderObject, { Us } from '../../engine/shaderObject'
 
 import './audio.js'
+import { visualizerData } from './audio.js'
+
+interface Uniforms {
+    'amplitude': {
+        value: number,
+    },
+    'scaleFactor': {
+        value: number,
+    },
+    'texture': {
+        value: THREE.Texture,
+    }
+}
 
 class audioXR extends Super {
+    uniforms: Uniforms
+    displacement: Float32Array
+    geometry: THREE.BufferGeometry
+    torus: Torus
+    visualizer: ShaderObject
+
     constructor() {
         //calling Super constructor
         super()
@@ -21,7 +40,6 @@ class audioXR extends Super {
         this.uniforms = null
         this.displacement = null
         this.geometry = null
-        this.plane = null
         this.torus = null
 
         //bindings
@@ -39,19 +57,13 @@ class audioXR extends Super {
         this.initVisualizer()
     }
     initVisualizer() {
-        // Shader variables setup
-        this.uniforms = {
-            amplitude: {
-                value: 10,
-            },
-            scaleFactor: {
-                value: 1.0,
-            },
-            texture: {
-                value: new THREE.TextureLoader().load('audioXR/textures/about-us.png'),
-            }
-        }
-        this.uniforms.texture.value.wrapS = this.uniforms.texture.value.wrapT = THREE.MirroredRepeatWrapping
+        const texture = new THREE.TextureLoader().load('audioXR/textures/about-us.png')
+        texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping
+        const uniforms: Us = [
+            ['amplitude', 10],
+            ['scaleFactor', 1.0],
+            ['texture', texture],
+        ]
 
         // setting up the geometry
         this.geometry = new THREE.SphereBufferGeometry(0.1, 32, 32)
@@ -61,7 +73,7 @@ class audioXR extends Super {
         this.applyDisplacements(this.displacement)
 
         // Creating the mesh
-        this.visualizer = new ShaderObject(this.geometry, this.uniforms, 'vertexshader', 'fragmentshader')
+        this.visualizer = new ShaderObject(this.geometry, uniforms, 'vertexshader', 'fragmentshader')
         this.visualizer.addAttribute('displacement', new THREE.BufferAttribute(this.displacement, 1))
         this.visualizer.mesh.position.y = 3
         this.visualizer.mesh.position.x = 3
@@ -82,8 +94,8 @@ class audioXR extends Super {
     }
     applyDisplacements(displacement) {
         for (let i = 0; i < displacement.length; i++) {
-            if(window.data && i % 2 === 0) {
-                const x = window.data[i % window.data.length] / 128
+            if(visualizerData && i % 2 === 0) {
+                const x = visualizerData[i % visualizerData.length] / 128
                 displacement[i] = 0.2 * Math.pow(x, 2)
             }
         }
@@ -98,11 +110,12 @@ class audioXR extends Super {
         // Rotating and scaling plane wrt time
         this.visualizer.mesh.rotation.z = 0.5 * time
         this.visualizer.mesh.rotation.y = 0.5 * time
-        this.uniforms.scaleFactor.value = 1
 
         this.applyDisplacements(this.displacement)
-        this.geometry.attributes.displacement.needsUpdate = true
+        if(this.visualizer.geometry.attributes.displacement instanceof THREE.BufferAttribute) {
+            this.visualizer.geometry.attributes.displacement.needsUpdate = true
+        }
     }
 }
 
-window.audioXR = new audioXR()
+new audioXR()

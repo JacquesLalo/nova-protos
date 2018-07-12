@@ -2,9 +2,11 @@ import * as THREE from 'three'
 
 interface Uniforms {
     [s: string]: {
-        value: number | THREE.Texture,
-    },
+        value: number | THREE.Texture
+    }
 }
+
+type Us = Array<[string, number | THREE.Texture]>
 
 class ShaderObject {
     uniforms: Uniforms
@@ -12,24 +14,24 @@ class ShaderObject {
     mesh: THREE.Mesh
     geometry: THREE.BufferGeometry
 
-    constructor(g: THREE.BufferGeometry, u: Uniforms, v: string, f: string) {
-        this.uniforms = null
+    constructor(g: THREE.BufferGeometry, us: Us, v: string, f: string) {
+        this.uniforms = {}
 
-        this.updateUniforms = this.updateUniforms.bind(this)
+        this.updateUniform = this.updateUniform.bind(this)
         this.addAttribute = this.addAttribute.bind(this)
         this.init = this.init.bind(this)
 
-        this.init(g, u, v, f)
+        this.init(g, us, v, f)
     }
-    init(g: THREE.BufferGeometry, u: Uniforms, v: string, f: string) {
-        this.updateUniforms(u)
+    init(g: THREE.BufferGeometry, us: Us, v: string, f: string) {
+        us.map(u => (this.updateUniform(u[0], u[1])))
+
         this.geometry = g
 
         this.material = new THREE.ShaderMaterial({
             uniforms: this.uniforms,
             vertexShader: document.getElementById(v).textContent,
             fragmentShader: document.getElementById(f).textContent,
-            side: THREE.DoubleSide,
         })
 
 
@@ -38,9 +40,14 @@ class ShaderObject {
     addAttribute(n: string, a: THREE.BufferAttribute) {
         this.geometry.addAttribute(n, a)
     }
-    updateUniforms(u: Uniforms) {
-        this.uniforms = u
+    updateUniform(n: string, v: number | THREE.Texture) {
+        this.uniforms[n] = {
+            value: v,
+        }
     }
 }
 
 export default ShaderObject
+export {
+    Us,
+}

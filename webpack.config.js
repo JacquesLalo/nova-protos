@@ -6,7 +6,7 @@ module.exports = {
     mode: 'development',
     entry: {
         bloomaway: './bloomaway/js/bloomaway.ts',
-        audioXR: './audioXR/js/audioXR.js',
+        audioXR: './audioXR/js/audioXR.ts',
         mecaFlu: './meca-flu/js/meca-flu.js',
         infiniteGallery: './infinite-gallery/js/infinite-gallery.ts',
     },

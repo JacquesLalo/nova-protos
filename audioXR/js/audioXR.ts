@@ -92,7 +92,7 @@ class audioXR extends Super {
             shape: 'box',
         })
     }
-    applyDisplacements(displacement) {
+    applyDisplacements(displacement: Float32Array) {
         for (let i = 0; i < displacement.length; i++) {
             if(visualizerData && i % 2 === 0) {
                 const x = visualizerData[i % visualizerData.length] / 128

@@ -8,7 +8,7 @@ module.exports = {
         bloomaway: './bloomaway/js/bloomaway.ts',
         audioXR: './audioXR/js/audioXR.js',
         mecaFlu: './meca-flu/js/meca-flu.js',
-        infiniteGallery: './infinite-gallery/js/infinite-gallery.js',
+        infiniteGallery: './infinite-gallery/js/infinite-gallery.ts',
     },
     devtool: 'source-map',
     output: {

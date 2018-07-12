@@ -1,9 +1,12 @@
 import * as THREE from 'three'
 
-import Super from '../../engine/super.ts'
-import { getObj } from '../../engine/helpers.js'
+import Super from '../../engine/super'
+import { getObj } from '../../engine/helpers'
 
 class InfiniteGallery extends Super {
+    walkPath: THREE.QuadraticBezierCurve3
+    userPosition: number // in [0, 1]
+    isWalkingForward: boolean
     constructor() {
         // Calling Super constructor
         super()
@@ -106,4 +109,4 @@ class InfiniteGallery extends Super {
     }
 }
 
-window.infiniteGallery = new InfiniteGallery()
+new InfiniteGallery()

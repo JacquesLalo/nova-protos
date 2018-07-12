@@ -1,3 +1,5 @@
+import * as THREE from 'three'
+
 import Super from '../../engine/super.js'
 import { getObj } from '../../engine/helpers.js'
 

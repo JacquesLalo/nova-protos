@@ -4,7 +4,7 @@ import Super from '../../engine/super'
 import { getObj } from '../../engine/helpers'
 
 class InfiniteGallery extends Super {
-    walkPath: THREE.QuadraticBezierCurve3
+    walkPath: THREE.CurvePath<THREE.Vector3>
     userPosition: number // in [0, 1]
     isWalkingForward: boolean
     constructor() {
@@ -33,11 +33,23 @@ class InfiniteGallery extends Super {
         this.initMoveControls()
     }
     initMoveControls() {
-        this.walkPath = new THREE.QuadraticBezierCurve3(
-            new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(50, 15, 0),
-            new THREE.Vector3(50, 0, 0)
+        type Curve = Array<[number, number, number]>
+        const createCurve = (c: Curve) => new THREE.QuadraticBezierCurve3(
+            new THREE.Vector3(c[0][0], c[0][1], c[0][2]),
+            new THREE.Vector3(c[1][0], c[1][1], c[1][2]),
+            new THREE.Vector3(c[2][0], c[2][1], c[2][2])
         )
+
+        const curvePath: Array<Curve> = [
+            [
+                [-1, 0.176006, 0.017777],
+                [-2, 0, 0.033176],
+                [20, 20.176008, 0.048574]
+            ],
+        ]
+
+        this.walkPath = new THREE.CurvePath()
+        curvePath.map(c => this.walkPath.add(createCurve(c)))
 
         document.addEventListener('click', () => {
             this.isWalkingForward = !this.isWalkingForward
@@ -99,14 +111,18 @@ class InfiniteGallery extends Super {
     }
     animate() {
         super.animate()
+        const currentPos = this.walkPath.getPointAt(this.userPosition % 1)
 
         if(this.isWalkingForward) {
-            this.userPosition += 0.0001
+            this.userPosition += 0.001
         }
 
-        const { x, y, z } =  this.walkPath.getPointAt(this.userPosition % 1)
-        this.camera.getInstance().position.set(x, y, z)
+        const { x, y, z } = this.walkPath.getPointAt(this.userPosition % 1)
+        this.controls.controls.getObject().translateX(currentPos.x - x)
+        this.controls.controls.getObject().translateY(currentPos.y - y)
+        this.controls.controls.getObject().translateZ(currentPos.z - z)
     }
 }
 
-new InfiniteGallery()
+const a = new InfiniteGallery()
+console.log(a)

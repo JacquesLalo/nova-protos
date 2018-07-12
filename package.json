@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-      "lint": "eslint",
-      "webpack": "webpack --watch"
+    "lint": "eslint",
+    "webpack": "webpack --watch",
+    "flow": "flow"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,11 @@
   },
   "homepage": "https://github.com/mecs13/nova-protos#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-stage-3": "^6.24.1",
     "eslint": "^5.0.1",
     "eslint-plugin-react": "^7.10.0",
     "webpack": "^4.16.0",

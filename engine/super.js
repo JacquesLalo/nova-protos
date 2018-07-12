@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 import Camera from './camera.js'
-import Controls from './controls.js'
+import Controls from './controls.ts'
 
 class Super {
     constructor() {

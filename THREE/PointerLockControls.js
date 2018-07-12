@@ -69,3 +69,5 @@ THREE.PointerLockControls = function ( camera ) {
 	}();
 
 };
+
+export default THREE.PointerLockControls

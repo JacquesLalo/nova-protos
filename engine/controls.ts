@@ -13,6 +13,9 @@
 */
 
 import * as THREE from 'three'
+import PointerLockControls from '../THREE/PointerLockControls.js'
+import Camera from './camera.js'
+
 
 /**
  * Handles instantiating a THREE.PointerLockControls instance and hooking it up to the scene, camera, and DOM events
@@ -20,6 +23,21 @@ import * as THREE from 'three'
  * @param {THREE.Scene} scene - Scene to mount controls into
  */
 class Controls {
+    controls: PointerLockControls
+    raycaster: THREE.Raycaster
+    camera: Camera
+    scene: THREE.Scene
+    controlsEnabled: boolean
+    moveForward: boolean
+    moveBackward: boolean
+    moveLeft: boolean
+    moveRight: boolean
+    moveUp: boolean
+    moveDown: boolean
+    canJump: boolean
+    prevTime: number
+    velocity: THREE.Vector3
+    direction: THREE.Vector3
     constructor(camera, scene) {
         this.controls = null
         this.raycaster = null
@@ -50,7 +68,7 @@ class Controls {
         this.init()
     }
     init() {
-        this.controls = new THREE.PointerLockControls(this.camera)
+        this.controls = new PointerLockControls(this.camera)
         this.scene.add(this.controls.getObject())
         this.controls.getObject().position.y = 0
         this.raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, - 1, 0))
@@ -64,7 +82,7 @@ class Controls {
 
         /* Mouse Events */
         const pointerlockchange = () => {
-            if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
+            if (document.pointerLockElement === element) {
                 this.controlsEnabled = true
                 this.controls.enabled = true
             } else {
@@ -78,7 +96,7 @@ class Controls {
 
         element.addEventListener('click', () => {
             // Ask the browser to lock the pointer
-            element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock
+            element.requestPointerLock = element.requestPointerLock
             element.requestPointerLock()
         }, false)
 
@@ -88,9 +106,9 @@ class Controls {
     }
     /**
     * onKeyDown DOM event callback
-    * @param {DOM event} event - event.keyCode contains information relative to keyboard key that was pressed
+    * @param {KeyboardEvent} event - event.keyCode contains information relative to keyboard key that was pressed
     */
-    onKeyDown(event) {
+    onKeyDown(event: KeyboardEvent) {
         switch (event.keyCode) {
             case 38: // up
             case 87: // w
@@ -126,9 +144,9 @@ class Controls {
     }
     /**
      * onKeyUp DOM event callback
-     * @param {DOM event} event - event.keyCode contains information relative to keyboard key that was released
+     * @param {KeyboardEvent} event - event.keyCode contains information relative to keyboard key that was released
      */
-    onKeyUp(event) {
+    onKeyUp(event: KeyboardEvent) {
         switch( event.keyCode ) {
             case 38: // up
             case 87: // W
@@ -158,9 +176,9 @@ class Controls {
         * Checks if camera view intersects a 3D object
         * @param {THREE.Object3D} object - Object to check for intersection against
         * @param {boolean} recursive - Should search be recursive
-        * @returns {Array<TREE.Object3D>} Array of intersected objects
+        * @returns {Array<TREE.Intersection>} Array of intersected objects
     */
-    intersectObject(object, recursive = false) {
+    intersectObject(object: THREE.Object3D, recursive = false): Array<THREE.Intersection> {
         this.raycaster.ray.origin.copy(this.controls.getObject().position)
         this.raycaster.setFromCamera(new THREE.Vector2(0, 0), this.camera)
         return this.raycaster.intersectObjects([object], recursive)

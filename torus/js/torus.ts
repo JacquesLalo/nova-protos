@@ -8,10 +8,18 @@
 
  */
 
-import Button from './Button.ts'
+import Button, {
+    ButtonOptions,
+    OnClickCallback,
+} from './Button'
 import {
     getObj,
 } from '../../engine/helpers.js'
+import Controls from '../../engine/controls'
+
+interface TorusModels {
+    buttons: Array<Button>,
+}
 
 /**
  * Handles instantiating a Torus UI
@@ -19,6 +27,9 @@ import {
  * @param {Controls} controls - Controls to bind button clicks to
  */
 class Torus {
+    scene: THREE.Scene
+    controls: Controls
+    torus: TorusModels
     constructor(scene, controls) {
         this.scene = scene
         this.controls = controls
@@ -35,10 +46,11 @@ class Torus {
     * Initialized the Torus by importing its geometry and mounting it into the scene
     */
     init() {
-        const cb = attrName => object => {
+        const cb = (attrName: string) => (object: THREE.Object3D) => {
             this.scene.add(object)
-            const d = {}
-            d.geometry = object
+            const d = {
+                geometry: object
+            }
             this.torus[attrName] = d
         }
         const getOptions = s => ({
@@ -55,7 +67,10 @@ class Torus {
     * @param {funciton} onClick - Callback to be called when button is clicked
     * @param {dict} _options - Button options
     */
-    createButton(onClick, _options = {}) {
+    createButton(
+        onClick: OnClickCallback,
+        _options: ButtonOptions
+    ) {
         const button = new Button(this.controls, onClick, _options)
 
         // Add to scene and keep reference

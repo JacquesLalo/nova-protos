@@ -22,6 +22,8 @@ interface ButtonOptions {
     shape?: string,
 }
 
+type OnClickCallback = (o: THREE.Mesh) => void
+
 /**
  * Class defining a Torus button
  * @param {THREE.Control} controls - THREE controls objects used for onClick callback
@@ -32,8 +34,8 @@ class Button {
     controls: Controls
     button: THREE.Mesh
     options: ButtonOptions
-    onClick: (o: THREE.Mesh) => void
-    constructor(controls: Controls, onClick, _options = {}) {
+    onClick: OnClickCallback
+    constructor(controls: Controls, onClick: OnClickCallback, _options = {}) {
         this.onClick = onClick
         this.controls = controls
 
@@ -115,3 +117,7 @@ class Button {
 }
 
 export default Button
+export {
+    ButtonOptions,
+    OnClickCallback,
+}

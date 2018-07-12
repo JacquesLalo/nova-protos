@@ -20,10 +20,11 @@ import {
     getGltf,
     getObj,
 } from '../../engine/helpers.js'
-import Torus from '../../torus/js/torus.js'
-import Super from '../../engine/super.ts'
+import Torus from '../../torus/js/torus'
+import Super from '../../engine/super'
 
 class Bloomaway extends Super {
+    torus: Torus
     constructor() {
         // Calling super constructor
         super()
@@ -80,7 +81,7 @@ class Bloomaway extends Super {
     * TODO: optimize this function
     * @param {string} sceneName - Name of scene to import
     */
-    updateScene(sceneName) {
+    updateScene(sceneName: string) {
         var selectedObject = this.scene.getObjectByName('scene')
         this.scene.remove(selectedObject)
 
@@ -102,4 +103,4 @@ class Bloomaway extends Super {
     }
 }
 
-window.bloomaway = new Bloomaway()
+new Bloomaway()

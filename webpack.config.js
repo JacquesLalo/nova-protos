@@ -5,7 +5,7 @@ const path = require('path')
 module.exports = {
     mode: 'development',
     entry: {
-        bloomaway: './bloomaway/js/bloomaway.js',
+        bloomaway: './bloomaway/js/bloomaway.ts',
         audioXR: './audioXR/js/audioXR.js',
         mecaFlu: './meca-flu/js/meca-flu.js',
         infiniteGallery: './infinite-gallery/js/infinite-gallery.js',

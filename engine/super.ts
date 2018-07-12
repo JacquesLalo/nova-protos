@@ -28,7 +28,6 @@ class Super {
         this.initScene = this.initScene.bind(this)
         this.initDOM = this.initDOM.bind(this)
         this.initRenderer = this.initRenderer.bind(this)
-
     }
     init() {
         this.initDOM()

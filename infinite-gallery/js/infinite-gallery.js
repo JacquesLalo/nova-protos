@@ -7,10 +7,14 @@ class InfiniteGallery extends Super {
         super()
 
         // Initializing attributes
+        this.walkPath = null
+        this.userPosition = 0
+        this.isWalkingForward = false
 
         // Function bindings
         this.loadGalleryModels = this.loadGalleryModels.bind(this)
         this.initSky = this.initSky.bind(this)
+        this.initMoveControls = this.initMoveControls.bind(this)
 
         // Init
         this.init()
@@ -21,6 +25,27 @@ class InfiniteGallery extends Super {
 
         this.loadGalleryModels()
         this.initSky()
+        this.initMoveControls()
+    }
+    initMoveControls() {
+        this.walkPath = new THREE.QuadraticBezierCurve3(
+            new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(20, 15, 0),
+            new THREE.Vector3(10, 0, 0)
+        )
+
+        document.addEventListener('click', () => {
+            this.isWalkingForward = !this.isWalkingForward
+        })
+
+        const points = this.walkPath.getPoints(50)
+        const geometry = new THREE.BufferGeometry().setFromPoints(points)
+
+        const material = new THREE.LineBasicMaterial({ color: 0xff0000 })
+
+        // Create the final object to add to the scene
+        const curveObject = new THREE.Line(geometry, material)
+        this.scene.add(curveObject)
     }
     initSky() {
         const scale = 100
@@ -69,6 +94,13 @@ class InfiniteGallery extends Super {
     }
     animate() {
         super.animate()
+
+        if(this.isWalkingForward) {
+            this.userPosition += 0.005
+        }
+
+        const { x, y, z } =  this.walkPath.getPointAt(this.userPosition % 1)
+        this.camera.getInstance().position.set(x, y, z)
     }
 }
 

@@ -3,8 +3,13 @@
 
   TODO: isulate visualier in new class to be called form audioXR after initTorus.
 */
+
+import * as THREE from 'three'
+
 import Torus from '../../torus/js/torus.js'
 import Super from '../../engine/super.js'
+
+import './audio.js'
 
 class audioXR extends Super {
     constructor() {

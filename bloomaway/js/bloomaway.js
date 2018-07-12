@@ -21,7 +21,7 @@ import {
     getObj,
 } from '../../engine/helpers.js'
 import Torus from '../../torus/js/torus.js'
-import Super from '../../engine/super.js'
+import Super from '../../engine/super.ts'
 
 class Bloomaway extends Super {
     constructor() {

@@ -1,9 +1,15 @@
 import * as THREE from 'three'
 
-import Camera from './camera.ts'
-import Controls from './controls.ts'
+import Camera from './camera'
+import Controls from './controls'
 
 class Super {
+    container: HTMLElement
+    camera: Camera
+    controls: Controls
+    scene: THREE.Scene
+    renderer: THREE.Renderer
+    light: THREE.HemisphereLight
     constructor() {
         // Initialize attributes
         this.container = null
@@ -41,9 +47,7 @@ class Super {
     }
     initRenderer() {
         this.renderer = new THREE.WebGLRenderer({ antialias: true })
-        this.renderer.setPixelRatio(window.devicePixelRatio)
         this.renderer.setSize(window.innerWidth, window.innerHeight)
-        this.renderer.gammaOutput = true
         this.container.appendChild(this.renderer.domElement)
     }
     initScene() {

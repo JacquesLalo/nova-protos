@@ -7,7 +7,7 @@
 import * as THREE from 'three'
 
 import Torus from '../../torus/js/torus.js'
-import Super from '../../engine/super.js'
+import Super from '../../engine/super.ts'
 
 import './audio.js'
 

@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-import Super from '../../engine/super.js'
+import Super from '../../engine/super.ts'
 import { getObj } from '../../engine/helpers.js'
 
 class InfiniteGallery extends Super {

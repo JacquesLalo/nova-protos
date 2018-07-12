@@ -13,6 +13,14 @@
  */
 
 import * as THREE from 'three'
+import Controls from '../../engine/controls.js'
+
+interface ButtonOptions {
+    scale?: number,
+    color?: number,
+    position?: THREE.Vector3,
+    shape?: string,
+}
 
 /**
  * Class defining a Torus button
@@ -21,10 +29,12 @@ import * as THREE from 'three'
  * @param {dict} _options - Button geometry options
  */
 class Button {
-    constructor(controls, onClick, _options = {}) {
-        this.button = null // private, use getter
+    controls: Controls
+    button: THREE.Mesh
+    options: ButtonOptions
+    onClick: (o: THREE.Mesh) => void
+    constructor(controls: Controls, onClick, _options = {}) {
         this.onClick = onClick
-        this.options = null
         this.controls = controls
 
         this.init = this.init.bind(this)
@@ -37,12 +47,12 @@ class Button {
 
         this.init(_options)
     }
-    init(_options) {
+    init(_options: ButtonOptions) {
         this.initOptions(_options)
-        this.initGeometry(_options)
+        this.initGeometry()
         this.initEvents()
     }
-    initOptions(_options) {
+    initOptions(_options: ButtonOptions) {
         // Provide default options
         this.options = {
             scale: _options.scale || 1,
@@ -52,7 +62,7 @@ class Button {
         }
     }
     initGeometry() {
-        let geometry = null
+        let geometry: THREE.Geometry
         if(this.options.shape === 'sphere' || this.options.shape === 'Sphere'){
         // Apply transformations
             geometry = new THREE.SphereGeometry(

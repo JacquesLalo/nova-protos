@@ -8,6 +8,7 @@ import * as THREE from 'three'
 
 import Torus from '../../torus/js/torus.ts'
 import Super from '../../engine/super.ts'
+import ShaderObject from '../../engine/shaderObject.ts'
 
 import './audio.js'
 
@@ -27,6 +28,7 @@ class audioXR extends Super {
         this.applyDisplacements = this.applyDisplacements.bind(this)
         this.render = this.render.bind(this)
         this.initTorus = this.initTorus.bind(this)
+        this.initVisualizer = this.initVisualizer.bind(this)
 
         this.init()
         super.animate()
@@ -34,18 +36,9 @@ class audioXR extends Super {
     init() {
         super.init()
         this.initTorus()
+        this.initVisualizer()
     }
-    initTorus() {
-        // Setup Torus
-        this.torus = new Torus(this.scene, this.controls)
-
-
-        this.torus.createButton(() => {}, {
-            position: new THREE.Vector3(-1.5, 0, 0),
-            scale: 0.5,
-            shape: 'box',
-        })
-
+    initVisualizer() {
         // Shader variables setup
         this.uniforms = {
             amplitude: {
@@ -59,31 +52,33 @@ class audioXR extends Super {
             }
         }
         this.uniforms.texture.value.wrapS = this.uniforms.texture.value.wrapT = THREE.MirroredRepeatWrapping
-        const shaderMaterial = new THREE.ShaderMaterial({
-            uniforms: this.uniforms,
-            vertexShader: document.getElementById('vertexshader').textContent,
-            fragmentShader: document.getElementById('fragmentshader').textContent,
-            side: THREE.DoubleSide,
-        })
 
         // setting up the geometry
-        // play with controls on: https://threejs.org/docs/#api/geometries/PlaneBufferGeometry
         this.geometry = new THREE.SphereBufferGeometry(0.1, 32, 32)
 
         // Deforming plane with displacements
         this.displacement = new Float32Array(this.geometry.attributes.position.count)
         this.applyDisplacements(this.displacement)
 
-        // Setting up the shaders' attributes
-        this.geometry.addAttribute('displacement', new THREE.BufferAttribute(this.displacement, 1))
-
         // Creating the mesh
-        this.plane = new THREE.Mesh(this.geometry, shaderMaterial)
-        this.plane.position.y = 3
-        this.plane.position.x = 3
+        this.visualizer = new ShaderObject(this.geometry, this.uniforms, 'vertexshader', 'fragmentshader')
+        this.visualizer.addAttribute('displacement', new THREE.BufferAttribute(this.displacement, 1))
+        this.visualizer.mesh.position.y = 3
+        this.visualizer.mesh.position.x = 3
 
         // Adding the mesh to our scene
-        this.scene.add(this.plane)
+        this.scene.add(this.visualizer.mesh)
+    }
+    initTorus() {
+        // Setup Torus
+        this.torus = new Torus(this.scene, this.controls)
+
+
+        this.torus.createButton(() => {}, {
+            position: new THREE.Vector3(-1.5, 0, 0),
+            scale: 0.5,
+            shape: 'box',
+        })
     }
     applyDisplacements(displacement) {
         for (let i = 0; i < displacement.length; i++) {
@@ -101,8 +96,8 @@ class audioXR extends Super {
         const time = Date.now() * 0.001
 
         // Rotating and scaling plane wrt time
-        this.plane.rotation.z = 0.5 * time
-        this.plane.rotation.y = 0.5 * time
+        this.visualizer.mesh.rotation.z = 0.5 * time
+        this.visualizer.mesh.rotation.y = 0.5 * time
         this.uniforms.scaleFactor.value = 1
 
         this.applyDisplacements(this.displacement)

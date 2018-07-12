@@ -13,13 +13,13 @@ class Super {
 
         // bindings
         this.init = this.init.bind(this)
-        //this.updateScene = this.updateScene.bind(this)
         this.animate = this.animate.bind(this)
         this.onWindowResize = this.onWindowResize.bind(this)
         this.initLight = this.initLight.bind(this)
         this.initScene = this.initScene.bind(this)
         this.initDOM = this.initDOM.bind(this)
         this.initRenderer = this.initRenderer.bind(this)
+        this.initCamera = this.initCamera.bind(this)
 
     }
     init() {
@@ -27,10 +27,7 @@ class Super {
         this.initScene()
         this.initRenderer()
         this.initLight()
-
-        //innitializing camera of bloomaway class
-        this.camera = new Camera(this.scene)
-        this.controls = new Controls(this.camera.getInstance(), this.scene)
+        this.initCamera()
     }
     initDOM() {
         this.container = document.createElement('div')
@@ -51,6 +48,10 @@ class Super {
         this.light = new THREE.HemisphereLight(0xbbbbff, 0x444422)
         this.light.position.set(0, 1, 0)
         this.scene.add(this.light)
+    }
+    initCamera(){
+        this.camera = new Camera(this.scene)
+        this.controls = new Controls(this.camera.getInstance(), this.scene)
     }
     onWindowResize() {
         this.camera.onWindowResize()

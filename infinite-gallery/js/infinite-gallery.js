@@ -30,8 +30,8 @@ class InfiniteGallery extends Super {
     initMoveControls() {
         this.walkPath = new THREE.QuadraticBezierCurve3(
             new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(20, 15, 0),
-            new THREE.Vector3(10, 0, 0)
+            new THREE.Vector3(50, 15, 0),
+            new THREE.Vector3(50, 0, 0)
         )
 
         document.addEventListener('click', () => {
@@ -96,7 +96,7 @@ class InfiniteGallery extends Super {
         super.animate()
 
         if(this.isWalkingForward) {
-            this.userPosition += 0.005
+            this.userPosition += 0.0001
         }
 
         const { x, y, z } =  this.walkPath.getPointAt(this.userPosition % 1)

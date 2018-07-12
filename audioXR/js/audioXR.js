@@ -22,13 +22,16 @@ class audioXR extends Super {
         this.applyDisplacements = this.applyDisplacements.bind(this)
         this.render = this.render.bind(this)
         this.initTorus = this.initTorus.bind(this)
+        this.visualizer = this.visualizer.bind(this)
 
+        //calling init and super animate
         this.init()
         super.animate()
     }
     init() {
         super.init()
         this.initTorus()
+        this.visualizer()
     }
     initTorus() {
         // Setup Torus
@@ -40,7 +43,8 @@ class audioXR extends Super {
             scale: 0.5,
             shape: 'box',
         })
-
+    }
+    visualizer(){
         // Shader variables setup
         this.uniforms = {
             amplitude: {

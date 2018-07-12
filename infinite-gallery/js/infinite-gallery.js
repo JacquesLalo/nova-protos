@@ -10,6 +10,7 @@ class InfiniteGallery extends Super {
 
         // Function bindings
         this.loadGalleryModels = this.loadGalleryModels.bind(this)
+        this.initSky = this.initSky.bind(this)
 
         // Init
         this.init()
@@ -19,6 +20,39 @@ class InfiniteGallery extends Super {
         super.init()
 
         this.loadGalleryModels()
+        this.initSky()
+    }
+    initSky() {
+        const scale = 100
+        const skyGeometry = new THREE.SphereGeometry(
+            scale,
+            scale,
+            scale
+        )
+
+        const loader = new THREE.TextureLoader()
+        const onTextureLoad = texture => {
+            // in this example we create the material when the texture is loaded
+            const material = new THREE.MeshBasicMaterial({
+                map: texture
+            })
+
+            material.side = THREE.DoubleSide
+            const skyMesh = new THREE.Mesh(skyGeometry, material)
+            this.scene.add(skyMesh)
+        }
+        const onError = () => {}
+        const onProgress = () => {}
+
+        // load a resource
+        loader.load(
+            'infinite-gallery/textures/sky.jpg',
+            onTextureLoad,
+            onProgress,
+            onError,
+        )
+
+
     }
     loadGalleryModels() {
         const cbObj = object => {

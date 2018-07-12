@@ -4,8 +4,9 @@
   "description": "* Resources",
   "main": "index.js",
   "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "lint": "eslint"
+    "test": "echo \"Error: no test specified\" && exit 1",
+      "lint": "eslint",
+      "webpack": "webpack"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,8 @@
   "homepage": "https://github.com/mecs13/nova-protos#readme",
   "devDependencies": {
     "eslint": "^5.0.1",
-    "eslint-plugin-react": "^7.10.0"
+    "eslint-plugin-react": "^7.10.0",
+    "webpack": "^4.16.0",
+    "webpack-cli": "^3.0.8"
   }
 }

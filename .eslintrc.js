@@ -24,7 +24,7 @@ module.exports = {
             4,
             { SwitchCase: 1 }
         ],
-        
+
         "quotes": [
             "error",
             "single"

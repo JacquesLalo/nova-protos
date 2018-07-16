@@ -5,6 +5,7 @@
 */
 import Torus from '../../bloomaway/js/torus.js'
 import Super from '../../bloomaway/js/super.js'
+import Visualizer from '../../audioXR/js/visualizer.js'
 
 class audioXR extends Super {
     constructor() {
@@ -17,21 +18,24 @@ class audioXR extends Super {
         this.geometry = null
         this.plane = null
         this.torus = null
+        this.visual = new Visualizer() //creating instance of Visualizer
 
         //bindings
-        this.applyDisplacements = this.applyDisplacements.bind(this)
-        this.render = this.render.bind(this)
         this.initTorus = this.initTorus.bind(this)
-        this.visualizer = this.visualizer.bind(this)
+        this.animate = this.animate.bind(this)
 
         //calling init and super animate
         this.init()
-        super.animate()
+        this.animate()
     }
     init() {
         super.init()
         this.initTorus()
-        this.visualizer()
+        this.visual.init()
+
+        //adding mesh to pur scene
+        this.scene.add(this.visual.getPlane())
+
     }
     initTorus() {
         // Setup Torus
@@ -44,69 +48,10 @@ class audioXR extends Super {
             shape: 'box',
         })
     }
-    visualizer(){
-        // Shader variables setup
-        this.uniforms = {
-            amplitude: {
-                value: 10,
-            },
-            scaleFactor: {
-                value: 1.0,
-            },
-            texture: {
-                value: new THREE.TextureLoader().load('audioXR/textures/about-us.png'),
-            }
-        }
-        this.uniforms.texture.value.wrapS = this.uniforms.texture.value.wrapT = THREE.MirroredRepeatWrapping
-        const shaderMaterial = new THREE.ShaderMaterial({
-            uniforms: this.uniforms,
-            vertexShader: document.getElementById('vertexshader').textContent,
-            fragmentShader: document.getElementById('fragmentshader').textContent,
-            side: THREE.DoubleSide,
-        })
-
-        // setting up the geometry
-        // play with controls on: https://threejs.org/docs/#api/geometries/PlaneBufferGeometry
-        this.geometry = new THREE.SphereBufferGeometry(0.1, 32, 32)
-
-        // Deforming plane with displacements
-        this.displacement = new Float32Array(this.geometry.attributes.position.count)
-        this.applyDisplacements(this.displacement)
-
-        // Setting up the shaders' attributes
-        this.geometry.addAttribute('displacement', new THREE.BufferAttribute(this.displacement, 1))
-
-        // Creating the mesh
-        this.plane = new THREE.Mesh(this.geometry, shaderMaterial)
-        this.plane.position.y = 3
-        this.plane.position.x = 3
-
-        // Adding the mesh to our scene
-        this.scene.add(this.plane)
-    }
-    applyDisplacements(displacement) {
-        for (let i = 0; i < displacement.length; i++) {
-            if(window.data && i % 2 === 0) {
-                const x = window.data[i % window.data.length] / 128
-                displacement[i] = 0.2 * Math.pow(x, 2)
-            }
-        }
-    }
     animate() {
         super.animate()
-        this.render()
-    }
-    render() {
-        const time = Date.now() * 0.001
-
-        // Rotating and scaling plane wrt time
-        this.plane.rotation.z = 0.5 * time
-        this.plane.rotation.y = 0.5 * time
-        this.uniforms.scaleFactor.value = 1
-
-        this.applyDisplacements(this.displacement)
-        this.geometry.attributes.displacement.needsUpdate = true
+        //calling the render in Visualizer class
+        this.visual.render()
     }
 }
-
 window.audioXR = new audioXR()

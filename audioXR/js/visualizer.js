@@ -1,18 +1,12 @@
 class Visualizer{
-    constructor(scene){
+    constructor(){
 
         //declaring attributes
         this.uniforms = null
-        this.displacement = null
         this.geometry = null
         this.plane = null
-        this.displacement = new Float32Array(this.geometry.attributes.position.count)
-        this.shaderMaterial =  new THREE.ShaderMaterial({
-            uniforms: this.uniforms,
-            vertexShader: document.getElementById('vertexshader').textContent,
-            fragmentShader: document.getElementById('fragmentshader').textContent,
-            side: THREE.DoubleSide,
-        })
+        this.displacement = null
+        this.shaderMaterial = null
 
         //binding
         this.init = this.init.bind(this)
@@ -20,12 +14,24 @@ class Visualizer{
         this.inituniforms = this. inituniforms.bind(this)
         this.applyDisplacements = this.applyDisplacements.bind(this)
         this.deformPlane = this.deformPlane.bind(this)
+        this.getPlane = this.getPlane.bind(this)
     }
     init(){
         this.inituniforms()
+        //creating shader Materials
+        this.shaderMaterial= new THREE.ShaderMaterial({
+            uniforms: this.uniforms,
+            vertexShader: document.getElementById('vertexshader').textContent,
+            fragmentShader: document.getElementById('fragmentshader').textContent,
+            side: THREE.DoubleSide,
+        })
         this.initGeometry()
+        this.createMesh()
+
     }
     inituniforms(){
+
+        //innitializing uniforms for shaders
         this.uniforms = {
             amplitude: {
                 value: 10,
@@ -40,17 +46,21 @@ class Visualizer{
         this.uniforms.texture.value.wrapS = this.uniforms.texture.value.wrapT = THREE.MirroredRepeatWrapping
     }
     initGeometry(){
+        // setting up the geometry
+        // play with controls on: https://threejs.org/docs/#api/geometries/PlaneBufferGeometry
         this.geometry = new THREE.SphereBufferGeometry(0.1, 32, 32)
-        this.deformPlane()
+        this.displacement = new Float32Array(this.geometry.attributes.position.count)
+        this.deformPlane() //deforming plane with displacement
         this.geometry.addAttribute('displacement', new THREE.BufferAttribute(this.displacement, 1))
     }
     createMesh(){
+        //creates mesh
         this.plane = new THREE.Mesh(this.geometry, this.shaderMaterial)
         this.plane.position.y = 3
         this.plane.position.x = 3
-
     }
     deformPlane(){
+        //applies displacement to the plane from sound freq.
         this.applyDisplacements(this.displacement)
     }
     applyDisplacements(displacement) {
@@ -61,6 +71,10 @@ class Visualizer{
             }
         }
     }
+    getPlane(){
+        //returns plane
+        return this.plane
+    }
     render() {
         const time = Date.now() * 0.001
 
@@ -69,8 +83,8 @@ class Visualizer{
         this.plane.rotation.y = 0.5 * time
         this.uniforms.scaleFactor.value = 1
 
-        this.applyDisplacements(this.displacement)
+        this.deformPlane()
         this.geometry.attributes.displacement.needsUpdate = true
     }
 }
-window.Visualizer = new Visualizer()
+export default Visualizer

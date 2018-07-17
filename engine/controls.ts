@@ -62,6 +62,7 @@ class Controls {
         this.onKeyUp = this.onKeyUp.bind(this)
         this.intersectObject = this.intersectObject.bind(this)
         this.onKeyUp = this.onKeyUp.bind(this)
+        this.getDistanceFrom = this.getDistanceFrom.bind(this)
 
         this.init()
     }
@@ -180,6 +181,14 @@ class Controls {
         this.raycaster.ray.origin.copy(this.controls.getObject().position)
         this.raycaster.setFromCamera(new THREE.Vector2(0, 0), this.camera)
         return this.raycaster.intersectObjects([object], recursive)
+    }
+    getDistanceFrom(object: THREE.Object3D): number {
+        const userPosition = this.controls.getObject().position
+        return Math.sqrt(
+            Math.pow(userPosition.x - object.position.x, 2) +
+            Math.pow(userPosition.y - object.position.y, 2) +
+            Math.pow(userPosition.z - object.position.z, 2)
+        )
     }
     /**
      * Callback to be called in Bloomaway render loop

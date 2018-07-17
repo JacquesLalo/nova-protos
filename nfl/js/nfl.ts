@@ -19,6 +19,7 @@ import * as THREE from 'three'
 import Super from '../../engine/super'
 import Controls from '../../engine/controls'
 import { getObj, getGltf } from '../../engine/helpers'
+import { Vector3 } from 'three';
 
 class Player {
     controls: Controls
@@ -27,13 +28,19 @@ class Player {
     player: THREE.Object3D
     annotation: THREE.Object3D
     isMoving: boolean
-    constructor(scene: THREE.Scene, controls: Controls, handsUp = false) {
+    time: Date
+    initPos: Vector3
+    finalPos: Vector3
+    constructor(scene: THREE.Scene, controls: Controls, Pos:Vector3, pos2: Vector3, handsUp = false) {
         this.controls = controls
         this.scene = scene
         this.handsUp = handsUp
+        this. initPos = Pos
+        this.finalPos = pos2
         this.player = null
         this.annotation = null
         this.isMoving = false
+        this.time = new Date()
 
         this.init = this.init.bind(this)
         this.startMoving = this.startMoving.bind(this)
@@ -48,6 +55,7 @@ class Player {
     }
     startMoving(){
         this.isMoving = true
+
     }
     stopMoving(){
         this.isMoving = false
@@ -67,7 +75,7 @@ class Player {
         const s = 4
         const options = {
             scale: {x: s, y: s, z: s},
-            position: new THREE.Vector3(this.handsUp ? 30 : 1, -6, 0),
+            position: this.initPos
         }
 
         getObj('nfl/obj/player', 'Player-hands-' + (this.handsUp ? 'up' : 'down'), cbPlayer, options)
@@ -75,13 +83,13 @@ class Player {
     }
     animate() {
         const d = this.controls.getDistanceFrom(this.player)
-        let s = 4 // scaling factor
-
+        let s = 4 // scaling factor 
+        let t = this.time.getTime()/10000
         if(d > 10) { // scale and translate annotation if camera further than 10 from player
             s = s * 10 / d
-
             this.annotation.position.y = -6 * Math.pow(s / 4, 3)
         } else {
+            this.annotation.rotateY(t*(Math.PI/4))
             this.annotation.position.y = -6
         }
 
@@ -119,16 +127,27 @@ class NFL extends Super {
         this.loadStadium()
         this.loadPlayers()
         this.initSky()
+        document.addEventListener('keydown', this.onKeyPress, false)
+        // document.addEventListener('keyup', this.onKeyRelease, false)
     }
-    movePlayers() {
-        this.players.map(p => p.startMoving())
+ 
+    onKeyPress(event: KeyboardEvent) {
+        switch(event.keyCode){
+            case 32:
+                this.players.map(p => p.isMoving = !p.isMoving)
+                if((this.players[0].isMoving) && (this.players[1].isMoving)){
+                    
+                }
+                break
+        }
     }
-    onKeyPress() {
-        this.movePlayers()
-    }
+
     loadPlayers() {
-        this.players.push(new Player(this.scene, this.controls))
-        this.players.push(new Player(this.scene, this.controls, true))
+        let setpos1= new Vector3(30,-6,0)
+        let setpos2 = new Vector3(5,-6,0)
+        let move = new Vector3(10,0,10)
+        this.players.push(new Player(this.scene, this.controls,setpos1, setpos1.add(move) ))
+        this.players.push(new Player(this.scene, this.controls, setpos2, setpos2.add(move),true))
     }
     initSky() {
         const scale = 500

@@ -26,14 +26,18 @@ class Player {
     handsUp: boolean
     player: THREE.Object3D
     annotation: THREE.Object3D
+    isMoving: boolean
     constructor(scene: THREE.Scene, controls: Controls, handsUp = false) {
         this.controls = controls
         this.scene = scene
         this.handsUp = handsUp
         this.player = null
         this.annotation = null
+        this.isMoving = false
 
         this.init = this.init.bind(this)
+        this.startMoving = this.startMoving.bind(this)
+        this.stopMoving = this.stopMoving.bind(this)
         this.animate = this.animate.bind(this)
         this.loadPlayer = this.loadPlayer.bind(this)
 
@@ -41,6 +45,12 @@ class Player {
     }
     init() {
         this.loadPlayer()
+    }
+    startMoving(){
+        this.isMoving = true
+    }
+    stopMoving(){
+        this.isMoving = false
     }
     loadPlayer() {
         const cbPlayer = obj => {
@@ -78,6 +88,10 @@ class Player {
         this.annotation.scale.x = s
         this.annotation.scale.y = s
         this.annotation.scale.z = s
+
+        if(this.isMoving) {
+            // move player from this.options.initPost to this.options.finalPos with this.options.speed
+        }
     }
 }
 
@@ -93,6 +107,7 @@ class NFL extends Super {
         // Function bindings
         this.loadStadium = this.loadStadium.bind(this)
         this.initSky = this.initSky.bind(this)
+        this.loadPlayers = this.loadPlayers.bind(this)
 
         // Init
         this.init()
@@ -102,7 +117,16 @@ class NFL extends Super {
         super.init()
 
         this.loadStadium()
+        this.loadPlayers()
         this.initSky()
+    }
+    movePlayers() {
+        this.players.map(p => p.startMoving())
+    }
+    onKeyPress() {
+        this.movePlayers()
+    }
+    loadPlayers() {
         this.players.push(new Player(this.scene, this.controls))
         this.players.push(new Player(this.scene, this.controls, true))
     }
@@ -135,8 +159,6 @@ class NFL extends Super {
             onProgress,
             onError,
         )
-
-
     }
     loadStadium() {
         const cb = gltf => {

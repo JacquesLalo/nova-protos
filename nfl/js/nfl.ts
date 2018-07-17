@@ -1,3 +1,19 @@
+/**
+ * @fileOverview
+ * @name nfl.ts
+ * @author Nova Media LLc
+ * @license TBD
+
+ This file consists in 2 classes:
+ - NFL which inherits from Super and setups up the stadium and the players
+ - Player, which defines a player and associates an annotation
+
+ TODO:
+ - enhance Player.animate so it's better
+ - Make it so that a player can be given an initial position, a target position, a speed and callback to annimate te player from one point to another. This will allow us to have plays by keeping a array of data for all players
+ - refactor NFL.initSky to ../../engine/super.ts
+*/
+
 import * as THREE from 'three'
 
 import Super from '../../engine/super'
@@ -9,13 +25,13 @@ class Player {
     scene: THREE.Scene
     handsUp: boolean
     player: THREE.Object3D
-    sign: THREE.Object3D
+    annotation: THREE.Object3D
     constructor(scene: THREE.Scene, controls: Controls, handsUp = false) {
         this.controls = controls
         this.scene = scene
         this.handsUp = handsUp
         this.player = null
-        this.sign = null
+        this.annotation = null
 
         this.init = this.init.bind(this)
         this.animate = this.animate.bind(this)
@@ -32,9 +48,9 @@ class Player {
             this.player = obj
             this.scene.add(obj)
         }
-        const cbSign = obj => {
-            obj.name = 'sign'
-            this.sign = obj
+        const cbAnnotation = obj => {
+            obj.name = 'annotation'
+            this.annotation = obj
             this.scene.add(obj)
         }
 
@@ -45,22 +61,23 @@ class Player {
         }
 
         getObj('nfl/obj/player', 'Player-hands-' + (this.handsUp ? 'up' : 'down'), cbPlayer, options)
-        getObj('nfl/obj/player', 'Player-sign', cbSign, options)
+        getObj('nfl/obj/player', 'Player-sign', cbAnnotation, options)
     }
     animate() {
-        const d = this.controls.getDistanceFrom(this.sign)
-        let s = 4
-        if(d > 10) {
+        const d = this.controls.getDistanceFrom(this.player)
+        let s = 4 // scaling factor
+
+        if(d > 10) { // scale and translate annotation if camera further than 10 from player
             s = s * 10 / d
 
-            this.sign.position.y = -6 * Math.pow(s / 4, 3)
+            this.annotation.position.y = -6 * Math.pow(s / 4, 3)
         } else {
-            this.sign.position.y = -6
+            this.annotation.position.y = -6
         }
 
-        this.sign.scale.x = s
-        this.sign.scale.y = s
-        this.sign.scale.z = s
+        this.annotation.scale.x = s
+        this.annotation.scale.y = s
+        this.annotation.scale.z = s
     }
 }
 

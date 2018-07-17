@@ -1,3 +1,14 @@
+
+/**
+ * @fileOverview
+ * @name camera.js
+ * @author Nova Media LLc
+ * @license TBD
+
+ TODO:
+ - refactor NFL.initSky to ../../engine/super.ts
+*/
+
 import * as THREE from 'three'
 
 import Super from '../../engine/super'

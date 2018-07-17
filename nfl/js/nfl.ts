@@ -49,16 +49,18 @@ class Player {
     }
     animate() {
         const d = this.controls.getDistanceFrom(this.sign)
+        let s = 4
         if(d > 10) {
-            this.sign.scale.x = 0
-            this.sign.scale.z = 0
-            this.sign.scale.z = 0
+            s = s * 10 / d
+
+            this.sign.position.y = -6 * Math.pow(s / 4, 3)
         } else {
-            const s = 4
-            this.sign.scale.x = s
-            this.sign.scale.z = s
-            this.sign.scale.z = s
+            this.sign.position.y = -6
         }
+
+        this.sign.scale.x = s
+        this.sign.scale.y = s
+        this.sign.scale.z = s
     }
 }
 

@@ -27,7 +27,7 @@ class Camera {
         this.init()
     }
     init() {
-        this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 500)
+        this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 600)
         this.camera.position.set(0, 0, 0)
         this.camera.lookAt(new THREE.Vector3(-1, 0, 0))
         this.scene.add(this.camera)

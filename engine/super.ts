@@ -2,13 +2,14 @@ import * as THREE from 'three'
 
 import Camera from './camera'
 import Controls from './controls'
+import WebVR from './WebVR.js'
 
 class Super {
     container: HTMLElement
     camera: Camera
     controls: Controls
     scene: THREE.Scene
-    renderer: THREE.Renderer
+    renderer: THREE.WebGLRenderer
     light: THREE.HemisphereLight
     constructor() {
         // Initialize attributes
@@ -46,7 +47,10 @@ class Super {
     }
     initRenderer() {
         this.renderer = new THREE.WebGLRenderer({ antialias: true })
+        document.body.appendChild( WebVR.createButton( this.renderer ) );
         this.renderer.setSize(window.innerWidth, window.innerHeight)
+        this.renderer.vr.enabled = true;
+
         this.container.appendChild(this.renderer.domElement)
     }
     initScene() {

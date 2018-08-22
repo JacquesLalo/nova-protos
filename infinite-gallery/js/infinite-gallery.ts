@@ -12,7 +12,7 @@
 import * as THREE from 'three'
 
 import Super from '../../engine/super'
-import { getObj } from '../../engine/helpers'
+import { getObj } from '../../engine/helpers.js'
 
 class InfiniteGallery extends Super {
     walkPath: THREE.CurvePath<THREE.Vector3>

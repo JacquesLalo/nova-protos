@@ -8,6 +8,7 @@
 
  */
 
+import * as THREE from 'three'
 import Button, {
     ButtonOptions,
     OnClickCallback,
@@ -58,8 +59,14 @@ class Torus {
         })
 
         const s = 20
-        getObj('torus/obj', 'map/map', cb('map'), getOptions(s))
-        getObj('torus/obj', 'ground/ground', cb('ground'), getOptions(s))
+        const A: Array<[string, string, (a: any) => any, any]> = [
+            ['torus/obj', 'map/map', cb('map'), getOptions(s)],
+            ['torus/obj', 'ground/ground', cb('ground'), getOptions(s)],
+            ['torus/obj', 'shell/shell', cb('shell'), getOptions(0)],
+        ]
+
+        A.map(e => getObj(e[0], e[1], e[2], e[3]))
+
         getObj('torus/obj', 'shell/shell', cb('shell'), getOptions(0))
     }
     /**

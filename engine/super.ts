@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 import Camera from './camera'
-import Controls from './controls'
+import Controls, {VRControls} from './controls'
 import WebVR from './WebVR.js'
 
 class Super {
@@ -38,7 +38,7 @@ class Super {
 
         //innitializing camera of bloomaway class
         this.camera = new Camera(this.scene)
-        this.controls = new Controls(this.camera.getInstance(), this.scene)
+        this.controls = new VRControls(this.camera.getInstance(), this.scene, this.renderer)
     }
     initDOM() {
         this.container = document.createElement('div')
@@ -47,9 +47,9 @@ class Super {
     }
     initRenderer() {
         this.renderer = new THREE.WebGLRenderer({ antialias: true })
-        document.body.appendChild( WebVR.createButton( this.renderer ) );
+        console.log(THREE, WebVR)
+        document.body.appendChild( WebVR.createButton( this.renderer ) )
         this.renderer.setSize(window.innerWidth, window.innerHeight)
-        this.renderer.vr.enabled = true;
 
         this.container.appendChild(this.renderer.domElement)
     }
@@ -66,7 +66,8 @@ class Super {
         this.renderer.setSize(window.innerWidth, window.innerHeight)
     }
     animate() {
-        requestAnimationFrame(this.animate)
+        // requestAnimationFrame(this.animate)
+        this.renderer.setAnimationLoop(this.animate)
         this.renderer.render(this.scene, this.camera.getInstance())
         this.controls.update()
     }

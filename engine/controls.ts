@@ -14,6 +14,7 @@
 
 import * as THREE from 'three'
 import PointerLockControls from '../THREE/PointerLockControls.js'
+import { getObj } from './helpers.js'
 
 /**
  * Handles instantiating a THREE.PointerLockControls instance and hooking it up to the scene, camera, and DOM events
@@ -93,11 +94,11 @@ class Controls {
         // Hook pointer lock state change events
         document.addEventListener('pointerlockchange', pointerlockchange, false)
 
-        element.addEventListener('click', () => {
-            // Ask the browser to lock the pointer
-            element.requestPointerLock = element.requestPointerLock
-            element.requestPointerLock()
-        }, false)
+        // element.addEventListener('click', () => {
+        //     // Ask the browser to lock the pointer
+        //     element.requestPointerLock = element.requestPointerLock
+        //     element.requestPointerLock()
+        // }, false)
 
         /* KeyboardEvents */
         document.addEventListener('keydown', this.onKeyDown, false)
@@ -224,4 +225,70 @@ class Controls {
     }
 }
 
+class VRControls extends Controls {
+    renderer: THREE.WebGLRenderer
+    controller1: THREE.Group
+    constructor(camera, scene, renderer) {
+        super(camera, scene)
+
+        this.renderer = renderer
+        this.renderer.vr.enabled = true
+
+        this.onPointerRestricted = this.onPointerRestricted.bind(this)
+        this.onPointerUnrestricted = this.onPointerUnrestricted.bind(this)
+
+				window.addEventListener(
+            'vrdisplaypointerrestricted',
+            this.onPointerRestricted,
+            false,
+        )
+				window.addEventListener(
+            'vrdisplaypointerunrestricted',
+            this.onPointerUnrestricted,
+            false,
+        )
+
+        // controllers
+        this.controller1 = this.renderer.vr.getController(0)
+        this.controller1.addEventListener('selectstart', () => console.log('start'))
+				this.controller1.addEventListener('selectend', () => console.log('end'))
+        this.scene.add(this.controller1)
+
+        const opts = {
+            rotation: {
+                axis: new THREE.Vector3(1, 0, 0),
+                angle: 3 * Math.PI / 2,
+            },
+        }
+        console.log(opts)
+
+        getObj('./engine/obj', 'handle', obj => {
+					  this.controller1.add(obj);
+        }, opts)
+    }
+    onPointerRestricted() {
+        console.log(this, this.renderer)
+				var pointerLockElement = this.renderer.domElement
+				if (pointerLockElement && typeof(pointerLockElement.requestPointerLock) === 'function') {
+					  pointerLockElement.requestPointerLock()
+				}
+		}
+		onPointerUnrestricted() {
+				var currentPointerLockElement = document.pointerLockElement
+				var expectedPointerLockElement = this.renderer.domElement
+				if (currentPointerLockElement
+            && currentPointerLockElement === expectedPointerLockElement
+            && typeof(document.exitPointerLock) === 'function')
+        {
+					  document.exitPointerLock()
+				}
+		}
+    update() {
+    }
+}
+
 export default Controls
+
+export {
+    VRControls,
+}

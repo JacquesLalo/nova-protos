@@ -95,10 +95,8 @@ class Button {
     }
     clickEvent() {
         // Check for camera view / button intersection on user click
-        console.log('click event')
         if(this.controls.intersectObject(this.button).length) {
             this.onClick(this.button)
-            console.log('intersection !!')
         }
     }
     mouseMoveEvent() {

@@ -309,8 +309,14 @@ class VRControls extends Controls {
     intersectObject(object: THREE.Object3D, recursive = false): Array<THREE.Intersection> {
         this.raycaster.ray.origin.copy(this.controller1.position)
         //this.raycaster.setFromCamera(new THREE.Vector2(0, 0), this.camera)
-        const direction = this.controller1.localToWorld(new THREE.Vector3(0, 0, 1))
-        this.raycaster.ray.direction.copy(direction)
+        const d = this.controller1.children[1].localToWorld(new THREE.Vector3(0, 1, 0)).normalize()
+        this.raycaster.ray.direction = new THREE.Vector3(d.x, d.y, d.z)
+
+        const a = this.controller1.children[0].localToWorld(this.controller1.children[0].position.clone())
+        const b = this.controller1.children[0].localToWorld(this.controller1.children[1].position.clone())
+        const c = new THREE.Vector3(b.x - a.x, b.y - a.y, b.z - a.z).normalize()
+        this.raycaster.ray.direction = c
+
         return this.raycaster.intersectObjects([object], recursive)
     }
 }

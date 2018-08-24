@@ -37,6 +37,7 @@ class Controls {
     prevTime: number
     velocity: THREE.Vector3
     direction: THREE.Vector3
+    controller1: THREE.Group
     constructor(camera, scene) {
         this.controls = null
         this.raycaster = null
@@ -228,6 +229,7 @@ class Controls {
 class VRControls extends Controls {
     renderer: THREE.WebGLRenderer
     controller1: THREE.Group
+    ball: THREE.Object3D
     constructor(camera, scene, renderer) {
         super(camera, scene)
 
@@ -237,12 +239,12 @@ class VRControls extends Controls {
         this.onPointerRestricted = this.onPointerRestricted.bind(this)
         this.onPointerUnrestricted = this.onPointerUnrestricted.bind(this)
 
-				window.addEventListener(
+        window.addEventListener(
             'vrdisplaypointerrestricted',
             this.onPointerRestricted,
             false,
         )
-				window.addEventListener(
+        window.addEventListener(
             'vrdisplaypointerunrestricted',
             this.onPointerUnrestricted,
             false,
@@ -250,8 +252,14 @@ class VRControls extends Controls {
 
         // controllers
         this.controller1 = this.renderer.vr.getController(0)
-        this.controller1.addEventListener('selectstart', () => console.log('start'))
-				this.controller1.addEventListener('selectend', () => console.log('end'))
+        this.controller1.addEventListener('selectstart', () => {
+            console.log('start')
+            this.ball.scale.set(0.5, 0.5, 0.5)
+        })
+        this.controller1.addEventListener('selectend', () => {
+            console.log('end')
+            this.ball.scale.set(0, 0, 0)
+        })
         this.scene.add(this.controller1)
 
         const opts = {
@@ -259,15 +267,28 @@ class VRControls extends Controls {
                 axis: new THREE.Vector3(1, 0, 0),
                 angle: 3 * Math.PI / 2,
             },
+            scale: {
+                x: 0.5,
+                y: 0.5,
+                z: 0.5,
+            },
         }
-        console.log(opts)
 
         getObj('./engine/obj', 'handle', obj => {
-					  this.controller1.add(obj);
+            obj.name = "handle"
+					  this.controller1.add(obj)
         }, opts)
+        getObj('./engine/obj', 'handle-ball', obj => {
+            obj.name = "ball"
+					  this.controller1.add(obj)
+            this.ball = this.controller1.children.filter(c => c.name === "ball")[0]
+            this.ball.translateY(0.2)
+        }, {
+            ...opts,
+            scale: { x: 0, y: 0, z: 0 },
+        })
     }
     onPointerRestricted() {
-        console.log(this, this.renderer)
 				var pointerLockElement = this.renderer.domElement
 				if (pointerLockElement && typeof(pointerLockElement.requestPointerLock) === 'function') {
 					  pointerLockElement.requestPointerLock()
@@ -284,6 +305,13 @@ class VRControls extends Controls {
 				}
 		}
     update() {
+    }
+    intersectObject(object: THREE.Object3D, recursive = false): Array<THREE.Intersection> {
+        this.raycaster.ray.origin.copy(this.controller1.position)
+        //this.raycaster.setFromCamera(new THREE.Vector2(0, 0), this.camera)
+        const direction = this.controller1.localToWorld(new THREE.Vector3(0, 0, 1))
+        this.raycaster.ray.direction.copy(direction)
+        return this.raycaster.intersectObjects([object], recursive)
     }
 }
 

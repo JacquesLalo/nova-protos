@@ -5,6 +5,7 @@ import "aframe";
 
 export interface AppState {
   scale: number;
+  color: string;
 }
 
 class App extends React.Component<{}, AppState> {
@@ -13,11 +14,17 @@ class App extends React.Component<{}, AppState> {
     super(props);
     this.state = {
       scale: 1,
+      color: "red",
     };
 
     this.update = this.update.bind(this);
 
     this.update();
+
+    document.addEventListener("triggerdown", () =>
+      this.setState({color: "blue"}),
+    );
+    document.addEventListener("triggerup", () => this.setState({color: "red"}));
   }
   update() {
     this.raq = requestAnimationFrame(() => {
@@ -33,14 +40,24 @@ class App extends React.Component<{}, AppState> {
           mtl="./kartell/obj/kartell-room.mtl"
         />
         <a-obj-model
+          scale="0.013 0.013 0.013"
+          src="./kartell/obj/chair.obj"
+          material={`color: ${this.state.color}`}
+        />
+        <a-obj-model
           id="collision-box"
           src="./kartell/obj/Collision.obj"
           mtl="./kartell/obj/Collision.mtl"
+          class="collidable"
           scale="0.9 0.9 0.9"
           visible="false"
         />
         <a-sky color="#ECECEC" />
-        <a-entity laser-controls="hand: right"  line="color: red; opacity: 0.75" />
+        <a-entity
+          laser-controls="hand: right"
+          raycaster="objects: .collidable"
+          line="color: red; opacity: 0.75"
+        />
       </a-scene>
     );
   }

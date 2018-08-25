@@ -10,6 +10,7 @@ module.exports = {
         mecaFlu: './meca-flu/js/meca-flu.js',
         nfl: './nfl/js/nfl.ts',
         infiniteGallery: './infinite-gallery/js/infinite-gallery.ts',
+        kartell: './kartell/js/kartell.ts',
     },
     devtool: 'source-map',
     output: {

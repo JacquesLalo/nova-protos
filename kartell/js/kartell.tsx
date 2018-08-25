@@ -27,13 +27,19 @@ class App extends React.Component<{}, AppState> {
   }
   render() {
     return (
-      <a-scene vr-mode-ui="enabled: true">
+      <a-scene>
         <a-obj-model
           src="./kartell/obj/kartell-room.obj"
           mtl="./kartell/obj/kartell-room.mtl"
         />
+        <a-obj-model
+          id="collision-box"
+          src="./kartell/obj/Collision.obj"
+          mtl="./kartell/obj/Collision.mtl"
+          visible="false"
+        />
         <a-sky color="#ECECEC" />
-        <a-entity laser-controls="hand: left" />
+        <a-entity laser-controls="hand: right" />
       </a-scene>
     );
   }

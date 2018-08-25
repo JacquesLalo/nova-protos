@@ -36,10 +36,11 @@ class App extends React.Component<{}, AppState> {
           id="collision-box"
           src="./kartell/obj/Collision.obj"
           mtl="./kartell/obj/Collision.mtl"
+          scale="0.9 0.9 0.9"
           visible="false"
         />
         <a-sky color="#ECECEC" />
-        <a-entity laser-controls="hand: right" />
+        <a-entity laser-controls="hand: right"  line="color: red; opacity: 0.75" />
       </a-scene>
     );
   }

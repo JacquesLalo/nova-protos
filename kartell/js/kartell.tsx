@@ -5,7 +5,8 @@ import "aframe";
 
 export interface AppState {
   scale: number;
-  color: string;
+  triggerDown: boolean;
+  intersection: Array<any>;
 }
 
 class App extends React.Component<{}, AppState> {
@@ -14,17 +15,33 @@ class App extends React.Component<{}, AppState> {
     super(props);
     this.state = {
       scale: 1,
-      color: "red",
+      triggerDown: false,
+      intersection: [],
     };
 
     this.update = this.update.bind(this);
 
     this.update();
 
-    document.addEventListener("triggerdown", () =>
-      this.setState({color: "blue"}),
-    );
-    document.addEventListener("triggerup", () => this.setState({color: "red"}));
+    document.addEventListener("triggerdown", () => {
+      this.setState({triggerDown: true});
+      console.log(this.state);
+    });
+
+    document.addEventListener("triggerup", () => {
+      this.setState({triggerDown: false});
+      console.log(this.state);
+    });
+
+    document.addEventListener("raycaster-intersected", (e: CustomEvent) => {
+      this.setState({intersection: e.detail.el});
+      console.log(this.state);
+    });
+
+    document.addEventListener("raycaster-intersected", (e: CustomEvent) => {
+      this.setState({intersection: []});
+      console.log(this.state);
+    });
   }
   update() {
     this.raq = requestAnimationFrame(() => {
@@ -42,7 +59,7 @@ class App extends React.Component<{}, AppState> {
         <a-obj-model
           scale="0.013 0.013 0.013"
           src="./kartell/obj/chair.obj"
-          material={`color: ${this.state.color}`}
+          material={`color: ${this.state.triggerDown ? "red" : "green"}`}
         />
         <a-obj-model
           id="collision-box"

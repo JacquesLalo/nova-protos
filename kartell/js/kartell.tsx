@@ -3,8 +3,8 @@ import * as ReactDOM from "react-dom";
 import * as React from "react";
 import "aframe";
 
-const Model = (props: {isSelected: boolean}) => (
-  <a-entity>
+const Model = (props: {isSelected: boolean, position: THREE.Vector3}) => (
+  <a-entity position={props.position.x + " " + 0.1 + " " + props.position.z}>
     <a-obj-model
       id="model"
       scale="0.013 0.013 0.013"
@@ -109,7 +109,9 @@ class App extends React.Component<{}, AppState> {
           src="./kartell/obj/kartell-room.obj"
           mtl="./kartell/obj/kartell-room.mtl"
         />
-        <Model isSelected={this.state.triggerDown && this.state.intersection} />
+        <Model
+          position={ this.state.modelPosition }
+          isSelected={this.state.triggerDown && this.state.intersection} />
         <a-obj-model
           id="collision-box"
           src="./kartell/obj/Collision.obj"

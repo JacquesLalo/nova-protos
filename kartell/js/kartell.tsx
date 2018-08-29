@@ -26,7 +26,7 @@ const Model = (props: {isSelected: boolean}) => (
     <a-entity
       class="collidable"
       geometry="primitive: box"
-      material="color: rgba(0, 0, 0); opacity: 0.1"
+      material={"color: rgba(0, 0, 0); opacity: " + (props.isSelected ? "0.3" : "0.1")}
       scale="1.5 1.5 0.8"
       position="0 0.8 0"
     />
@@ -52,7 +52,6 @@ class App extends React.Component<{}, AppState> {
     });
 
     document.addEventListener("raycaster-intersected", (e: CustomEvent) => {
-      if (e.detail.el.id === "model" && !this.state.intersection)
         this.setState({intersection: true});
     });
 

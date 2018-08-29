@@ -75,6 +75,15 @@ class App extends React.Component<{}, AppState> {
         this.setState({intersection: false});
       },
     );
+
+    document.addEventListener("thumbstickup", (e: CustomEvent) => {
+      const isModelSelected = this.state.triggerDown && this.state.intersection;
+      if (isModelSelected) this.modelDistance += 0.1;
+    });
+    document.addEventListener("thumbstickdown", (e: CustomEvent) => {
+      const isModelSelected = this.state.triggerDown && this.state.intersection;
+      if (isModelSelected) this.modelDistance -= 0.1;
+    });
   }
 
   update() {

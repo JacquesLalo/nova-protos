@@ -56,14 +56,16 @@ class App extends React.Component<{}, AppState> {
           src="./kartell/obj/kartell-room.obj"
           mtl="./kartell/obj/kartell-room.mtl"
         />
-        <a-obj-model
-          id="model"
-          scale="0.013 0.013 0.013"
-          src="./kartell/obj/chair.obj"
-          material={`color: ${this.state.triggerDown && this.state.intersection ? "red" : "green"}`}
-        />
         <a-entity class="collidable"
-            geometry="primitive: box" material="color: rgba(0, 0, 0); opacity: 0.1" scale="1.5 1.5 0.8" position="0 0.8 0" />
+            geometry="primitive: box" material="color: rgba(0, 0, 0); opacity: 0.1" scale="1.5 1.5 0.8" position="0 0.8 0">
+            <a-obj-model
+                id="model"
+                scale="0.013 0.013 0.013"
+                position="0 -0.73 0"
+                src="./kartell/obj/chair.obj"
+                material={`color: ${this.state.triggerDown && this.state.intersection ? "red" : "green"}`}
+            />
+        </a-entity>
         <a-obj-model
           id="collision-box"
           src="./kartell/obj/Collision.obj"
@@ -71,7 +73,7 @@ class App extends React.Component<{}, AppState> {
           scale="0.9 0.9 0.9"
           visible="false"
         />
-        <a-sky color="#0000ff" />
+        <a-sky color="#ECECEC" />
         <a-entity
           laser-controls="hand: right"
           raycaster="objects: .collidable; recursive: true"

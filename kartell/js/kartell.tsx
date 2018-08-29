@@ -3,38 +3,42 @@ import * as ReactDOM from "react-dom";
 import * as React from "react";
 import "aframe";
 
+
+const Model = (props: {isSelected: boolean}) => (
+    <a-entity>
+        <a-obj-model
+            id="model"
+            scale="0.013 0.013 0.013"
+            src="./kartell/obj/chair.obj"
+            material={"color: " + (props.isSelected ? "red" : "green")}
+        />
+        <a-entity
+            class="collidable"
+            geometry="primitive: box"
+            material={"color: rgba(0, 0, 0); opacity: " + (props.isSelected ? "0.3" : "0.1")}
+            scale="1.5 1.5 0.8"
+            position="0 0.8 0"
+        />
+    </a-entity>
+);
+
 export interface AppState {
   scale: number;
   triggerDown: boolean;
   intersection: boolean;
+  foo: any,
 }
 
 const defaultState = {
   scale: 1,
   triggerDown: false,
   intersection: false,
+  foo: "",
 };
-
-const Model = (props: {isSelected: boolean}) => (
-  <a-entity>
-    <a-obj-model
-      id="model"
-      scale="0.013 0.013 0.013"
-      src="./kartell/obj/chair.obj"
-      material={"color: " + (props.isSelected ? "red" : "green")}
-    />
-    <a-entity
-      class="collidable"
-      geometry="primitive: box"
-      material={"color: rgba(0, 0, 0); opacity: " + (props.isSelected ? "0.3" : "0.1")}
-      scale="1.5 1.5 0.8"
-      position="0 0.8 0"
-    />
-  </a-entity>
-);
 
 class App extends React.Component<{}, AppState> {
   raq: number;
+  raycastingDirection: THREE.Vector3;
   constructor(props) {
     super(props);
     this.state = defaultState;
@@ -45,6 +49,7 @@ class App extends React.Component<{}, AppState> {
 
     document.addEventListener("triggerdown", () => {
       this.setState({triggerDown: true});
+        console.log(this.state)
     });
 
     document.addEventListener("triggerup", () => {
@@ -53,6 +58,7 @@ class App extends React.Component<{}, AppState> {
 
     document.addEventListener("raycaster-intersected", (e: CustomEvent) => {
         this.setState({intersection: true});
+        this.raycastingDirection = e.detail.el.object3D
     });
 
     document.addEventListener(

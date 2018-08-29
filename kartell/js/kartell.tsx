@@ -6,18 +6,20 @@ import "aframe";
 export interface AppState {
   scale: number;
   triggerDown: boolean;
-  intersection: Array<any>;
+  intersection: boolean,
+}
+
+const defaultState = {
+    scale: 1,
+    triggerDown: false,
+    intersection: false,
 }
 
 class App extends React.Component<{}, AppState> {
   raq: number;
   constructor(props) {
     super(props);
-    this.state = {
-      scale: 1,
-      triggerDown: false,
-      intersection: [],
-    };
+    this.state = defaultState
 
     this.update = this.update.bind(this);
 
@@ -25,24 +27,22 @@ class App extends React.Component<{}, AppState> {
 
     document.addEventListener("triggerdown", () => {
       this.setState({triggerDown: true});
-      console.log(this.state);
     });
 
     document.addEventListener("triggerup", () => {
       this.setState({triggerDown: false});
-      console.log(this.state);
     });
 
     document.addEventListener("raycaster-intersected", (e: CustomEvent) => {
-      this.setState({intersection: e.detail.el});
-      console.log(this.state);
+      if(e.detail.el.id === "model" && !this.state.intersection)
+        this.setState({intersection: true});
     });
 
-    document.addEventListener("raycaster-intersected", (e: CustomEvent) => {
-      this.setState({intersection: []});
-      console.log(this.state);
+    document.addEventListener("raycaster-intersected-cleared", (e: CustomEvent) => {
+      this.setState({intersection: false});
     });
   }
+
   update() {
     this.raq = requestAnimationFrame(() => {
       this.setState({scale: Math.abs(Math.sin(new Date().getTime() / 1000))});
@@ -57,22 +57,24 @@ class App extends React.Component<{}, AppState> {
           mtl="./kartell/obj/kartell-room.mtl"
         />
         <a-obj-model
+          id="model"
           scale="0.013 0.013 0.013"
           src="./kartell/obj/chair.obj"
-          material={`color: ${this.state.triggerDown ? "red" : "green"}`}
+          material={`color: ${this.state.triggerDown && this.state.intersection ? "red" : "green"}`}
         />
+        <a-entity class="collidable"
+            geometry="primitive: box" material="color: rgba(0, 0, 0); opacity: 0.1" scale="1.5 1.5 0.8" position="0 0.8 0" />
         <a-obj-model
           id="collision-box"
           src="./kartell/obj/Collision.obj"
           mtl="./kartell/obj/Collision.mtl"
-          class="collidable"
           scale="0.9 0.9 0.9"
           visible="false"
         />
-        <a-sky color="#ECECEC" />
+        <a-sky color="#0000ff" />
         <a-entity
           laser-controls="hand: right"
-          raycaster="objects: .collidable"
+          raycaster="objects: .collidable; recursive: true"
           line="color: red; opacity: 0.75"
         />
       </a-scene>

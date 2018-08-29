@@ -12,7 +12,6 @@ const Model = (props: {
   <a-entity position={props.position}>
     <a-obj-model
       id="model"
-      foo={()=> console.log(props) }
       scale="0.013 0.013 0.013"
       src="./kartell/obj/chair.obj"
       material={"color: " + (props.isSelected ? "red" : "green")}
@@ -44,40 +43,66 @@ const defaultState = {
 class App extends React.Component<{}, AppState> {
   raq: number;
   modelDistance: number;
+  modelPointOfIntersection: THREE.Vector3;
+  offset: THREE.Vector3;
   constructor(props) {
     super(props);
 
     this.state = defaultState;
 
     this.modelDistance = 0
+    this.modelPointOfIntersection = new THREE.Vector3(0, 0, 0,);
+    this.offset = new THREE.Vector3(0, 0, 0,);
 
     this.update = this.update.bind(this);
     this.isSelected = this.isSelected.bind(this);
 
     this.update();
 
+
+    document.addEventListener("thumbstickmoved", (e: CustomEvent) => {
+        const { x, y } = e.detail
+        if(this.isSelected()) {
+          if(Math.abs(x) < 0.5) {
+            if(y < -0.5)
+                this.modelDistance += 0.1;
+            else if(y > 0.5)
+                this.modelDistance -= 0.1;
+          } else if(Math.abs(y) < 0.5) {
+              if(x > 0.5) {
+                  // rotate around positive Y axis
+              } else if(x < -0.5) {
+                  // rotate around negative Y axis
+              }
+          }
+        }
+    });
+
     document.addEventListener("triggerdown", () => {
       this.setState({triggerDown: true});
+
+        const raycaster = AFRAME.scenes[0].querySelector("[raycaster]").components.raycaster;
+        raycaster.refreshObjects();
+        const model = AFRAME.scenes[0].querySelector("#model").object3D
+        const intersections = raycaster.raycaster.intersectObject(model, true)
+            // .filter(e => e.className === "collidable");
+        if(intersections.length) {
+            const intersection = intersections
+            this.modelDistance = intersection.distance;
+            this.modelPointOfIntersection = intersection.point;
+            this.offset = new THREE.Vector3(
+                model.position.x - intersection.point.x,
+                model.position.y - intersection.point.y,
+                model.position.z - intersection.point.z,
+            )
+
+            this.setState({intersection: true});
+        }
     });
 
     document.addEventListener("triggerup", () => {
-      this.setState({triggerDown: false});
+        this.setState({triggerDown: false, intersection: false});
     });
-
-    document.addEventListener("raycaster-intersected", (e: CustomEvent) => {
-      const {el, intersection} = e.detail;
-
-      this.modelDistance = intersection.distance;
-
-      this.setState({intersection: true});
-    });
-
-    document.addEventListener(
-      "raycaster-intersected-cleared",
-      (e: CustomEvent) => {
-        this.setState({intersection: false});
-      },
-    );
 
     document.addEventListener("trackpaddown", (e: CustomEvent) => {
       if (this.isSelected()) this.modelDistance += 0.25;
@@ -93,6 +118,7 @@ class App extends React.Component<{}, AppState> {
       if (this.isSelected()) {
         const raycasterDirection = AFRAME.scenes[0].querySelector("[raycaster]")
           .components.raycaster.raycaster.ray.direction.clone();
+          raycasterDirection.sub(this.offset)
 
         const modelPosition = raycasterDirection
           .normalize()
@@ -109,7 +135,7 @@ class App extends React.Component<{}, AppState> {
   render() {
     const modelPosition = this.state.modelPosition.x
                         + " "
-                        + (this.isSelected() ? 0.2 : 0)
+                        + (this.isSelected() ? 0.1 : 0)
                         + " "
                         + this.state.modelPosition.z
 

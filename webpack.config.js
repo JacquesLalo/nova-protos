@@ -6,6 +6,7 @@ module.exports = {
     mode: 'development',
     entry: {
         bloomaway: './bloomaway/js/bloomaway.ts',
+        bloomaway_aframe: './bloomaway/js/bloomaway_aframe.tsx',
         audioXR: './audioXR/js/audioXR.ts',
         mecaFlu: './meca-flu/js/meca-flu.js',
         nfl: './nfl/js/nfl.ts',

@@ -9,9 +9,8 @@ const Model = (props: {
   collisionBoxScale: string;
   collisionBoxPosition: string;
 }) => (
-  <a-entity position={props.position}>
+  <a-entity id="model" position={props.position}>
     <a-obj-model
-      id="model"
       scale="0.013 0.013 0.013"
       src="./kartell/obj/chair.obj"
       material={"color: " + (props.isSelected ? "red" : "green")}
@@ -37,7 +36,7 @@ export interface AppState {
 const defaultState = {
   triggerDown: false,
   intersection: false,
-  modelPosition: new THREE.Vector3(2.5, 0, 2.5),
+  modelPosition: new THREE.Vector3(1.85, 0, -1.57),
 };
 
 class App extends React.Component<{}, AppState> {
@@ -81,11 +80,10 @@ class App extends React.Component<{}, AppState> {
       const raycaster = AFRAME.scenes[0].querySelector("[raycaster]").components
         .raycaster;
       raycaster.refreshObjects();
-      const model = AFRAME.scenes[0].querySelector("#model").object3D;
+      const model = AFRAME.scenes[0].querySelector("#model > .collidable").object3D;
       const intersections = raycaster.raycaster.intersectObject(model, true);
-      // .filter(e => e.className === "collidable");
       if (intersections.length) {
-        const intersection = intersections;
+        const intersection = intersections[0];
         this.modelDistance = intersection.distance;
         this.modelPointOfIntersection = intersection.point;
         this.offset = new THREE.Vector3(
@@ -117,7 +115,7 @@ class App extends React.Component<{}, AppState> {
         const raycasterDirection = AFRAME.scenes[0]
           .querySelector("[raycaster]")
           .components.raycaster.raycaster.ray.direction.clone();
-        raycasterDirection.sub(this.offset);
+        //raycasterDirection.sub(this.offset);
 
         const modelPosition = raycasterDirection
           .normalize()

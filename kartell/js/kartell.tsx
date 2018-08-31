@@ -8,8 +8,9 @@ const Model = (props: {
   position: string;
   collisionBoxScale: string;
   collisionBoxPosition: string;
+  id: string;
 }) => (
-  <a-entity id="model" position={props.position}>
+        <a-entity id={props.id} position={props.position}>
     <a-obj-model
       scale="0.013 0.013 0.013"
       src="./kartell/obj/chair.obj"
@@ -30,13 +31,23 @@ const Model = (props: {
 export interface AppState {
   triggerDown: boolean;
   intersection: boolean;
-  modelPosition: THREE.Vector3;
+  currentModelId: string;
+  models: Array<{position: THREE.Vector3}>;
 }
 
 const defaultState = {
   triggerDown: false,
   intersection: false,
   modelPosition: new THREE.Vector3(1.85, 0, -1.57),
+  currentModelId: "",
+    models: [
+        {
+            position: new THREE.Vector3(1.85, 0, -1.57),
+        },
+        {
+            position: new THREE.Vector3(1, 0, 1),
+        },
+    ],
 };
 
 class App extends React.Component<{}, AppState> {
@@ -80,33 +91,32 @@ class App extends React.Component<{}, AppState> {
       const raycaster = AFRAME.scenes[0].querySelector("[raycaster]").components
         .raycaster;
       raycaster.refreshObjects();
-      const model = AFRAME.scenes[0].querySelector("#model > .collidable").object3D;
-      const intersections = raycaster.raycaster.intersectObject(model, true);
-      if (intersections.length) {
-        const intersection = intersections[0];
-        this.modelDistance = intersection.distance;
-        this.modelPointOfIntersection = intersection.point;
-        this.offset = new THREE.Vector3(
-          model.position.x - intersection.point.x,
-          model.position.y - intersection.point.y,
-          model.position.z - intersection.point.z,
-        );
 
-        this.setState({intersection: true});
-      }
+        for(let i in this.state.models) {
+            const modelId = `model${i}`
+            const model = AFRAME.scenes[0].querySelector(`#${modelId} > .collidable`).object3D;
+            const intersections = raycaster.raycaster.intersectObject(model, true);
+            console.log(intersections)
+            if (intersections.length) {
+                const intersection = intersections[0];
+                this.modelDistance = intersection.distance;
+                this.modelPointOfIntersection = intersection.point;
+                this.offset = new THREE.Vector3(
+                    model.position.x - intersection.point.x,
+                    model.position.y - intersection.point.y,
+                    model.position.z - intersection.point.z,
+                );
+
+                this.setState({intersection: true, currentModelId: modelId});
+            }
+        }
+
     });
 
     document.addEventListener("triggerup", () => {
-      this.setState({triggerDown: false, intersection: false});
+        this.setState({triggerDown: false, intersection: false, currentModelId: defaultState.currentModelId});
     });
 
-    document.addEventListener("trackpaddown", (e: CustomEvent) => {
-      if (this.isSelected()) this.modelDistance += 0.25;
-      console.log(this.modelDistance);
-    });
-    document.addEventListener("thumbstickdown", (e: CustomEvent) => {
-      if (this.isSelected()) this.modelDistance -= 0.25;
-    });
   }
 
   update() {
@@ -121,7 +131,13 @@ class App extends React.Component<{}, AppState> {
           .normalize()
           .multiplyScalar(this.modelDistance);
 
-        this.setState({modelPosition});
+        //this.setState({modelPosition});
+
+        const modelId = parseInt(this.state.currentModelId[this.state.currentModelId.length - 1])
+        const models = this.state.models.slice()
+        models[modelId] = {position: modelPosition}
+
+        this.setState({models})
       }
       this.update();
     });
@@ -130,12 +146,26 @@ class App extends React.Component<{}, AppState> {
     return this.state.triggerDown && this.state.intersection;
   }
   render() {
-    const modelPosition =
-      this.state.modelPosition.x +
-      " " +
-      (this.isSelected() ? 0.1 : 0) +
-      " " +
-      this.state.modelPosition.z;
+      const models = this.state.models.map((m, i) => {
+          const id = `model${i}`
+          const position =
+              m.position.x +
+              " " +
+              (this.state.currentModelId === id ? 0.1 : 0) +
+              " " +
+              m.position.z;
+
+          return (
+              <Model
+                key={i}
+                id={id}
+                position={position}
+                collisionBoxPosition="0 0.55 0"
+                collisionBoxScale="0.85 1.171 0.8"
+                isSelected={this.isSelected()}
+                />
+          )
+      })
 
     return (
       <a-scene>
@@ -143,12 +173,7 @@ class App extends React.Component<{}, AppState> {
           src="./kartell/obj/kartell-room.obj"
           mtl="./kartell/obj/kartell-room.mtl"
         />
-        <Model
-          collisionBoxPosition="0 0.55 0"
-          collisionBoxScale="0.85 1.171 0.8"
-          position={modelPosition}
-          isSelected={this.isSelected()}
-        />
+            { models }
         <a-obj-model
           id="collision-box"
           src="./kartell/obj/Collision.obj"

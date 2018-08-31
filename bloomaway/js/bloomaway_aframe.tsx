@@ -40,14 +40,14 @@ class App extends React.Component<{}, AppState> {
     this.buttonCoords = [
       {theta: PI / 5, phi: PI / 3},
         {theta: 0, phi: 0},
-      // {theta: PI / 10, phi: -PI / 3},
+      {theta: PI / 10, phi: -PI / 3},
       // {theta: -PI / 10, phi: PI / 3},
       // {theta: -PI / 10, phi: -PI / 3},
     ];
       this.scenes = [
+          createScene("mall", "0 10.866 0"),
           createScene("stadium", "0 -3.639 0", "0.02 0.02 0.02"),
           createScene("king", "0 1.63 -8.3", "1 1 1"),
-          createScene("bedroom1"),
       ];
 
     this.update = this.update.bind(this);

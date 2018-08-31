@@ -16,11 +16,15 @@ const defaultState = {
 
 const {PI, sin, cos} = Math;
 
-const createScene = (name: string, position: string = "0 0 0", scale: string = "1 1 1") => ({
-    name,
-    position,
-    scale,
-})
+const createScene = (
+  name: string,
+  position: string = "0 0 0",
+  scale: string = "1 1 1",
+) => ({
+  name,
+  position,
+  scale,
+});
 
 const sphericalToCartesian = (theta: number, phi: number, rho: number) => ({
   x: rho * sin(phi) * cos(theta),
@@ -31,7 +35,7 @@ const sphericalToCartesian = (theta: number, phi: number, rho: number) => ({
 class App extends React.Component<{}, AppState> {
   raq: number;
   buttonCoords: Array<{theta: number; phi: number}>;
-  scenes: Array<{name: string, position: string, scale: string}>;
+  scenes: Array<{name: string; position: string; scale: string}>;
 
   constructor(props) {
     super(props);
@@ -39,20 +43,22 @@ class App extends React.Component<{}, AppState> {
     this.state = defaultState;
     this.buttonCoords = [
       {theta: PI / 5, phi: PI / 3},
-        {theta: 0, phi: 0},
+      {theta: 0, phi: 0},
       {theta: PI / 10, phi: -PI / 3},
       // {theta: -PI / 10, phi: PI / 3},
       // {theta: -PI / 10, phi: -PI / 3},
     ];
-      this.scenes = [
-          createScene("mall", "0 10.866 0"),
-          createScene("stadium", "0 -3.639 0", "0.02 0.02 0.02"),
-          createScene("king", "0 1.63 -8.3", "1 1 1"),
-      ];
+    this.scenes = [
+      createScene("mall", "0 10.866 0"),
+      createScene("stadium", "0 -3.639 0", "0.02 0.02 0.02"),
+      createScene("king", "0 1.63 -8.3", "1 1 1"),
+    ];
 
     this.update = this.update.bind(this);
     this.onRaycasterIntersected = this.onRaycasterIntersected.bind(this);
-    this.onRaycasterIntersectedCleared = this.onRaycasterIntersectedCleared.bind(this);
+    this.onRaycasterIntersectedCleared = this.onRaycasterIntersectedCleared.bind(
+      this,
+    );
     this.onTriggerUp = this.onTriggerUp.bind(this);
     this.onTriggerDown = this.onTriggerDown.bind(this);
     this.getButtons = this.getButtons.bind(this);
@@ -61,7 +67,10 @@ class App extends React.Component<{}, AppState> {
 
     document.addEventListener("triggerdown", this.onTriggerDown);
     document.addEventListener("triggerup", this.onTriggerUp);
-    document.addEventListener("raycaster-intersected", this.onRaycasterIntersected);
+    document.addEventListener(
+      "raycaster-intersected",
+      this.onRaycasterIntersected,
+    );
     document.addEventListener(
       "raycaster-intersected-cleared",
       this.onRaycasterIntersectedCleared,
@@ -76,8 +85,7 @@ class App extends React.Component<{}, AppState> {
   onTriggerDown() {
     if (this.state.hoveredButton !== defaultState.hoveredButton) {
       const b = this.state.hoveredButton;
-        const currentScene = parseInt(b[b.length - 1])
-        console.log("currentscene", currentScene)
+      const currentScene = parseInt(b[b.length - 1]);
       this.setState({currentScene});
     }
   }
@@ -115,18 +123,15 @@ class App extends React.Component<{}, AppState> {
   }
   render() {
     const scene = this.scenes[this.state.currentScene];
-      console.log(scene.name)
     return (
       <a-scene>
         <a-entity
           gltf-model={`url(./bloomaway/gltf/${scene.name}/scene.gltf)`}
-        position={ scene.position }
-        scale={ scene.scale}
+          position={scene.position}
+          scale={scene.scale}
         />
         <a-entity rotation="0 -90 0" scale="10 10 10" position="0 1.6 0">
-            <a-entity
-                gltf-model={`url(./torus/gltf/map.gltf)`}
-            />
+          <a-entity gltf-model={`url(./torus/gltf/map.gltf)`} />
           <a-obj-model src="./torus/obj/ground/ground.obj" />
           <a-entity rotation="0 -90 0" position="0 0 0">
             {this.getButtons()}

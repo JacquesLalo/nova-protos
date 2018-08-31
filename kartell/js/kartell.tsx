@@ -148,10 +148,11 @@ class App extends React.Component<{}, AppState> {
   render() {
       const models = this.state.models.map((m, i) => {
           const id = `model${i}`
+          const isSelected = this.state.currentModelId === id
           const position =
               m.position.x +
               " " +
-              (this.state.currentModelId === id ? 0.1 : 0) +
+              (isSelected ? 0.1 : 0) +
               " " +
               m.position.z;
 
@@ -162,7 +163,7 @@ class App extends React.Component<{}, AppState> {
                 position={position}
                 collisionBoxPosition="0 0.55 0"
                 collisionBoxScale="0.85 1.171 0.8"
-                isSelected={this.isSelected()}
+                isSelected={isSelected}
                 />
           )
       })

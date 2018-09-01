@@ -9,11 +9,13 @@ const Model = (props: {
   collisionBoxScale: string;
   collisionBoxPosition: string;
   id: string;
+    scale: string;
+    src: string;
 }) => (
         <a-entity id={props.id} position={props.position}>
     <a-obj-model
-      scale="0.013 0.013 0.013"
-      src="./kartell/obj/chair.obj"
+    scale={props.scale}
+    src={props.src}
       material={"color: " + (props.isSelected ? "red" : "green")}
     />
     <a-entity
@@ -32,22 +34,35 @@ export interface AppState {
   triggerDown: boolean;
   intersection: boolean;
   currentModelId: string;
-  models: Array<{position: THREE.Vector3}>;
+    models: Array<{
+        position: THREE.Vector3,
+        src: string,
+        scale: string,
+        collisionBoxPosition: string,
+        collisionBoxScale: string,
+    }>;
 }
 
 const defaultState = {
   triggerDown: false,
   intersection: false,
-  modelPosition: new THREE.Vector3(1.85, 0, -1.57),
   currentModelId: "",
-    models: [
-        {
-            position: new THREE.Vector3(1.85, 0, -1.57),
-        },
-        {
-            position: new THREE.Vector3(1, 0, 1),
-        },
-    ],
+  models: [
+      {
+          position: new THREE.Vector3(1.85, 0, -1.57),
+          src: "./kartell/obj/chair.obj",
+          scale: "0.013 0.013 0.013",
+          collisionBoxPosition: "0 0.55 0",
+          collisionBoxScale: "00.85 1.171 0.8",
+      },
+      {
+          position: new THREE.Vector3(2.899, 0, 2.141),
+          src: "./kartell/obj/couch.obj",
+          scale: "0.029 0.029 0.029",
+          collisionBoxPosition: "0.399 0.726 0",
+          collisionBoxScale: "3.236 1.412 1.655",
+      },
+  ],
 };
 
 class App extends React.Component<{}, AppState> {
@@ -131,8 +146,6 @@ class App extends React.Component<{}, AppState> {
           .normalize()
           .multiplyScalar(this.modelDistance);
 
-        //this.setState({modelPosition});
-
         const modelId = parseInt(this.state.currentModelId[this.state.currentModelId.length - 1])
         const models = this.state.models.slice()
         models[modelId] = {position: modelPosition}
@@ -161,9 +174,11 @@ class App extends React.Component<{}, AppState> {
                 key={i}
                 id={id}
                 position={position}
-                collisionBoxPosition="0 0.55 0"
-                collisionBoxScale="0.85 1.171 0.8"
+              collisionBoxPosition={m.collisionBoxPosition}
+              collisionBoxScale={m.collisionBoxScale}
                 isSelected={isSelected}
+                scale={m.scale}
+                src={m.src}
                 />
           )
       })

@@ -8,6 +8,7 @@ const Model = (props: {
   position: string;
   collisionBoxScale: string;
   collisionBoxPosition: string;
+    color: string;
   id: string;
     scale: string;
     src: string;
@@ -16,7 +17,7 @@ const Model = (props: {
     <a-obj-model
     scale={props.scale}
     src={props.src}
-      material={"color: " + (props.isSelected ? "red" : "green")}
+      material={"color: " + (props.isSelected ? "green" : props.color)}
     />
     <a-entity
       class="collidable"
@@ -40,6 +41,7 @@ export interface AppState {
         scale: string,
         collisionBoxPosition: string,
         collisionBoxScale: string,
+        color: string,
     }>;
 }
 
@@ -54,6 +56,7 @@ const defaultState = {
           scale: "0.013 0.013 0.013",
           collisionBoxPosition: "0 0.55 0",
           collisionBoxScale: "00.85 1.171 0.8",
+          color: "gray",
       },
       {
           position: new THREE.Vector3(2.899, 0, 2.141),
@@ -61,6 +64,7 @@ const defaultState = {
           scale: "0.029 0.029 0.029",
           collisionBoxPosition: "0.399 0.726 0",
           collisionBoxScale: "3.236 1.412 1.655",
+          color: "brown",
       },
   ],
 };
@@ -148,7 +152,10 @@ class App extends React.Component<{}, AppState> {
 
         const modelId = parseInt(this.state.currentModelId[this.state.currentModelId.length - 1])
         const models = this.state.models.slice()
-        models[modelId] = {position: modelPosition}
+          models[modelId] = {
+              ...models[modelId],
+              position: modelPosition,
+          }
 
         this.setState({models})
       }
@@ -179,6 +186,7 @@ class App extends React.Component<{}, AppState> {
                 isSelected={isSelected}
                 scale={m.scale}
                 src={m.src}
+              color={m.color}
                 />
           )
       })

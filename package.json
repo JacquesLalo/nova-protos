@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "aframe": "^0.8.2",
+    "jzz": "^0.5.4",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "three": "^0.94.0"

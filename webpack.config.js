@@ -12,6 +12,7 @@ module.exports = {
         nfl: './nfl/js/nfl.ts',
         infiniteGallery: './infinite-gallery/js/infinite-gallery.ts',
         kartell: './kartell/js/kartell.tsx',
+        musicXR: './musicXR/js/musicXR.tsx',
     },
     devtool: 'source-map',
     output: {

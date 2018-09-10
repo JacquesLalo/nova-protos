@@ -8,21 +8,18 @@ const Model = (props: {
   position: string;
   collisionBoxScale: string;
   collisionBoxPosition: string;
-    color: string;
+  color: string;
   id: string;
-    scale: string;
-    src: string;
-    rotation: string;
-    modelPosition: string;
+  scale: string;
+  src: string;
+  rotation: string;
+  modelPosition: string;
 }) => (
-    <a-entity
-        id={props.id}
-        rotation={props.rotation}
-        position={props.position}>
+  <a-entity id={props.id} rotation={props.rotation} position={props.position}>
     <a-obj-model
-    scale={props.scale}
-    src={props.src}
-    position={props.modelPosition}
+      scale={props.scale}
+      src={props.src}
+      position={props.modelPosition}
       material={"color: " + (props.isSelected ? "green" : props.color)}
     />
     <a-entity
@@ -41,103 +38,107 @@ export interface AppState {
   triggerDown: boolean;
   intersection: boolean;
   currentModelId: string;
-    models: Array<{
-        position: THREE.Vector3,
-        src: string,
-        scale: string,
-        collisionBoxPosition: string,
-        collisionBoxScale: string,
-        color: string,
-        rotationY: number,
-        modelPosition: string,
-    }>;
+  trackpadDown: boolean;
+  gripDown: boolean;
+  models: Array<{
+    position: THREE.Vector3;
+    src: string;
+    scale: string;
+    collisionBoxPosition: string;
+    collisionBoxScale: string;
+    color: string;
+    rotationY: number;
+    modelPosition: string;
+  }>;
 }
 
 const defaultState = {
   triggerDown: false,
+  trackpadDown: false,
+  gripDown: false,
   intersection: false,
   currentModelId: "",
   models: [
-      {
-          position: new THREE.Vector3(1.85, 0, -1.57),
-          src: "./kartell/obj/chair.obj",
-          scale: "0.013 0.013 0.013",
-          collisionBoxPosition: "0 0.55 0",
-          collisionBoxScale: "00.85 1.171 0.8",
-          color: "gray",
-          rotationY: 0,
-          modelPosition: "0 0 0",
-      },
-      {
-          position: new THREE.Vector3(-2.6, 0, -2.6),
-          src: "./kartell/obj/kartell/invisible_table.obj",
-          scale: "1 1 1",
-          collisionBoxPosition: "0.283 0.386 1.650",
-          collisionBoxScale: "1.137 0.739 1.104",
-          color: "brown",
-          rotationY: 0,
-          modelPosition: "0 0.584 0",
-      },
-      {
-          position: new THREE.Vector3(3.497, 0, -1.036),
-          src: "./kartell/obj/kartell/kartell_couch.obj",
-          scale: "1 1 1",
-          collisionBoxPosition: "-0.534 0.345 0.113",
-          collisionBoxScale: "3.062 0.739 1.104",
-          color: "brown",
-          rotationY: 90,
-          modelPosition: "0 0 0",
-      },
-      {
-          position: new THREE.Vector3(2.899, 0, 2.141),
-          src: "./kartell/obj/kartell/kartell_couch.obj",
-          scale: "1 1 1",
-          collisionBoxPosition: "-0.534 0.345 0.113",
-          collisionBoxScale: "3.062 0.739 1.104",
-          color: "brown",
-          rotationY: 0,
-          modelPosition: "0 0 0",
-      },
-      // {
-      //     position: new THREE.Vector3(2.899, 0, 2.141),
-      //     src: "./kartell/obj/couch.obj",
-      //     scale: "0.029 0.029 0.029",
-      //     collisionBoxPosition: "0.399 0.726 0",
-      //     collisionBoxScale: "3.236 1.412 1.655",
-      //     color: "brown",
-      //     rotationY: 0,
-      //     modelPosition: "0 0 0",
-      // },
-      {
-          position: new THREE.Vector3(0, 0, 0),
-          src: "./kartell/obj/kartell/stark_table.obj",
-          scale: "1 1 1",
-          collisionBoxPosition: "0.9 0.264 -0.036",
-          collisionBoxScale: "1.297 1 1.362",
-          color: "brown",
-          rotationY: 0,
-          modelPosition: "0 0.195 0",
-      },
-      {
-          position: new THREE.Vector3(-0.56, 0, -1.026),
-          src: "./kartell/obj/kartell/madame_3d_stark.obj",
-          scale: "0.1 0.1 0.1",
-          collisionBoxPosition: "0 0.314 -0.036",
-          collisionBoxScale: "0.724 1.001 0.716",
-          color: "brown",
-          rotationY: 0,
-          modelPosition: "0 0 0",
-      },
-      {
-          position: new THREE.Vector3(0.56, 0, -1.026),
-          src: "./kartell/obj/kartell/madame_3d_stark.obj",
-          scale: "0.1 0.1 0.1",
-          collisionBoxPosition: "0 0.314 -0.036",
-          collisionBoxScale: "0.724 1.001 0.716",
-          color: "brown",
-          rotationY: 90,
-          modelPosition: "0 0 0",
-      },
+    {
+      position: new THREE.Vector3(1.85, 0, -1.57),
+      src: "./kartell/obj/chair.obj",
+      scale: "0.013 0.013 0.013",
+      collisionBoxPosition: "0 0.55 0",
+      collisionBoxScale: "00.85 1.171 0.8",
+      color: "gray",
+      rotationY: 0,
+      modelPosition: "0 0 0",
+    },
+    {
+      position: new THREE.Vector3(-2.6, 0, -2.6),
+      src: "./kartell/obj/kartell/invisible_table.obj",
+      scale: "1 1 1",
+      collisionBoxPosition: "0.283 0.386 1.650",
+      collisionBoxScale: "1.137 0.739 1.104",
+      color: "brown",
+      rotationY: 0,
+      modelPosition: "0 0.584 0",
+    },
+    {
+      position: new THREE.Vector3(3.497, 0, -1.036),
+      src: "./kartell/obj/kartell/kartell_couch.obj",
+      scale: "1 1 1",
+      collisionBoxPosition: "-0.534 0.345 0.113",
+      collisionBoxScale: "3.062 0.739 1.104",
+      color: "brown",
+      rotationY: 90,
+      modelPosition: "0 0 0",
+    },
+    {
+      position: new THREE.Vector3(2.899, 0, 2.141),
+      src: "./kartell/obj/kartell/kartell_couch.obj",
+      scale: "1 1 1",
+      collisionBoxPosition: "-0.534 0.345 0.113",
+      collisionBoxScale: "3.062 0.739 1.104",
+      color: "brown",
+      rotationY: 0,
+      modelPosition: "0 0 0",
+    },
+    // {
+    //     position: new THREE.Vector3(2.899, 0, 2.141),
+    //     src: "./kartell/obj/couch.obj",
+    //     scale: "0.029 0.029 0.029",
+    //     collisionBoxPosition: "0.399 0.726 0",
+    //     collisionBoxScale: "3.236 1.412 1.655",
+    //     color: "brown",
+    //     rotationY: 0,
+    //     modelPosition: "0 0 0",
+    // },
+    {
+      position: new THREE.Vector3(0, 0, 0),
+      src: "./kartell/obj/kartell/stark_table.obj",
+      scale: "1 1 1",
+      collisionBoxPosition: "0.9 0.264 -0.036",
+      collisionBoxScale: "1.297 1 1.362",
+      color: "brown",
+      rotationY: 0,
+      modelPosition: "0 0.195 0",
+    },
+    {
+      position: new THREE.Vector3(-0.56, 0, -1.026),
+      src: "./kartell/obj/kartell/madame_3d_stark.obj",
+      scale: "0.1 0.1 0.1",
+      collisionBoxPosition: "0 0.314 -0.036",
+      collisionBoxScale: "0.724 1.001 0.716",
+      color: "brown",
+      rotationY: 0,
+      modelPosition: "0 0 0",
+    },
+    {
+      position: new THREE.Vector3(0.56, 0, -1.026),
+      src: "./kartell/obj/kartell/madame_3d_stark.obj",
+      scale: "0.1 0.1 0.1",
+      collisionBoxPosition: "0 0.314 -0.036",
+      collisionBoxScale: "0.724 1.001 0.716",
+      color: "brown",
+      rotationY: 90,
+      modelPosition: "0 0 0",
+    },
   ],
 };
 
@@ -157,6 +158,15 @@ class App extends React.Component<{}, AppState> {
 
     this.update = this.update.bind(this);
     this.isSelected = this.isSelected.bind(this);
+    this.updateModelRotation = this.updateModelRotation.bind(this);
+    this.increaseModelRotation = this.increaseModelRotation.bind(this);
+    this.decreaseModelRotation = this.decreaseModelRotation.bind(this);
+    this.increaseSelectedModelDistance = this.increaseSelectedModelDistance.bind(
+      this,
+    );
+    this.decreaseSelectedModelDistance = this.decreaseSelectedModelDistance.bind(
+      this,
+    );
 
     this.update();
 
@@ -164,25 +174,28 @@ class App extends React.Component<{}, AppState> {
       const {x, y} = e.detail;
       if (this.isSelected()) {
         if (Math.abs(x) < 0.5) {
-          if (y < -0.5) this.modelDistance += 0.1;
-          else if (y > 0.5) this.modelDistance -= 0.1;
+          if (y < -0.5) this.increaseSelectedModelDistance();
+          else if (y > 0.5) this.decreaseSelectedModelDistance();
         } else if (Math.abs(y) < 0.5) {
-            const { models } = this.state
-            const modelId = parseInt(this.state.currentModelId[this.state.currentModelId.length - 1])
-            const model = models[modelId]
-            const delta = 5
           if (x > 0.5) {
-            // rotate around positive Y axis
-              model.rotationY = (model.rotationY + delta) % 360
-              this.setState({ models })
+            this.increaseModelRotation();
           } else if (x < -0.5) {
-            // rotate around negative Y axis
-              model.rotationY = (model.rotationY - delta) % 360
-              this.setState({ models })
+            this.decreaseModelRotation();
           }
         }
       }
     });
+
+    document.addEventListener("gripdown", () =>
+      this.setState({gripDown: true}),
+    );
+    document.addEventListener("gripup", () => this.setState({gripDown: false}));
+    document.addEventListener("trackpaddown", () =>
+      this.setState({trackpadDown: true}),
+    );
+    document.addEventListener("trackpadup", () =>
+      this.setState({trackpadDown: false}),
+    );
 
     document.addEventListener("triggerdown", () => {
       this.setState({triggerDown: true});
@@ -191,36 +204,74 @@ class App extends React.Component<{}, AppState> {
         .raycaster;
       raycaster.refreshObjects();
 
-        for(let i in this.state.models) {
-            const modelId = `model${i}`
-            const model = AFRAME.scenes[0].querySelector(`#${modelId} > .collidable`).object3D;
-            const intersections = raycaster.raycaster.intersectObject(model, true);
-            console.log(intersections)
-            if (intersections.length) {
-                const intersection = intersections[0];
-                this.modelDistance = intersection.distance;
-                this.modelPointOfIntersection = intersection.point;
-                this.offset = new THREE.Vector3(
-                    model.position.x - intersection.point.x,
-                    model.position.y - intersection.point.y,
-                    model.position.z - intersection.point.z,
-                );
+      for (let i in this.state.models) {
+        const modelId = `model${i}`;
+        const model = AFRAME.scenes[0].querySelector(
+          `#${modelId} > .collidable`,
+        ).object3D;
+        const intersections = raycaster.raycaster.intersectObject(model, true);
+        if (intersections.length) {
+          const intersection = intersections[0];
+          this.modelDistance = intersection.distance;
+          this.modelPointOfIntersection = intersection.point;
+          this.offset = new THREE.Vector3(
+            model.position.x - intersection.point.x,
+            model.position.y - intersection.point.y,
+            model.position.z - intersection.point.z,
+          );
 
-                this.setState({intersection: true, currentModelId: modelId});
-            }
+          this.setState({intersection: true, currentModelId: modelId});
         }
-
+      }
     });
 
     document.addEventListener("triggerup", () => {
-        this.setState({triggerDown: false, intersection: false, currentModelId: defaultState.currentModelId});
+      this.setState({
+        triggerDown: false,
+        intersection: false,
+        currentModelId: defaultState.currentModelId,
+      });
     });
+  }
 
+  increaseSelectedModelDistance() {
+    this.modelDistance += 0.1;
+  }
+
+  decreaseSelectedModelDistance() {
+    this.modelDistance -= 0.1;
+  }
+
+  updateModelRotation(increaseRotation: boolean) {
+    const modelId = parseInt(
+      this.state.currentModelId[this.state.currentModelId.length - 1],
+    );
+    if (modelId) {
+      const {models} = this.state;
+      const model = models[modelId];
+      const delta = 5;
+      const c = increaseRotation ? 1 : -1;
+      model.rotationY = (model.rotationY + delta * c) % 360;
+      this.setState({models});
+    }
+  }
+
+  increaseModelRotation() {
+    this.updateModelRotation(true);
+  }
+
+  decreaseModelRotation() {
+    this.updateModelRotation(false);
   }
 
   update() {
     this.raq = requestAnimationFrame(() => {
       if (this.isSelected()) {
+        if (this.state.trackpadDown && this.state.gripDown)
+          this.increaseModelRotation();
+        else if (this.state.trackpadDown) this.increaseSelectedModelDistance();
+        else if (this.state.gripDown) this.decreaseSelectedModelDistance();
+
         const raycasterDirection = AFRAME.scenes[0]
           .querySelector("[raycaster]")
           .components.raycaster.raycaster.ray.direction.clone();
@@ -229,14 +280,16 @@ class App extends React.Component<{}, AppState> {
           .normalize()
           .multiplyScalar(this.modelDistance);
 
-        const modelId = parseInt(this.state.currentModelId[this.state.currentModelId.length - 1])
-        const models = this.state.models.slice()
-          models[modelId] = {
-              ...models[modelId],
-              position: modelPosition,
-          }
+        const modelId = parseInt(
+          this.state.currentModelId[this.state.currentModelId.length - 1],
+        );
+        const models = this.state.models.slice();
+        models[modelId] = {
+          ...models[modelId],
+          position: modelPosition,
+        };
 
-        this.setState({models})
+        this.setState({models});
       }
       this.update();
     });
@@ -245,32 +298,28 @@ class App extends React.Component<{}, AppState> {
     return this.state.triggerDown && this.state.intersection;
   }
   render() {
-      const models = this.state.models.map((m, i) => {
-          const id = `model${i}`
-          const isSelected = this.state.currentModelId === id
-          const position =
-              m.position.x +
-              " " +
-              (isSelected ? 0.1 : 0) +
-              " " +
-              m.position.z;
+    const models = this.state.models.map((m, i) => {
+      const id = `model${i}`;
+      const isSelected = this.state.currentModelId === id;
+      const position =
+        m.position.x + " " + (isSelected ? 0.1 : 0) + " " + m.position.z;
 
-          return (
-              <Model
-                key={i}
-                id={id}
-                position={position}
-              collisionBoxPosition={m.collisionBoxPosition}
-              collisionBoxScale={m.collisionBoxScale}
-                isSelected={isSelected}
-                scale={m.scale}
-                src={m.src}
-              modelPosition={m.modelPosition}
-              rotation={`0 ${m.rotationY} 0`}
-              color={m.color}
-                />
-          )
-      })
+      return (
+        <Model
+          key={i}
+          id={id}
+          position={position}
+          collisionBoxPosition={m.collisionBoxPosition}
+          collisionBoxScale={m.collisionBoxScale}
+          isSelected={isSelected}
+          scale={m.scale}
+          src={m.src}
+          modelPosition={m.modelPosition}
+          rotation={`0 ${m.rotationY} 0`}
+          color={m.color}
+        />
+      );
+    });
 
     return (
       <a-scene>
@@ -278,7 +327,7 @@ class App extends React.Component<{}, AppState> {
           src="./kartell/obj/kartell-room.obj"
           mtl="./kartell/obj/kartell-room.mtl"
         />
-            { models }
+        {models}
         <a-obj-model
           id="collision-box"
           src="./kartell/obj/Collision.obj"

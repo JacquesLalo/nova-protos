@@ -13,6 +13,7 @@ module.exports = {
         infiniteGallery: './infinite-gallery/js/infinite-gallery.ts',
         kartell: './kartell/js/kartell.tsx',
         musicXR: './musicXR/js/musicXR.tsx',
+        XRMedical: './XR-medical/js/XR-medical.tsx',
     },
     devtool: 'source-map',
     output: {

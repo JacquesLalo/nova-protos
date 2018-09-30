@@ -1,0 +1,41 @@
+On the side of ExperQuiz, we already have an integration of "media", which can be images, documents, but also, and above all, videos.
+It may be to illustrate a question or to enrich an explanation or a reminder of the course. You can also share media with some users, but that's another topic. In this logic of media integration, we can imagine to put, in place of video, interactive 3d media, there are technos for that, for example www.blend4web.com (https://viscircle.de / kamera-konfigurator /). In these examples, it is 3D in 2D, that is to say that we have the interactivity around the object, but not the true volume. But it's not revolutionary.
+
+
+Basically, ExperQuiz is the web, and I do not know how to marry the web (browser-based) and the real 3D, with glasses. Surely people have had to think about it, but I do not know.
+
+
+In ExperQuiz, we can distinguish: on one side all the functions of administration or back-office, on the other hand the functions of passage of tests, which we call, we, the "player". 90% of our development work has been in administration interfaces: create or modify questions, configure tests, invite users, analyze results, .... This is where the greatest number of features are. The player, for many users, is the only thing they see from ExperQuiz, that's where they are asked questions and their answers. I make this distinction to underline that, for the 90% of ExperQuiz which concern the administration, the question of the integration VR does not arise. The question is how can you integrate the player with VR. Nevertheless, these 90% of administration are important because, whatever the system that one manufactures, one needs these functionalities: it is necessary to have tools to define questions, tests, users, to visualize the results, etc. And so, even if, in a project Quiz-VR, we could not keep anything from the player ExperQuiz, we could still try to reuse the entire administration, and redo a "player-VR" brand new.
+
+
+In the ExperQuiz player, we can distinguish two parts: a part that manages the user interface itself, ie the display of the question, the answers, the media, the score, etc. and a part that manages the logic of the test: what is the next question, the answer provided is it good, how many points won, what time control, etc. I stress this because the management of the test logic is relatively independent of the interface technology. At ExperQuiz, the interface is web (or possibly mobile), VR should at least rebuild the interface part, but without doubt also the logical part.
+
+
+Between the admin ExperQuiz (we could call the 'back office') and the player there are exchanges that use APIs, ie exchanges between computer programs. The player asks the back office to send him a description of the test, questions to ask, the back office answers him. The player sends the responses back to the back office, the back office keeps them in a database so that they can be returned to the administrator later. I emphasize this because, in a hypothesis where we would keep an ExperQuiz back-office but with a brand new VR player, these exchanges could be (partly) preserved.
+
+
+Now think about what could be a "player-VR", in the sense of "player quiz", of course, ie a way for a user, immersed in his VR with the headset on his head, participate in a quiz.
+
+
+First possibility, easy to imagine but clearly not satisfactory: turning the head, the user sees a written question, floating in the air, with below 3 possible answers. He points his 'laser' to the correct answer and clicks, or perhaps with his hand he virtually touches the correct answer, in short, he selects it. The selected answer is sent to ExperQuiz who responds by saying if it is the right one or not, and the VR presents the appropriate "reaction", a firework if OK, a big gray cloud if not OK, or something in the kind ... Then, a little further, he sees the next question, ... and so on.
+
+
+What is missing here is a real take advantage of the VR, we just sort of plated our web interface question / answer in the universe.
+
+
+It might still make sense if these questions are intertwined with real VR experiences. For example, the user is in front of a human body, he can turn around, but maybe also remove the skin, remove the intestines to see behind, ... etc, maybe by 'clicking' on an organ, a voice gives him info on this organ, etc. And after 3 minutes of this interaction, we go to a little quiz. Here the fact that the quiz is almost a representation of the web page plated in the RV is not very serious, the important thing is that we benefited from the VR experience upstream of the question.
+
+
+A first way to go further could be to use a voice interface for the tests part. It avoids having to write floating texts in the air and to pick answers in the air as well. And so it is less to take the user out of reality. He imagines he is in communication with someone who asks him questions. We already imagined to include vocal in ExperQuiz, studied a little the question, but nothing concrete. There are APIs offered by the giants of the Internet to make (1) Text-to-speech and (2) speech-to-text (speech recognition). It does not cost much to use, it's quite simple and powerful enough. The text-to-speech is not perfect yet, the speech is still a little bit robotic, but it has improved a lot. And with the Siri, and Amazon Alexa, people get used to it. So: we pronounce orally the question in the headset of the user, he says his answer, we address the sound file to the chosen API, it answers us (in milliseconds) with the corresponding text, and we compare this text to the possible answers, and we say if OK or not.
+
+
+We can also go further by integrating the designation of an object in the VR. Today, ExperQuiz allows to show an image and to ask the user to click on this or that part. It could be medicine elsewhere: on this image of the human body, indicate where the femur is. The guy clicks with his mouse, and we see if the click is inside the correct zone.
+
+
+We can easily imagine the same thing in VR. I do not know how the score works, like the click of a mouse, but hey he must exist. So we ask him to show the femur, he shows and we say if OK or not. The question could be asked by oral as well.
+
+
+For all this part "player VR", I'm just imagining without knowing. The main thing to remember is that, whatever the system and whatever the technology, we always need a back office at the same time for what is before the test (create, define questions, define test methods, define users, etc.) and what is downstream (visualize results, statistics, produce degrees, track changes over time, etc.). And this part back-office, which we hardly think at the beginning as we are focused on the player part which is the most fun, this part back-office so that it is complete and of quality, represents 90% of the investment (at least that's the ratio for the web). From this point of view, it may be relevant, indeed, to try to use this back office ExperQuiz, which is of quality.
+
+
+Nevertheless, it is likely that it should be enriched, at least for the definition of the questions, if the VR questions are not just web questions carried in the VR. For example, to identify a correct area on an image, just draw a rectangle. To identify the right object in VR, it would be different.
